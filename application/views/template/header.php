@@ -13,6 +13,9 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?= base_url('jar/html/default/') ?>assets/images/favicon.ico">
 
+    <!-- gridjs css -->
+    <link rel="stylesheet" href="<?= base_url('jar/html/default/') ?>assets/libs/gridjs/theme/mermaid.min.css">
+
     <!-- Layout config Js -->
     <script src="<?= base_url('jar/html/default/') ?>assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
@@ -189,6 +192,9 @@
                             </a>
                             <div class="collapse menu-dropdown <?= $this->uri->segment(1) == 'master' ? 'collapse show' : '' ?> " id="sidebarMaster">
                                 <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('master/subdist') ?>" class="nav-link <?= $this->uri->segment(2) == 'subdist' ? 'active' : '' ?>"> Sub Distributor </a>
+                                    </li>
                                     <li class="nav-item">
                                         <a href="<?= base_url('master/top') ?>" class="nav-link <?= $this->uri->segment(2) == 'top' ? 'active' : '' ?>"> TOP </a>
                                     </li>

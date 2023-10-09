@@ -6,6 +6,7 @@ class Master extends CI_Controller
     function __construct()
     {
         parent::__construct();
+        $this->load->model(['master_m']);
     }
 
     public function render($view, array $data = null)
@@ -31,5 +32,20 @@ class Master extends CI_Controller
     {
         $data = array();
         $this->render('master/item', $data);
+    }
+
+    public function subdist()
+    {
+        $data = array();
+        $this->render('master/subdist', $data);
+    }
+
+    public function getMasterSubdist()
+    {
+        $subdist = $this->master_m->master_subdist();
+        $response = array(
+            'subdist' => $subdist->result()
+        );
+        echo json_encode($response);
     }
 }
