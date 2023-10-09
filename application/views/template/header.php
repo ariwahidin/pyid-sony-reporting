@@ -16,6 +16,8 @@
     <!-- gridjs css -->
     <link rel="stylesheet" href="<?= base_url('jar/html/default/') ?>assets/libs/gridjs/theme/mermaid.min.css">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+
     <!-- Layout config Js -->
     <script src="<?= base_url('jar/html/default/') ?>assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
@@ -26,6 +28,7 @@
     <link href="<?= base_url('jar/html/default/') ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="<?= base_url('jar/html/default/') ?>assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+
 
 </head>
 
