@@ -1,8 +1,6 @@
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
 
-<!-- Mirrored from themesbrand.com/velzon/html/default/dashboard-projects.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 06 Oct 2023 03:36:14 GMT -->
-
 <head>
 
     <meta charset="utf-8" />
@@ -33,8 +31,6 @@
 </head>
 
 <body>
-
-    <!-- Begin page -->
     <div id="layout-wrapper">
 
         <header id="page-topbar">
@@ -188,7 +184,7 @@
                             <a class="nav-link menu-link <?= $this->uri->segment(1) == 'dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                                 <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
                             </a>
-                        </li> <!-- end Dashboard Menu -->
+                        </li> 
                         <li class="nav-item">
                             <a class="nav-link menu-link <?= $this->uri->segment(1) == 'master' ? 'active' : '' ?>" href="#sidebarMaster" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                                 <i class="ri-apps-2-line"></i> <span data-key="t-apps">Master</span>
