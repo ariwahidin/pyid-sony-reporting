@@ -28,6 +28,36 @@ class Master extends CI_Controller
         $this->render('master/customer', $data);
     }
 
+    public function getMasterCustomer()
+    {
+        $post = $this->input->post();
+        $customer = $this->master_m->master_customer($post);
+        $total_records = $this->master_m->countAllCustomer();
+        $total_filtered = $this->master_m->countAllCustomer();
+        $data = array();
+        $no = $post['start'];
+
+        foreach($customer->result() as $field){
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $field->CardName;
+            $row[] = $field->Address;
+            $row[] = $field->City;
+            $row[] = $field->Phone;
+            $data[] = $row;
+        }
+
+        $response = array(
+            'draw' => intval($this->input->post('draw')),
+            'recordsTotal' =>  $total_records,
+            'recordsFiltered' =>  $total_filtered,
+            'data' => $data
+        );
+
+        echo json_encode($response);
+    }
+
     public function item()
     {
         $data = array();
@@ -42,9 +72,9 @@ class Master extends CI_Controller
 
     public function getMasterSubdist()
     {
-        $subdist = $this->master_m->master_subdist();
+        $subdist = $this->master_m->master_subdist()->result();
         $response = array(
-            'subdist' => $subdist->result()
+            'subdist' => $subdist
         );
         echo json_encode($response);
     }

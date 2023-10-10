@@ -8,4 +8,26 @@ class Master_m extends CI_Model
         $query = $this->db->query($sql);
         return $query;
     }
+
+    public function countAllCustomer()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM master_customer";
+        $query = $this->db->query($sql);
+        return $query->row()->total;
+    }
+
+
+    public function master_customer($post)
+    {
+        $start = $post['start'];
+        $length = $post['length'];
+
+        $sql = "select CardName, Address, City, Phone
+        from master_customer";
+
+        if ($post['length'] != -1)
+            $sql .= " limit $start, $length";
+        $query = $this->db->query($sql);
+        return $query;
+    }
 }

@@ -1,3 +1,7 @@
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -15,12 +19,37 @@
 </div>
 <!-- end page title -->
 
-<div class="row project-wrapper">
-    <div class="col-xxl-8">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <table id="customer-table" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>CardName</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-    </div><!-- end col -->
-
-    <div class="col-xxl-4">
-
-    </div><!-- end col -->
-</div><!-- end row -->
+<script>
+    $(document).ready(function() {
+        $('#customer-table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "<?php echo site_url('master/getMasterCustomer'); ?>",
+                "type": "POST"
+            }
+        });
+    });
+</script>
