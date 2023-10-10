@@ -1,6 +1,6 @@
-<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="<?= base_url() ?>myassets/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="<?= base_url() ?>myassets/js/jquery-3.7.0.js"></script>
+<script src="<?= base_url() ?>myassets/js/jquery.dataTables.min.js"></script>
 
 <!-- start page title -->
 <div class="row">
