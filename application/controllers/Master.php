@@ -6,7 +6,7 @@ class Master extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(['master_m','customer_m']);
+        $this->load->model(['master_m','customer_m', 'item_m']);
     }
 
     public function render($view, array $data = null)
@@ -58,6 +58,31 @@ class Master extends CI_Controller
     {
         $data = array();
         $this->render('master/item', $data);
+    }
+
+    public function getMasterItem()
+    {
+        $list = $this->item_m->get_datatables();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $field->ItemCode;
+            $row[] = $field->FrgnName;
+            $row[] = $field->ItemName;
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->item_m->count_all(),
+            "recordsFiltered" => $this->item_m->count_filtered(),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
     }
 
     public function subdist()

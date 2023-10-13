@@ -3,6 +3,11 @@
 <script src="<?= base_url() ?>myassets/js/jquery.dataTables.min.js"></script>
 
 <!-- start page title -->
+
+
+<style>
+
+</style>
 <div class="row">
     <div class="col-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -20,13 +25,13 @@
 <!-- end page title -->
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col col-md-12">
         <div class="card">
             <div class="card-body">
                 <table id="customer-table" class="display" style="width:100%">
                     <thead>
                         <tr>
-                            <th>No.</th>
+                            <th>#</th>
                             <th>CardName</th>
                             <th>Address</th>
                             <th>City</th>

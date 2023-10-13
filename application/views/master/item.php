@@ -1,6 +1,16 @@
-<!-- start page title -->
+<link href="<?= base_url() ?>myassets/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="<?= base_url() ?>myassets/js/jquery-3.7.0.js"></script>
+<script src="<?= base_url() ?>myassets/js/jquery.dataTables.min.js"></script>
+<style>
+    table tr th:first-child{
+        max-width: 10px !important;
+    }
+</style>
+
+
+
 <div class="row">
-    <div class="col-12">
+    <div class="col col-md-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
             <h4 class="mb-sm-0">Item SKU</h4>
 
@@ -13,14 +23,37 @@
         </div>
     </div>
 </div>
-<!-- end page title -->
 
-<div class="row project-wrapper">
-    <div class="col-xxl-8">
+<div class="row">
+    <div class="col col-md-10">
+        <div class="card">
+            <div class="card-body">
+                <table id="item-table" class="display table table bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ItemCode</th>
+                            <th>FrgnName</th>
+                            <th>ItemName</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-    </div><!-- end col -->
-
-    <div class="col-xxl-4">
-
-    </div><!-- end col -->
-</div><!-- end row -->
+<script>
+    $(document).ready(function() {
+        $('#item-table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "<?php echo site_url('master/getMasterItem'); ?>",
+                "type": "POST"
+            }
+        });
+    });
+</script>
