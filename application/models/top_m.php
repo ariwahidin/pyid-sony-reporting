@@ -1,11 +1,11 @@
 <?php
-class Customer_m extends CI_Model
+class Top_m extends CI_Model
 {
 
-    var $table = 'master_customer';
-    var $column_order = array(null, 'CardName', 'Address', 'City', 'Phone'); //field yang ada di table cuatomer
-    var $column_search = array('CardName', 'Address', 'City'); //field yang diizin untuk pencarian 
-    var $order = array('CardName' => 'asc'); // default order 
+    var $table = 'master_top';
+    var $column_order = array(null, 'Descript', 'ExtraDays'); //field yang ada di table cuatomer
+    var $column_search = array('Descrpt', 'ExtraDays'); //field yang diizin untuk pencarian 
+    var $order = array('GroupNum' => 'asc'); // default order 
 
     private function _get_datatables_query()
     {
@@ -60,10 +60,5 @@ class Customer_m extends CI_Model
     {
         $this->db->from($this->table);
         return $this->db->count_all_results();
-    }
-
-
-    public function simpanCustomer($data){
-        return $this->db->insert_batch('master_customer', $data);
     }
 }

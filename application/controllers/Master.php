@@ -6,7 +6,7 @@ class Master extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(['master_m','customer_m', 'item_m']);
+        $this->load->model(['master_m', 'customer_m', 'item_m', 'top_m']);
     }
 
     public function render($view, array $data = null)
@@ -20,6 +20,31 @@ class Master extends CI_Controller
     {
         $data = array();
         $this->render('master/top', $data);
+    }
+
+    public function getMasterTop()
+    {
+        $list = $this->top_m->get_datatables();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $field->GroupNum;
+            $row[] = $field->Descript;
+            $row[] = $field->ExtraDays;
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->item_m->count_all(),
+            "recordsFiltered" => $this->item_m->count_filtered(),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
     }
 
     public function customer()
@@ -50,6 +75,7 @@ class Master extends CI_Controller
             "recordsFiltered" => $this->customer_m->count_filtered(),
             "data" => $data,
         );
+
         //output dalam format JSON
         echo json_encode($output);
     }
@@ -97,6 +123,32 @@ class Master extends CI_Controller
         $response = array(
             'subdist' => $subdist
         );
+        echo json_encode($response);
+    }
+
+    public function prosesSimpan()
+    {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        var_dump($data);
+    }
+
+    public function prosesSimpanCustomer()
+    {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+    
+        $this->customer_m->simpanCustomer($data);
+
+        if ($this->db->affected_rows() > 0) {
+            $response = array(
+                'success' => true
+            );
+        } else {
+            $response = array(
+                'success' => false
+            );
+        }
         echo json_encode($response);
     }
 }
