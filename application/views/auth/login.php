@@ -85,6 +85,7 @@
                                 <div class="col-lg-6">
                                     <div class="p-lg-5 p-4">
                                         <div>
+
                                             <h5 class="text-primary">Welcome Back !</h5>
                                             <p class="text-muted">Sign in to continue to Pandurasa Sub Distributor.</p>
                                         </div>
@@ -112,6 +113,12 @@
 
                                                 <div class="mt-4">
                                                     <button id="loginButton" class="btn btn-success w-100" type="submit">Sign In</button>
+                                                </div>
+
+                                                <div id="failedAlert" style="display: none;" class="mt-4">
+                                                    <div class="alert alert-danger mb-xl-0" role="alert">
+                                                        <strong> Login gagal! </strong> username atau password salah
+                                                    </div>
                                                 </div>
 
                                             </form>
@@ -169,6 +176,12 @@
     <script src="<?= base_url('jar/html/default/') ?>assets/js/pages/password-addon.init.js"></script>
 
     <script>
+        document.getElementById("username").focus()
+        document.getElementById("username").addEventListener("keyup", function(e) {
+            if (e.key == "Enter") {
+                document.getElementById("password").focus()
+            }
+        })
         async function loginUser(event) {
             event.preventDefault(); // Mencegah pengiriman form default
 
@@ -201,6 +214,7 @@
                         dashboard(responseData); // Panggil fungsi dashboard jika success adalah true
                     } else {
                         console.error('Login gagal:', responseData.message);
+                        document.getElementById("failedAlert").style.display = "block"
                     }
                 } else {
                     console.error('Login gagal:', response.status);

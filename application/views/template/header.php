@@ -300,7 +300,7 @@
                     </span>
                     <span class="logo-lg">
                         <img style="border-radius: 10%; margin-top: -5px;" src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="25">
-                        <span style="color: white; font-size: 16px; text-decoration: underline;"><strong>Pandurasa</strong> Kharisma</span>
+                        &nbsp;<span style="color: white; font-size: 16px; text-decoration: underline;"><strong>Pandurasa</strong> Kharisma</span>
                     </span>
                 </a>
                 <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
