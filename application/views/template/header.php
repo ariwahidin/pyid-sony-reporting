@@ -4,12 +4,12 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Projects | Velzon - Admin & Dashboard Template</title>
+    <title>Pandurasa | Subdistribution</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="<?= base_url('jar/html/default/') ?>assets/images/favicon.ico">
+    <link rel="shortcut icon" href="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png">
 
     <!-- gridjs css -->
     <link rel="stylesheet" href="<?= base_url('jar/html/default/') ?>assets/libs/gridjs/theme/mermaid.min.css">
@@ -199,19 +199,19 @@
                         <div class="navbar-brand-box horizontal-logo">
                             <a href="index.html" class="logo logo-dark">
                                 <span class="logo-sm">
-                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/logo-sm.png" alt="" height="22">
+                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="22">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/logo-dark.png" alt="" height="17">
+                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="17">
                                 </span>
                             </a>
 
                             <a href="index.html" class="logo logo-light">
                                 <span class="logo-sm">
-                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/logo-sm.png" alt="" height="22">
+                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="22">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/logo-light.png" alt="" height="17">
+                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="17">
                                 </span>
                             </a>
                         </div>
@@ -264,14 +264,14 @@
                                 <span class="d-flex align-items-center">
                                     <img class="rounded-circle header-profile-user" src="<?= base_url('jar/html/default/') ?>assets/images/users/avatar-1.jpg" alt="Header Avatar">
                                     <span class="text-start ms-xl-2">
-                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Anna Adame</span>
-                                        <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Founder</span>
+                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Admin</span>
+                                        <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Administrator</span>
                                     </span>
                                 </span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
-                                <h6 class="dropdown-header">Welcome Anna!</h6>
+                                <h6 class="dropdown-header">Welcome Admin</h6>
                                 <a id="logoutLink" class="dropdown-item" href="#"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
                             </div>
                         </div>
@@ -280,50 +280,27 @@
             </div>
         </header>
 
-        <!-- removeNotificationModal -->
-        <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="NotificationModalbtn-close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mt-2 text-center">
-                            <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                            <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                                <h4>Are you sure ?</h4>
-                                <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Notification ?</p>
-                            </div>
-                        </div>
-                        <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                            <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn w-sm btn-danger" id="delete-notification">Yes, Delete It!</button>
-                        </div>
-                    </div>
-
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
         <!-- ========== App Menu ========== -->
         <div class="app-menu navbar-menu">
             <!-- LOGO -->
             <div class="navbar-brand-box">
                 <!-- Dark Logo-->
-                <a href="index.html" class="logo logo-dark">
+                <a href="#" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="<?= base_url('jar/html/default/') ?>assets/images/logo-sm.png" alt="" height="22">
+                        <img src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="22">
                     </span>
                     <span class="logo-lg">
-                        <img src="<?= base_url('jar/html/default/') ?>assets/images/logo-dark.png" alt="" height="17">
+                        <img src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="17">
                     </span>
                 </a>
                 <!-- Light Logo-->
-                <a href="index.html" class="logo logo-light">
+                <a href="#" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="<?= base_url('jar/html/default/') ?>assets/images/logo-sm.png" alt="" height="22">
+                        <img style="border-radius: 10%;" src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="30">
                     </span>
                     <span class="logo-lg">
-                        <img src="<?= base_url('jar/html/default/') ?>assets/images/logo-light.png" alt="" height="17">
+                        <img style="border-radius: 10%; margin-top: -5px;" src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="25">
+                        <span style="color: white; font-size: 16px; text-decoration: underline;"><strong>Pandurasa</strong> Kharisma</span>
                     </span>
                 </a>
                 <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">

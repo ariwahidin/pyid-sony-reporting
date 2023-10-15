@@ -51,8 +51,6 @@
 </div>
 
 <script>
-    // $(document).ready(function() {
-    // });
 
     let table = $('#customer-table').DataTable({
         "processing": true,
@@ -170,7 +168,7 @@
         // Contoh data
         startLoading()
         var data = [
-            ["Nama", "Alamat"],
+            ["CardName", "Address", "City", "Phone"],
             // ["John Doe", "123 Main St"],
             // ["Jane Smith", "456 Elm St"],
             // Tambahkan data lainnya di sini
