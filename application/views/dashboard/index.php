@@ -17,7 +17,7 @@
 
 <div class="row project-wrapper">
     <div class="col-xxl-8">
-
+        <?php var_dump($this->session->userdata()) ?>
     </div>
     <!-- end col -->
 

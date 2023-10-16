@@ -1,11 +1,11 @@
 <?php
-class Customer_m extends CI_Model
+class User_m extends CI_Model
 {
 
-    var $table = 'master_customer';
-    var $column_order = array(null, 'CardName', 'Address', 'City', 'Phone'); //field yang ada di table cuatomer
-    var $column_search = array('CardName', 'Address', 'City'); //field yang diizin untuk pencarian 
-    var $order = array('CardName' => 'asc'); // default order 
+    var $table = 'master_user';
+    var $column_order = array(null, 'username', 'password', 'cardcode', 'role'); //field yang ada di table cuatomer
+    var $column_search = array('usrname', 'role'); //field yang diizin untuk pencarian 
+    var $order = array('username' => 'asc'); // default order 
 
     private function _get_datatables_query()
     {
@@ -62,18 +62,18 @@ class Customer_m extends CI_Model
         return $this->db->count_all_results();
     }
 
-
-    public function simpanCustomer($data)
+    function getUserActive($username = null, $password = null)
     {
-        // Mendapatkan waktu sekarang
-        date_default_timezone_set('Asia/Jakarta');
-        $created_at = date('Y-m-d H:i:s');
-
-        // Menambahkan kolom 'created_by' dan 'created_at' ke setiap elemen data
-        foreach ($data as &$row) {
-            $row['created_by'] = $this->session->userdata('user_data')['user_id'];
-            $row['created_at'] = $created_at;
+        $this->db->select('a.id, a.username, a.cardcode, a.role, b.CardName as cardname');
+        $this->db->from('master_user a');
+        $this->db->join('master_subdist b', 'a.cardcode = b.CardCode', 'inner');
+        if ($username != null && $password != null) {
+            $this->db->where('a.username', $username);
+            $this->db->where('a.password', $password);
         }
-        return $this->db->insert_batch('master_customer', $data);
+        $query = $this->db->get();
+        // var_dump($this->db->last_query());
+        // die;
+        return $query;
     }
 }

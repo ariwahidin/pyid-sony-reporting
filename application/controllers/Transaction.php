@@ -1,12 +1,12 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Dashboard extends CI_Controller
+class Transaction extends CI_Controller
 {
 
     function __construct()
     {
         parent::__construct();
-        is_not_logged_in();
+        $this->load->model(['master_m', 'customer_m', 'item_m', 'top_m', 'user_m']);
     }
 
     public function render($view, array $data = null)
@@ -16,10 +16,9 @@ class Dashboard extends CI_Controller
         $this->load->view('template/footer');
     }
 
-    public function index()
+    public function salesOrder()
     {
         $data = array();
-        $this->render('dashboard/index', $data);
+        $this->render('transaction/sales_order', $data);
     }
 }
- 

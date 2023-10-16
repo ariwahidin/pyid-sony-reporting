@@ -2,8 +2,16 @@
 
 class Auth extends CI_Controller
 {
+
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->model(['user_m']);
+	}
+
 	public function login()
 	{
+		is_logged_in();
 		$this->load->view('auth/login');
 	}
 
@@ -12,7 +20,15 @@ class Auth extends CI_Controller
 		$req = json_decode(file_get_contents('php://input'), true);
 		$username = $req['username'];
 		$password = $req['password'];
-		if ($username == 'admin' && $password == 'admin') {
+		$login = $this->user_m->getUserActive($username, $password);
+		if ($login->num_rows() > 0) {
+			$user_data = array(
+				'user_id' => $login->row()->id,
+				'username' => $login->row()->username,
+				'role' => $login->row()->role,
+				'cardname' => $login->row()->cardname
+			);
+			$this->session->set_userdata('user_data', $user_data);
 			$response = array(
 				'success' => true
 			);
@@ -26,6 +42,7 @@ class Auth extends CI_Controller
 
 	public function logout()
 	{
+		$this->session->sess_destroy();
 		$response = array(
 			'success' => true
 		);

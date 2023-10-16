@@ -8,4 +8,12 @@ class Master_m extends CI_Model
         $query = $this->db->query($sql);
         return $query;
     }
+
+    public function getSubdistForUser()
+    {
+        $sql = "select CardCode, CardName from master_subdist
+        where CardCode not in (select cardcode from master_user)";
+        $query = $this->db->query($sql);
+        return $query;
+    }
 }

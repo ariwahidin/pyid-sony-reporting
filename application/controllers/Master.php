@@ -6,7 +6,7 @@ class Master extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(['master_m', 'customer_m', 'item_m', 'top_m']);
+        $this->load->model(['master_m', 'customer_m', 'item_m', 'top_m', 'user_m']);
     }
 
     public function render($view, array $data = null)
@@ -137,7 +137,7 @@ class Master extends CI_Controller
     {
         $input = file_get_contents('php://input');
         $data = json_decode($input, true);
-    
+
         $this->customer_m->simpanCustomer($data);
 
         if ($this->db->affected_rows() > 0) {
@@ -150,5 +150,57 @@ class Master extends CI_Controller
             );
         }
         echo json_encode($response);
+    }
+
+    public function user()
+    {
+        $this->render('master/user');
+    }
+
+    public function getMasterUsers()
+    {
+        $list = $this->user_m->get_datatables();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $field->username;
+            $row[] = $field->role;
+            // $row[] = $field->ItemName;
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->item_m->count_all(),
+            "recordsFiltered" => $this->item_m->count_filtered(),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
+
+    public function getSubdistForNewUser()
+    {
+        $subdist = $this->master_m->getSubdistForUser();
+        if ($subdist->num_rows() > 0) {
+            $response = array(
+                'success' => true,
+                'data' => $subdist->result()
+            );
+        } else {
+            $response = array(
+                'success' => false
+            );
+        }
+        echo json_encode($response);
+    }
+
+    public function simpanNewUserSubdist(){
+        $data = file_get_contents("php://input");
+        var_dump($data);
+        var_dump($_POST);
     }
 }

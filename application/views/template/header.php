@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="<?= $this->uri->segment(2) == 'salesorder' ? 'sm' : 'lg' ?>" data-sidebar-image="none" data-preloader="disable">
 
 <head>
 
@@ -264,14 +264,14 @@
                                 <span class="d-flex align-items-center">
                                     <img class="rounded-circle header-profile-user" src="<?= base_url('jar/html/default/') ?>assets/images/users/avatar-1.jpg" alt="Header Avatar">
                                     <span class="text-start ms-xl-2">
-                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Admin</span>
-                                        <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Administrator</span>
+                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?= $this->session->userdata('user_data')['cardname'] ?></span>
+                                        <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text"><?= $this->session->userdata('user_data')['username'] ?></span>
                                     </span>
                                 </span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
-                                <h6 class="dropdown-header">Welcome Admin</h6>
+                                <h6 class="dropdown-header">Welcome <?= $this->session->userdata('user_data')['username'] ?></h6>
                                 <a id="logoutLink" class="dropdown-item" href="#"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
                             </div>
                         </div>
@@ -327,6 +327,9 @@
                             <div class="collapse menu-dropdown <?= $this->uri->segment(1) == 'master' ? 'collapse show' : '' ?> " id="sidebarMaster">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
+                                        <a href="<?= base_url('master/user') ?>" class="nav-link <?= $this->uri->segment(2) == 'user' ? 'active' : '' ?>"> Users </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="<?= base_url('master/subdist') ?>" class="nav-link <?= $this->uri->segment(2) == 'subdist' ? 'active' : '' ?>"> Sub Distributor </a>
                                     </li>
                                     <li class="nav-item">
@@ -343,7 +346,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                            <a href="<?= base_url('transaction/salesorder') ?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                                 <i class="ri-layout-3-line"></i> <span>Sales Order</span>
                             </a>
                         </li>
