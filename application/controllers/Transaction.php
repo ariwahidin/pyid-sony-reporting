@@ -6,7 +6,7 @@ class Transaction extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(['master_m', 'customer_m', 'item_m', 'top_m', 'user_m']);
+        $this->load->model(['master_m', 'customer_m', 'item_m', 'top_m', 'user_m', 'transaction_m']);
     }
 
     public function render($view, array $data = null)
@@ -20,5 +20,25 @@ class Transaction extends CI_Controller
     {
         $data = array();
         $this->render('transaction/sales_order', $data);
+    }
+
+    public function loadTableItemSubdist(){
+        
+    }
+
+    public function loadDataForSalesOrder(){
+
+        $item = $this->transaction_m->getItemSubdist();
+
+        $data = array(
+            'item' => $item->result()
+        );
+
+        $responseData = array(
+            'success' => true,
+            'data' => $data
+        );
+
+        echo json_encode($responseData);
     }
 }

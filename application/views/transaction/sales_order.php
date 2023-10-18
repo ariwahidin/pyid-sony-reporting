@@ -1,3 +1,30 @@
+<!-- <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script> -->
+
+<link href="<?= base_url() ?>myassets/css/jquery.dataTables.min.css" rel="stylesheet" />
+<style>
+    /* On sales order shown */
+    .navbar-header {
+        display: <?= $this->uri->segment(2) == 'salesorder' ? 'none !important' : '' ?>;
+    }
+
+    .page-title-box {
+        padding: 10px 1.5rem;
+        background-color: var(--vz-secondary-bg);
+        -webkit-box-shadow: var(--vz-page-title-box-shadow);
+        box-shadow: var(--vz-page-title-box-shadow);
+        border-bottom: 1px solid var(--vz-page-title-border);
+        margin: <?= $this->uri->segment(2) == 'salesorder' ? '0px -1.5rem 1.5rem -1.5rem' : '' ?>;
+    }
+
+    .page-content {
+        padding: <?= $this->uri->segment(2) == 'salesorder' ? '0px' : 'calc(70px + 1.5rem)' ?> calc(1.5rem * .5) 60px calc(1.5rem * .5);
+    }
+
+    /* .barbar {
+        position: <?= $this->uri->segment(2) == 'salesorder' ? 'fixed' : '' ?>;
+    } */
+</style>
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -17,103 +44,23 @@
 <!-- end page title -->
 
 <div class="row">
-    <div class="col-xl-6">
+    <div class="col-xl-4">
         <div class="row">
             <div class="col-xl-12">
                 <div class="card">
-                    <div class="card-header border-0">
-                        <div class="row g-4 align-items-center">
-                            <div class="col-sm">
-                                <h5 class="card-title mb-0">Product List</h5>
-                            </div>
-                            <div class="col-sm">
-                                <div class="d-flex justify-content-sm-end">
-                                    <div class="search-box ms-2">
-                                        <input type="text" class="form-control" id="searchProductList" placeholder="Search Products..." fdprocessedid="eay2dw">
-                                        <i class="ri-search-line search-icon"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end card header -->
                     <div class="card-body">
-                        <div class="tab-content text-muted">
-                            <div class="tab-pane active" id="productnav-all" role="tabpanel">
-                                <div id="table-product-list-all" class="table-card gridjs-border-none">
-                                    <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
-                                        <div class="gridjs-wrapper" style="height: auto;">
-                                            <table role="grid" class="gridjs-table" style="height: auto;">
-                                                <thead class="gridjs-thead">
-                                                    <tr class="gridjs-tr">
-                                                        <th data-column-id="#" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 40px;">
-                                                            <div class="gridjs-th-content">#</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
-                                                        </th>
-                                                        <th data-column-id="product" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 360px;">
-                                                            <div class="gridjs-th-content">Product</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
-                                                        </th>
-                                                        <!-- <th data-column-id="stock" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 94px;">
-                                                            <div class="gridjs-th-content">Stock</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
-                                                        </th> -->
-                                                        <th data-column-id="price" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 101px;">
-                                                            <div class="gridjs-th-content">Price</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
-                                                        </th>
-                                                        <th data-column-id="action" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 80px;">
-                                                            <div class="gridjs-th-content">Action</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="gridjs-tbody">
-
-                                                    <?php for ($i = 1; $i < 11; $i++) { ?>
-                                                        <tr class="gridjs-tr">
-                                                            <td data-column-id="#" class="gridjs-td">
-                                                                <span>
-                                                                    <?php echo $i ?>
-                                                                </span>
-                                                            </td>
-                                                            <td data-column-id="product" class="gridjs-td"><span>
-                                                                    <div class="d-flex align-items-center">
-
-                                                                        <div class="flex-grow-1">
-                                                                            <h5 class="fs-14 mb-1"><a href="apps-ecommerce-product-details.html" class="text-body">Half Sleeve Round Neck T-Shirts</a></h5>
-                                                                            <p class="text-muted mb-0"><span class="fw-medium">4564684656832</span></p>
-                                                                        </div>
-                                                                    </div>
-                                                                </span></td>
-                                                            <!-- <td data-column-id="stock" class="gridjs-td">12</td> -->
-                                                            <td data-column-id="price" class="gridjs-td"><span>215.000</span></td>
-                                                            <td data-column-id="action" class="gridjs-td">
-                                                                <button class="btn btn-sm btn-primary">Add</button>
-                                                            </td>
-                                                        </tr>
-                                                    <?php } ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="gridjs-footer">
-                                            <div class="gridjs-pagination">
-                                                <div role="status" aria-live="polite" class="gridjs-summary" title="Page 1 of 2">Showing <b>1</b> to <b>10</b> of <b>12</b> results</div>
-                                                <div class="gridjs-pages"><button tabindex="0" role="button" disabled="" title="Previous" aria-label="Previous" class="">Previous</button><button tabindex="0" role="button" class="gridjs-currentPage" title="Page 1" aria-label="Page 1" fdprocessedid="kys9g">1</button><button tabindex="0" role="button" class="" title="Page 2" aria-label="Page 2" fdprocessedid="bvwqzg">2</button><button tabindex="0" role="button" title="Next" aria-label="Next" class="" fdprocessedid="zya0j8">Next</button></div>
-                                            </div>
-                                        </div>
-                                        <div id="gridjs-temp" class="gridjs-temp"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <table id="datatable"></table>
                     </div>
                 </div>
             </div>
-            <!-- end card -->
         </div>
     </div>
-    <div class="col-xl-6">
+    <div class="col-xl-8">
         <div class="row">
-            <div class="col-lg-12">
+
+            <div class="col-lg-7">
                 <div class="card" id="customerList">
                     <div class="card-header border-bottom-dashed">
-
                         <div class="row g-4 align-items-center">
                             <div class="col-sm">
                                 <div>
@@ -249,12 +196,73 @@
                 </div>
 
             </div>
+
+            <div class="col-lg-5">
+                <div class="card" id="customerList">
+                    <div class="card-header border-bottom-dashed">
+                        <div class="row g-4 align-items-center">
+                            <div class="col-xl-6">
+                                <div>
+                                    <h5 class="card-title mb-0">Order Summary</h5>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="text-end">
+                                    <button type="button" class="btn btn-success btn-label right ms-auto" id="prosesButton"><i class="ri-arrow-right-line label-icon align-bottom fs-16 ms-2"></i>Proses Order</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-2">
+                        <div class="table-responsive">
+                            <table class="table table-borderless mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td>Sub Total :</td>
+                                        <td class="text-end" id="cart-subtotal"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Discount : </td>
+                                        <td style="text-align: end !important;" class="align-items-end" id="cart-discount">
+                                            <div class="formCost d-flex gap-2 justify-content-end">
+                                                <span class="fw-semibold text-muted">%</span>
+                                                <input style="max-width: 2.5rem" class="form-control form-control-sm" type="number" id="summaryDiscountPercent" value="0" />
+                                                <span class="fw-semibold text-muted">Rp.</span>
+                                                <input style="max-width: 4.5rem" class="form-control form-control-sm" type="number" id="summaryDiscount" value="1000" />
+                                            </div>
+                                            <!-- 500.000 -->
+                                        </td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th>Total (IDR) :</th>
+                                        <td class="text-end">
+                                            <span class="fw-semibold" id="grandTotal">
+                                                6.500.000
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- end table-responsive -->
+                    </div>
+                    <!-- <div class="card-footer">
+                    </div> -->
+                </div>
+            </div>
+
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-header border-0">
                         <div class="row g-4 align-items-center">
                             <div class="col-sm">
-                                <h5 class="card-title mb-0">Product Order</h5>
+                                <h5 class="card-title mb-0">Product Order
+
+                                    <span class="text-muted fs-14 fw-medium">(</span>
+                                    <span class="text-muted fs-14 fw-medium totalRow">0</span>
+                                    <span class="text-muted fs-14 fw-medium"> Product</span>
+                                    <span class="text-muted fs-14 fw-medium">)</span>
+                                </h5>
                             </div>
                         </div>
                     </div>
@@ -265,59 +273,33 @@
                                 <div id="table-product-list-all" class="table-card gridjs-border-none">
                                     <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
                                         <div class="gridjs-wrapper" style="height: auto;">
-                                            <table role="grid" class="gridjs-table" style="height: auto;">
+                                            <table role="grid" class="gridjs-table table_order" style="height: auto;">
                                                 <thead class="gridjs-thead">
                                                     <tr class="gridjs-tr">
-                                                        <th data-column-id="#" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 40px;">
-                                                            <div class="gridjs-th-content">#</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
-                                                        </th>
                                                         <th data-column-id="product" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 360px;">
                                                             <div class="gridjs-th-content">Product</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
                                                         </th>
-                                                        <!-- <th data-column-id="stock" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 94px;">
-                                                            <div class="gridjs-th-content">Stock</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
-                                                        </th> -->
+                                                        <th data-column-id="price" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 101px;">
+                                                            <div class="gridjs-th-content">Price</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                                        </th>
+                                                        <th data-column-id="stock" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 94px;">
+                                                            <div class="gridjs-th-content">Uom</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                                        </th>
                                                         <th data-column-id="price" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 101px;">
                                                             <div class="gridjs-th-content">Quantity</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                                        </th>
+                                                        <th data-column-id="price" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 101px;">
+                                                            <div class="gridjs-th-content">Disc(%)</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                                        </th>
+                                                        <th data-column-id="price" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 101px;">
+                                                            <div class="gridjs-th-content">Total</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
                                                         </th>
                                                         <th data-column-id="action" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 80px; text-align: center;">
                                                             <div class="gridjs-th-content">Action</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
                                                         </th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="gridjs-tbody">
-
-                                                    <?php for ($i = 1; $i < 3; $i++) { ?>
-                                                        <tr class="gridjs-tr">
-                                                            <td data-column-id="#" class="gridjs-td">
-                                                                <span>
-                                                                    <?php echo $i ?>
-                                                                </span>
-                                                            </td>
-                                                            <td data-column-id="product" class="gridjs-td"><span>
-                                                                    <div class="d-flex align-items-center">
-
-                                                                        <div class="flex-grow-1">
-                                                                            <h5 class="fs-14 mb-1"><a href="apps-ecommerce-product-details.html" class="text-body">Half Sleeve Round Neck T-Shirts</a></h5>
-                                                                            <p class="text-muted mb-0"><span class="fw-medium">4564684656832</span></p>
-                                                                        </div>
-                                                                    </div>
-                                                                </span></td>
-                                                            <!-- <td data-column-id="stock" class="gridjs-td">12</td> -->
-                                                            <td data-column-id="qty" class="gridjs-td">
-                                                                <div class="input-step">
-                                                                    <button type="button" class="minus" fdprocessedid="at46vd">–</button>
-                                                                    <input type="number" class="product-quantity" value="1" min="0" max="100" fdprocessedid="bs7ki8">
-                                                                    <button type="button" class="plus" fdprocessedid="aips3">+</button>
-                                                                </div>
-                                                            </td>
-                                                            <td data-column-id="action" class="gridjs-td" style="text-align: center;">
-                                                                <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteRecordModal">
-                                                                    <i class="ri-delete-bin-5-fill fs-16"></i>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    <?php } ?>
+                                                <tbody class="gridjs-tbody tbodyProductOrder">
                                                 </tbody>
                                             </table>
                                         </div>
@@ -339,52 +321,249 @@
                 </div>
             </div>
             <div class="col-lg-5"></div>
-            <div class="col-lg-7">
-                <div class="card" id="customerList">
-                    <div class="card-header border-bottom-dashed">
-                        <div class="row g-4 align-items-center">
-                            <div class="col-sm">
-                                <div>
-                                    <h5 class="card-title mb-0">Order Summary</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body pt-2">
-                        <div class="table-responsive">
-                            <table class="table table-borderless mb-0">
-                                <tbody>
-                                    <tr>
-                                        <td>Sub Total :</td>
-                                        <td class="text-end" id="cart-subtotal">7.000.000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Discount : </td>
-                                        <td class="text-end" id="cart-discount">500.000</td>
-                                    </tr>
-                                    <tr class="table-active">
-                                        <th>Total (IDR) :</th>
-                                        <td class="text-end">
-                                            <span class="fw-semibold" id="cart-total">
-                                                6.500.000
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- end table-responsive -->
-                    </div>
-                    <div class="card-footer">
-                        <div class="col-sm-auto">
-                            <div class="text-end">
-                                <button type="button" class="btn btn-success btn-label right ms-auto"><i class="ri-arrow-right-line label-icon align-bottom fs-16 ms-2"></i>Proses Order</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
         </div>
     </div>
 </div>
+<script src="<?= base_url() ?>myassets/js/jquery.dataTables.min.js"></script>
+<script>
+    let totalRowOrder = 0;
+    countRowOrder()
+    countSubTotal()
+    countGrandTotal()
+
+
+    $(document).ready(function() {
+        $.ajax({
+            url: "<?= base_url('transaction/loadDataForSalesOrder') ?>",
+            method: 'GET',
+            dataType: 'JSON',
+            success: function(response) {
+                // Manipulasi data dan isi tabel DataTable di sini
+                let data = response.data.item
+                let table = $('#datatable').DataTable({
+                    responsive: true,
+                    lengthChange: false,
+                    data: data, // Data yang akan dimasukkan
+                    pageLength: 5, // Batasi jumlah data yang ditampilkan menjadi 5
+                    columns: [{
+                            data: null,
+                            title: 'Product',
+                            render: function(data, type, row) {
+                                // Gunakan fungsi render untuk menampilkan data dengan HTML dan CSS yang disesuaikan
+                                return `<strong> ${data.ItemName} </strong>
+                                <p class="text-muted mb-0">
+                                <span class="fw-medium">${data.FrgnName}</span>
+                                </p>
+                                <p class="text-muted mb-0">
+                                <span class="fw-medium">${data.Price}</span>
+                                </p>`;
+                            }
+                        },
+                        {
+                            data: null,
+                            title: 'Action',
+                            render: function(data, type, row) {
+                                return `<button id="addButton" 
+                                data-id="${data.id}" 
+                                data-ItemCode="${data.ItemCode}" 
+                                data-ItemName="${data.ItemName}" 
+                                data-FrgnName="${data.FrgnName}" 
+                                data-Price="${data.Price}" 
+                                class="btn btn-primary btn-sm">Add</button>`;
+                            }
+                        }
+                    ]
+                });
+            },
+            error: function(error) {
+                console.error('Gagal mengambil data dari API: ', error);
+            }
+        });
+
+    })
+
+    // Mendaftarkan event listener dengan event delegation
+    $(document).on('click', '#datatable #addButton', function() {
+        addNewRow($(this).data())
+    });
+
+    $(document).on('click', '.tbodyProductOrder #deleteRecord', function() {
+        $(this).closest('tr').remove()
+        countRowOrder()
+        countSubTotal()
+        countGrandTotal()
+    })
+
+
+    $(document).on('click', '#prosesButton', getOrderCart);
+
+
+    function countSubTotal() {
+        var subTotal = 0;
+        if (totalRowOrder > 0) {
+            // Mendapatkan semua elemen input dalam tabel (menggunakan kelas CSS sebagai contoh)
+            var inputElements = document.querySelectorAll('.product-total'); // Gantilah dengan kelas yang sesuai   
+            // Inisialisasi total ke 0
+            // Loop melalui semua elemen input dan menjumlahkan nilai-nilainya
+            inputElements.forEach(function(inputElement) {
+                var value = parseFloat(inputElement.value); // Menggunakan parseFloat untuk mengubah nilai menjadi angka
+                if (!isNaN(value)) {
+                    subTotal += value;
+                }
+            });
+        }
+        // Output total
+        document.getElementById("cart-subtotal").innerHTML = formatUang(subTotal)
+        // console.log('subtotal: ' + subTotal);
+        formatUang(subTotal)
+        return subTotal;
+    }
+
+    function countGrandTotal() {
+        let grandTotal = 0;
+        let subTotal = countSubTotal();
+        let discountAmount = 0;
+        let summaryDiscount = document.getElementById("summaryDiscount").value;
+
+        if (!isNaN(summaryDiscount)) {
+            discountAmount = summaryDiscount;
+        }
+
+        grandTotal = subTotal - discountAmount;
+        // console.log('GrandTotal = ' + grandTotal);
+        document.getElementById("grandTotal").innerHTML = formatUang(grandTotal)
+        return grandTotal;
+    }
+
+    function formatUang(number) {
+        const formatted = number.toLocaleString('id-ID', {
+            style: 'currency',
+            currency: 'IDR'
+        });
+        // console.log(formatted); // Output: "Rp 1.234.567,89"
+        return formatted;
+    }
+
+    function countRowOrder() {
+        // Mendapatkan referensi ke elemen <tbody> atau <table>
+        var tableBody = document.querySelector(".tbodyProductOrder"); // Gantilah dengan selektor yang sesuai
+        var rowCount = tableBody.rows.length;
+        // Output jumlah baris
+        // console.log("Jumlah baris dalam tabel: " + rowCount);
+        document.querySelector(".totalRow").innerHTML = rowCount;
+        totalRowOrder = rowCount;
+        return rowCount;
+    }
+
+
+    function addNewRow(dataItem) {
+        // console.log(dataItem)
+        const orderBody = document.querySelector(".tbodyProductOrder");
+        // Buat elemen <tr> baru
+        const newRow = document.createElement("tr");
+        newRow.className = "gridjs-tr";
+        // Isi elemen <tr> dengan elemen-elemen <td> yang sesuai
+        newRow.innerHTML = `
+                            <td data-column-id="product" class="gridjs-td">
+                                <span>
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1">
+                                            <h5 class="fs-14 mb-1">
+                                            ${dataItem.itemname}
+                                            </h5>
+                                            <p class="text-muted mb-0">
+                                                <span class="fw-medium">
+                                                ${dataItem.frgnname}
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </span>
+                            </td>
+                            <td data-column-id="qty" class="gridjs-td">
+                                <div class="input-step">
+                                    <input type="hidden" class="product-quantity product-item-code" value="${dataItem.itemcode}">
+                                    <input type="number" class="product-quantity product-price" value="${dataItem.price}">
+                                </div>
+                            </td>
+                            <td data-column-id="stock" class="gridjs-td">
+                                <div class="input-step">
+                                    <select class="product-quantity product-uom" name="" id="">
+                                        <option value="crt">Crt</option>
+                                        <option value="pcs">Pcs</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td data-column-id="qty" class="gridjs-td">
+                                <div class="input-step">
+                                    <input type="number" class="product-quantity product-qty" value="1" min="0" max="100">
+                                </div>
+                            </td>
+                            <td data-column-id="qty" class="gridjs-td">
+                                <div class="input-step">
+                                    <input type="number" class="product-quantity product-disc" value="30" min="0" max="100">
+                                </div>
+                            </td>
+                            <td data-column-id="qty" class="gridjs-td">
+                                <div class="input-step">
+                                    <input type="number" class="product-quantity product-total" value="350000" min="0" max="100">
+                                </div>
+                            </td>
+                            <td data-column-id="action" class="gridjs-td" style="text-align: center;">
+                                <button class="text-danger d-inline-block remove-item-btn" id="deleteRecord">
+                                    <i class="ri-delete-bin-5-fill fs-16"></i>
+                                </button>
+                            </td>
+                            `;
+        // Sisipkan baris ke dalam tabel
+        orderBody.appendChild(newRow);
+        countRowOrder()
+        countSubTotal()
+        countGrandTotal()
+    }
+
+    function getOrderCart() {
+        let arrayOrder = [];
+        let objectData = {}; 
+
+        let tbody = document.querySelector(".tbodyProductOrder");
+        let table = document.querySelector(".table_order");
+        let discout = document.querySelector("#summaryDiscount").value
+        let discountPercent = document.querySelector("#summaryDiscountPercent").value
+        let subtotal = countSubTotal()
+        let grandTotal = countGrandTotal()
+
+        objectData.discount = discout;
+        objectData.discountPercent = discountPercent;
+        objectData.subtotal = subtotal;
+        objectData.grandTotal = grandTotal;
+
+        if (tbody.rows.length > 0) {
+            let rows = tbody.querySelectorAll('tr');
+            rows.forEach(function(row) {
+                let rowData = {};
+                let inputItemCode = row.querySelector('.product-item-code');
+                let inputPrice = row.querySelector('.product-price');
+                let inputUom = row.querySelector('.product-uom');
+                let inputQty = row.querySelector('.product-qty');
+                let inputDisc = row.querySelector('.product-disc');
+                let inputTotal = row.querySelector('.product-total');
+                rowData.itemcode = inputItemCode.value;
+                rowData.price = inputPrice.value;
+                rowData.uom = inputUom.value;
+                rowData.qty = inputQty.value;
+                rowData.disc = inputDisc.value;
+                rowData.total = inputTotal.value;
+                arrayOrder.push(rowData)
+            });
+            objectData.order = arrayOrder;
+            console.log(objectData);
+        } else {
+            Swal.fire(
+                'Warning!',
+                'Belum ada product yang dipilih',
+                'warning'
+            )
+        }
+    }
+</script>

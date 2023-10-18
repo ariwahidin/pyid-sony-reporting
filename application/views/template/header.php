@@ -26,7 +26,7 @@
 
     <!-- Sweet Alert css-->
     <link href="<?= base_url('jar/html/default/') ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-
+    <script src="<?= base_url() ?>myassets/js/jquery-3.7.0.js"></script>
 </head>
 
 <style>
@@ -154,6 +154,7 @@
         }
     }
 </style>
+
 
 
 <div class="pLoading" style="display: none;">
