@@ -7,6 +7,7 @@ class Transaction extends CI_Controller
     {
         parent::__construct();
         $this->load->model(['master_m', 'customer_m', 'item_m', 'top_m', 'user_m', 'transaction_m']);
+        is_not_logged_in();
     }
 
     public function render($view, array $data = null)
@@ -22,16 +23,14 @@ class Transaction extends CI_Controller
         $this->render('transaction/sales_order', $data);
     }
 
-    public function loadTableItemSubdist(){
-        
-    }
-
-    public function loadDataForSalesOrder(){
+    public function loadDataForSalesOrder()
+    {
 
         $item = $this->transaction_m->getItemSubdist();
-
+        $customer = $this->transaction_m->getCustomerSubdist();
         $data = array(
-            'item' => $item->result()
+            'item' => $item->result(),
+            'customer' => $customer->result()
         );
 
         $responseData = array(
@@ -40,5 +39,27 @@ class Transaction extends CI_Controller
         );
 
         echo json_encode($responseData);
+    }
+
+    public function validationSalesOrder()
+    {
+        $req = json_decode(file_get_contents('php://input'), true);
+        // var_dump($req);
+        $response = array(
+            'success' => true
+        );
+
+        echo json_encode($response);
+    }
+
+    public function prosesSimpanOrder()
+    {
+        $req = json_decode(file_get_contents('php://input'), true);
+        // var_dump($req);
+        $response = array(
+            'success' => true
+        );
+
+        echo json_encode($response);
     }
 }

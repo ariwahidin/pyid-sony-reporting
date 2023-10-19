@@ -8,4 +8,12 @@ class Transaction_m extends CI_Model
         $this->db->where('CreatedBy', $user_id);
         return $this->db->get();
     }
+    
+    public function getCustomerSubdist(){
+        $user_id = $this->session->userdata('user_data')['user_id'];
+        $this->db->select('CardCode, CardName, Address, City, Phone');
+        $this->db->from('master_customer');
+        $this->db->where('created_by', $user_id);
+        return $this->db->get();
+    }
 }

@@ -2,6 +2,10 @@
 <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script> -->
 
 <link href="<?= base_url() ?>myassets/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <style>
     /* On sales order shown */
     .navbar-header {
@@ -21,10 +25,15 @@
         padding: <?= $this->uri->segment(2) == 'salesorder' ? '0px' : 'calc(70px + 1.5rem)' ?> calc(1.5rem * .5) 60px calc(1.5rem * .5);
     }
 
-    /* .barbar {
-        position: <?= $this->uri->segment(2) == 'salesorder' ? 'fixed' : '' ?>;
-    } */
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #444;
+        line-height: 28px;
+        min-width: 150px;
+        /* max-width: 200px; */
+    }
 </style>
+
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -62,18 +71,20 @@
                 <div class="card" id="customerList">
                     <div class="card-header border-bottom-dashed">
                         <div class="row g-4 align-items-center">
-                            <div class="col-sm">
-                                <div>
-                                    <h5 class="card-title mb-0">Customer</h5>
-                                </div>
-                            </div>
-                            <div class="col-sm-auto">
+                            <div class="">
                                 <div class="d-flex flex-wrap align-items-start gap-2">
-                                    <div class="search-box">
-                                        <input type="text" class="form-control search" placeholder="Search for customer">
-                                        <i class="ri-search-line search-icon"></i>
+                                    <div class="col-xl-3">
+                                        <span class="card-title">Customer</span>
                                     </div>
-                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> New Customer</button>
+                                    <div class="col-xl-6">
+                                        <select class="search-box js-example-basic-single" name="" id="customerSearch">
+                                            <option value=""><span class="text-muted">Pilih customer</span></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-23">
+                                        <button type="button" class="btn btn-success add-btn btn-sm" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> New</button>
+                                        <button type="button" class="btn btn-danger add-btn btn-sm" id="btnDelCust"><i class="ri-delete-bin-5-fill"></i> Del</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -81,30 +92,30 @@
                     <div class="card-body">
                         <div>
                             <div class="table-responsive table-card mb-1">
-                                <table class="table align-middle" id="customerTable">
-                                    <thead class="table-light text-muted">
-                                        <tr>
-                                            <th class="sort" data-sort="customer_name">Customer</th>
-                                            <th class="sort" data-sort="phone">Phone</th>
-                                            <th class="sort" data-sort="action">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="list form-check-all">
-                                        <tr>
-                                            <td class="customer_name">PT Maryss nasis Cousar</td>
-                                            <td class="phone">580-464-4694</td>
-                                            <td>
-                                                <ul class="list-inline hstack gap-2 mb-0">
-                                                    <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Remove">
-                                                        <a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteRecordModal">
-                                                            <i class="ri-delete-bin-5-fill fs-16"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-borderless mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <th>Name:</th>
+                                                <td class="text-end">
+                                                    <span id="spanCustomerName"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Address: </th>
+                                                <td class="text-end">
+                                                    <span id="spanAddress"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Phone:</th>
+                                                <td class="text-end">
+                                                    <span id="spanPhone"></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                         <div class="modal fade" id="showModal" tabindex="-1" aria-hidden="true">
@@ -327,10 +338,31 @@
 <script src="<?= base_url() ?>myassets/js/jquery.dataTables.min.js"></script>
 <script>
     let totalRowOrder = 0;
+    let listCustomer = [];
     countRowOrder()
     countSubTotal()
     countGrandTotal()
 
+    $(document).on('click', '#btnDelCust', function() {
+        let valSearch = $('#customerSearch');
+        if (valSearch.val() != '') {
+            $('#customerSearch').val('').trigger('change');
+        }
+    })
+
+    $(document).on('change', '#customerSearch', function() {
+        let customerSelected = listCustomer.find(obj => obj.CardCode === $(this).val())
+        if (customerSelected) {
+            console.log(customerSelected)
+            $('#spanCustomerName').text(customerSelected.CardName)
+            $('#spanAddress').text(customerSelected.Address)
+            $('#spanPhone').text(customerSelected.Phone)
+        } else {
+            $('#spanCustomerName').text('')
+            $('#spanAddress').text('')
+            $('#spanPhone').text('')
+        }
+    })
 
     $(document).ready(function() {
         $.ajax({
@@ -338,7 +370,22 @@
             method: 'GET',
             dataType: 'JSON',
             success: function(response) {
-                // Manipulasi data dan isi tabel DataTable di sini
+
+                let arrayCustomers = [];
+                let dataCustomers = response.data.customer;
+                listCustomer = dataCustomers;
+
+                dataCustomers.forEach(function(cust) {
+                    let listCust = {}
+                    listCust.id = cust.CardCode;
+                    listCust.text = cust.CardName;
+                    arrayCustomers.push(listCust)
+                })
+
+                $('.js-example-basic-single').select2({
+                    data: arrayCustomers
+                });
+
                 let data = response.data.item
                 let table = $('#datatable').DataTable({
                     responsive: true,
@@ -379,7 +426,6 @@
                 console.error('Gagal mengambil data dari API: ', error);
             }
         });
-
     })
 
     // Mendaftarkan event listener dengan event delegation
@@ -524,7 +570,7 @@
 
     function getOrderCart() {
         let arrayOrder = [];
-        let objectData = {}; 
+        let objectData = {};
 
         let tbody = document.querySelector(".tbodyProductOrder");
         let table = document.querySelector(".table_order");
@@ -557,13 +603,94 @@
                 arrayOrder.push(rowData)
             });
             objectData.order = arrayOrder;
-            console.log(objectData);
+            Swal.fire({
+                icon: 'question',
+                title: 'Yakin simpan data?',
+                showDenyButton: false,
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+                denyButtonText: `Don't save`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    // Swal.fire('Saved!', '', 'success')
+                    validateOrder(objectData);
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+            })
         } else {
             Swal.fire(
                 'Warning!',
                 'Belum ada product yang dipilih',
                 'warning'
             )
+        }
+    }
+
+    async function validateOrder(dataToSend) {
+        try {
+            const response = await fetch("<?= base_url('transaction/validationSalesOrder') ?>", {
+                method: 'POST', // Atau 'PUT' sesuai kebutuhan Anda
+                headers: {
+                    'Content-Type': 'application/json', // Sesuaikan dengan jenis data yang dikirim
+                },
+                body: JSON.stringify(dataToSend), // Data yang akan dikirim ke server
+            });
+            if (response.ok) {
+                const responseData = await response.json(); // Menunggu hasil parsing respons sebagai JSON
+                // console.log(responseData);
+                if (responseData.success == true) {
+                    proseSimpanOrder(dataToSend)
+                } else {
+                    Swal.fire(
+                        'Warning!',
+                        'Data order tidak valid!',
+                        'warning'
+                    )
+                }
+            } else {
+                console.error('Gagal mengirim data ke server:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Terjadi kesalahan:', error);
+        }
+    }
+
+    async function proseSimpanOrder(dataToSend) {
+        try {
+            const response = await fetch("<?= base_url('transaction/prosesSimpanOrder') ?>", {
+                method: 'POST', // Atau 'PUT' sesuai kebutuhan Anda
+                headers: {
+                    'Content-Type': 'application/json', // Sesuaikan dengan jenis data yang dikirim
+                },
+                body: JSON.stringify(dataToSend), // Data yang akan dikirim ke server
+            });
+            if (response.ok) {
+                const responseData = await response.json(); // Menunggu hasil parsing respons sebagai JSON
+                // console.log(responseData);
+                if (responseData.success == true) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Data berhasil disimpan',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        window.location.href = "<?= base_url('transaction/salesorder') ?>"
+                    })
+                } else {
+                    Swal.fire(
+                        'Error!',
+                        'Gagal simpan data!',
+                        'error'
+                    )
+                }
+            } else {
+                console.error('Gagal mengirim data ke server:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Terjadi kesalahan:', error);
         }
     }
 </script>
