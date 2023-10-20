@@ -672,9 +672,8 @@
     }
 
     function getOrderCart() {
-        let arrayOrder = [];
         let objectData = {};
-
+        let order = arrayStateOrder;
         let tbody = document.querySelector(".tbodyProductOrder");
         let table = document.querySelector(".table_order");
         let discout = document.querySelector("#summaryDiscount").value
@@ -688,6 +687,7 @@
         objectData.grandTotal = grandTotal;
         objectData.customerSelected = customerSelected;
 
+
         if (!customerSelected) {
             Swal.fire(
                 'Warning!',
@@ -697,25 +697,8 @@
             return false;
         }
 
-        if (tbody.rows.length > 0) {
-            let rows = tbody.querySelectorAll('tr');
-            rows.forEach(function(row) {
-                let rowData = {};
-                let inputItemCode = row.querySelector('.product-item-code');
-                let inputPrice = row.querySelector('.product-price');
-                let inputUom = row.querySelector('.product-uom');
-                let inputQty = row.querySelector('.product-qty');
-                let inputDisc = row.querySelector('.product-disc');
-                let inputTotal = row.querySelector('.product-total');
-                rowData.itemcode = inputItemCode.value;
-                rowData.price = inputPrice.value;
-                rowData.uom = inputUom.value;
-                rowData.qty = inputQty.value;
-                rowData.disc = inputDisc.value;
-                rowData.total = inputTotal.value;
-                arrayOrder.push(rowData)
-            });
-            objectData.order = arrayOrder;
+        if (order.length > 0) {
+            objectData.order = order;
             Swal.fire({
                 icon: 'question',
                 title: 'Yakin simpan data?',
