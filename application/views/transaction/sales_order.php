@@ -32,6 +32,11 @@
         min-width: 150px;
         /* max-width: 200px; */
     }
+
+    .product-price,
+    .product-total {
+        width: 6em !important;
+    }
 </style>
 
 <!-- start page title -->
@@ -66,7 +71,6 @@
     </div>
     <div class="col-xl-8">
         <div class="row">
-
             <div class="col-lg-7">
                 <div class="card" id="customerList">
                     <div class="card-header border-bottom-dashed">
@@ -97,19 +101,19 @@
                                         <tbody>
                                             <tr>
                                                 <th>Name:</th>
-                                                <td class="text-end">
+                                                <td class="text-start">
                                                     <span id="spanCustomerName"></span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th>Address: </th>
-                                                <td class="text-end">
+                                                <th>Address:</th>
+                                                <td class="text-start">
                                                     <span id="spanAddress"></span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>Phone:</th>
-                                                <td class="text-end">
+                                                <td class="text-start">
                                                     <span id="spanPhone"></span>
                                                 </td>
                                             </tr>
@@ -239,7 +243,7 @@
                                                 <span class="fw-semibold text-muted">%</span>
                                                 <input style="max-width: 2.5rem" class="form-control form-control-sm" type="number" id="summaryDiscountPercent" value="0" />
                                                 <span class="fw-semibold text-muted">Rp.</span>
-                                                <input style="max-width: 4.5rem" class="form-control form-control-sm" type="number" id="summaryDiscount" value="1000" />
+                                                <input style="max-width: 4.5rem" class="form-control form-control-sm" type="number" id="summaryDiscount" value="0" />
                                             </div>
                                             <!-- 500.000 -->
                                         </td>
@@ -339,6 +343,9 @@
 <script>
     let totalRowOrder = 0;
     let listCustomer = [];
+    let arrayStateOrder = [];
+    let customerSelected = undefined;
+
     countRowOrder()
     countSubTotal()
     countGrandTotal()
@@ -351,7 +358,8 @@
     })
 
     $(document).on('change', '#customerSearch', function() {
-        let customerSelected = listCustomer.find(obj => obj.CardCode === $(this).val())
+        customerSelected = listCustomer.find(obj => obj.CardCode === $(this).val())
+        console.log(customerSelected)
         if (customerSelected) {
             console.log(customerSelected)
             $('#spanCustomerName').text(customerSelected.CardName)
@@ -415,7 +423,8 @@
                                 data-ItemCode="${data.ItemCode}" 
                                 data-ItemName="${data.ItemName}" 
                                 data-FrgnName="${data.FrgnName}" 
-                                data-Price="${data.Price}" 
+                                data-Price="${data.Price}"
+                                data-Disc="${0}"
                                 class="btn btn-primary btn-sm">Add</button>`;
                             }
                         }
@@ -430,19 +439,86 @@
 
     // Mendaftarkan event listener dengan event delegation
     $(document).on('click', '#datatable #addButton', function() {
-        addNewRow($(this).data())
+        let itemSelected = {};
+        itemSelected.itemcode = $(this).data('itemcode');
+        itemSelected.frgnname = $(this).data('frgnname');
+        itemSelected.itemname = $(this).data('itemname')
+        itemSelected.price = $(this).data('price');
+        itemSelected.disc = $(this).data('disc');
+        itemSelected.qty = 1;
+        itemSelected.total = parseFloat(itemSelected.price) * parseFloat(itemSelected.qty);
+        const maxIdOrder = Math.max(...arrayStateOrder.map(item => item.idorder), 0);
+
+        let itemSama = arrayStateOrder.find(i => i.itemcode === itemSelected.itemcode);
+        if (itemSama) {
+            itemSama.qty += itemSelected.qty;
+            itemSama.total = itemSama.price * (itemSama.qty);
+            updateRow(itemSama);
+        } else {
+            itemSelected.idorder = maxIdOrder + 1;
+            itemSelected.code = "ordr" + itemSelected.idorder;
+            arrayStateOrder.push(itemSelected);
+            addNewRow(itemSelected);
+        }
+        // console.log(arrayStateOrder)
     });
 
+    $(document).on('keyup change', '.product-price', function() {
+        let total = 0;
+        let row = $(this).closest('tr');
+        let price = parseFloat($(this).val())
+        let qty = $(row).find("input.product-qty").val();
+        let disc = $(row).find("input.product-disc").val();
+        total = (price - (price * (parseFloat(disc) / 100))) * parseFloat(qty);
+        $(row).find("input.product-total").val(total)
+    })
+
+    $(document).on('keyup', '.product-qty', function() {
+        let total = 0;
+        let row = $(this).closest('tr');
+        let rowCode = row.attr('id');
+        let inputValue = $(this).val();
+        let qty = inputValue.trim() === "" ? 0 : parseFloat(inputValue);
+        console.log(qty)
+
+        console.log(arrayStateOrder)
+        arrayStateOrder.forEach(item => {
+            if (item.code === rowCode) {
+                item.qty = qty;
+                item.total = (item.price - (item.price * (item.disc / 100))) * item.qty
+                updateRow(item)
+            }
+        });
+    })
+
+    $(document).on('keyup', '.product-disc', function() {
+        let total = 0;
+        let row = $(this).closest('tr');
+        let rowCode = row.attr('id');
+        let inputValue = $(this).val();
+        let disc = inputValue.trim() === "" ? 0 : parseFloat(inputValue);
+        console.log(disc)
+
+        // console.log(arrayStateOrder)
+        arrayStateOrder.forEach(item => {
+            if (item.code === rowCode) {
+                item.disc = disc;
+                item.total = (item.price - (item.price * (item.disc / 100))) * item.qty
+                updateRow(item)
+            }
+        });
+    })
+
     $(document).on('click', '.tbodyProductOrder #deleteRecord', function() {
-        $(this).closest('tr').remove()
+        let tr = $(this).closest('tr');
+        let rowCode = tr.attr('id');
+        deleteRow(rowCode)
         countRowOrder()
         countSubTotal()
         countGrandTotal()
     })
 
-
     $(document).on('click', '#prosesButton', getOrderCart);
-
 
     function countSubTotal() {
         var subTotal = 0;
@@ -501,12 +577,39 @@
         return rowCount;
     }
 
+    function deleteRow(rowCode) {
+        console.log(arrayStateOrder);
+        arrayStateOrder = arrayStateOrder.filter(item => item.code !== rowCode);
+        if (arrayStateOrder) {
+            // alert('yeay')
+            let orderBody = document.querySelector(".tbodyProductOrder");
+            let rowDelete = orderBody.querySelector("#" + rowCode);
+            if (rowDelete) {
+                rowDelete.parentNode.removeChild(rowDelete);
+            } else {
+                console.log("Elemen tidak ditemukan.");
+            }
+        }
+        console.log(arrayStateOrder);
+    }
+
+    function updateRow(dataItem) {
+        let orderBody = document.querySelector(".tbodyProductOrder");
+        let rowUpdate = orderBody.querySelector("#" + dataItem.code);
+        rowUpdate.querySelector(".product-qty").value = dataItem.qty;
+        rowUpdate.querySelector(".product-disc").value = dataItem.disc;
+        rowUpdate.querySelector(".product-total").value = dataItem.total;
+        // console.log(rowUpdate);
+        countSubTotal()
+        countGrandTotal()
+    }
 
     function addNewRow(dataItem) {
         // console.log(dataItem)
-        const orderBody = document.querySelector(".tbodyProductOrder");
+        let orderBody = document.querySelector(".tbodyProductOrder");
         // Buat elemen <tr> baru
         const newRow = document.createElement("tr");
+        newRow.setAttribute('id', dataItem.code);
         newRow.className = "gridjs-tr";
         // Isi elemen <tr> dengan elemen-elemen <td> yang sesuai
         newRow.innerHTML = `
@@ -542,17 +645,17 @@
                             </td>
                             <td data-column-id="qty" class="gridjs-td">
                                 <div class="input-step">
-                                    <input type="number" class="product-quantity product-qty" value="1" min="0" max="100">
+                                    <input type="number" class="product-quantity product-qty" value="1" min="0">
                                 </div>
                             </td>
                             <td data-column-id="qty" class="gridjs-td">
                                 <div class="input-step">
-                                    <input type="number" class="product-quantity product-disc" value="30" min="0" max="100">
+                                    <input type="number" class="product-quantity product-disc" value="0" min="0">
                                 </div>
                             </td>
                             <td data-column-id="qty" class="gridjs-td">
                                 <div class="input-step">
-                                    <input type="number" class="product-quantity product-total" value="350000" min="0" max="100">
+                                    <input type="number" class="product-quantity product-total" value="${dataItem.total}" readonly>
                                 </div>
                             </td>
                             <td data-column-id="action" class="gridjs-td" style="text-align: center;">
@@ -583,6 +686,16 @@
         objectData.discountPercent = discountPercent;
         objectData.subtotal = subtotal;
         objectData.grandTotal = grandTotal;
+        objectData.customerSelected = customerSelected;
+
+        if (!customerSelected) {
+            Swal.fire(
+                'Warning!',
+                'Customer belum dipilih',
+                'warning'
+            )
+            return false;
+        }
 
         if (tbody.rows.length > 0) {
             let rows = tbody.querySelectorAll('tr');

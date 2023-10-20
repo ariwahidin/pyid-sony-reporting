@@ -55,7 +55,7 @@ class Transaction extends CI_Controller
     public function prosesSimpanOrder()
     {
         $req = json_decode(file_get_contents('php://input'), true);
-        // var_dump($req);
+        var_dump($req);
         $response = array(
             'success' => true
         );
