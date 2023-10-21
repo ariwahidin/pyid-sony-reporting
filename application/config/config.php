@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/subdist';
+$config['base_url'] = 'https://subdist.test';
 
 /*
 |--------------------------------------------------------------------------
@@ -212,7 +212,7 @@ $config['allow_get_array'] = TRUE;
 | threshold determines what gets logged. Threshold options are:
 |
 |	0 = Disables logging, Error logging TURNED OFF
-|	1 = Error Messages (including PHP errors)
+|	1 = Error Messages (including PHP errors)   
 |	2 = Debug Messages
 |	3 = Informational Messages
 |	4 = All Messages
@@ -225,7 +225,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 0; //defaultnya 0
 
 /*
 |--------------------------------------------------------------------------
@@ -497,7 +497,7 @@ $config['compress_output'] = FALSE;
 | helper' page of the user guide for information regarding date handling.
 |
 */
-$config['time_reference'] = 'local';
+$config['time_reference'] = 'Asia/Jakarta';
 
 /*
 |--------------------------------------------------------------------------

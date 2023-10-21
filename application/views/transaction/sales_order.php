@@ -56,7 +56,6 @@
     </div>
 </div>
 <!-- end page title -->
-
 <div class="row">
     <div class="col-xl-4">
         <div class="row">
@@ -78,14 +77,14 @@
                             <div class="">
                                 <div class="d-flex flex-wrap align-items-start gap-2">
                                     <div class="col-xl-3">
-                                        <span class="card-title">Customer</span>
+                                        <h5 class="mb-0">Customer</h5>
                                     </div>
-                                    <div class="col-xl-6">
+                                    <div class="col-xl-5">
                                         <select class="search-box js-example-basic-single" name="" id="customerSearch">
                                             <option value=""><span class="text-muted">Pilih customer</span></option>
                                         </select>
                                     </div>
-                                    <div class="col-xl-23">
+                                    <div class="col-xl-3">
                                         <button type="button" class="btn btn-success add-btn btn-sm" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> New</button>
                                         <button type="button" class="btn btn-danger add-btn btn-sm" id="btnDelCust"><i class="ri-delete-bin-5-fill"></i> Del</button>
                                     </div>
@@ -272,7 +271,6 @@
                         <div class="row g-4 align-items-center">
                             <div class="col-sm">
                                 <h5 class="card-title mb-0">Product Order
-
                                     <span class="text-muted fs-14 fw-medium">(</span>
                                     <span class="text-muted fs-14 fw-medium totalRow">0</span>
                                     <span class="text-muted fs-14 fw-medium"> Product</span>
@@ -358,7 +356,7 @@
     })
 
     $(document).on('change', '#customerSearch', function() {
-        customerSelected = listCustomer.find(obj => obj.CardCode === $(this).val())
+        customerSelected = listCustomer.find(obj => obj.CustId === $(this).val())
         console.log(customerSelected)
         if (customerSelected) {
             console.log(customerSelected)
@@ -385,7 +383,7 @@
 
                 dataCustomers.forEach(function(cust) {
                     let listCust = {}
-                    listCust.id = cust.CardCode;
+                    listCust.id = cust.CustId;
                     listCust.text = cust.CardName;
                     arrayCustomers.push(listCust)
                 })
@@ -516,6 +514,34 @@
         countRowOrder()
         countSubTotal()
         countGrandTotal()
+    })
+
+    $(document).on('keyup', '#summaryDiscountPercent', function() {
+        let inputValue = $(this).val().trim() === "" ? 0 : parseFloat($(this).val());
+        $(this).val(inputValue)
+        let discAmount = 0;
+        let inputDiscAmount = $("#summaryDiscount");
+        let spanGrandTotal = $("#grandTotal")
+        let subTotal = countSubTotal();
+        let grandTotal = 0
+        grandTotal = subTotal - (subTotal * (parseFloat(inputValue) / 100))
+        discAmount = subTotal - grandTotal;
+        inputDiscAmount.val(discAmount);
+        spanGrandTotal.text(formatUang(grandTotal));
+    })
+
+    $(document).on('keyup', '#summaryDiscount', function() {
+        let inputValue = $(this).val().trim() === "" ? 0 : parseFloat($(this).val());
+        $(this).val(inputValue);
+        let inputDiscAmountPercent = $("#summaryDiscountPercent");
+        let spanGrandTotal = $("#grandTotal")
+        let subTotal = countSubTotal();
+        let grandTotal = 0;
+        let discPercent = 0;
+        grandTotal = subTotal - inputValue;
+        discPercent = parseInt((inputValue / subTotal) * 100)
+        spanGrandTotal.text(formatUang(grandTotal));
+        inputDiscAmountPercent.val(discPercent);
     })
 
     $(document).on('click', '#prosesButton', getOrderCart);
@@ -769,7 +795,7 @@
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
-                        title: 'Data berhasil disimpan',
+                        title: responseData.message,
                         showConfirmButton: false,
                         timer: 1500
                     }).then(function() {
@@ -778,15 +804,25 @@
                 } else {
                     Swal.fire(
                         'Error!',
-                        'Gagal simpan data!',
+                        responseData.message,
                         'error'
                     )
                 }
             } else {
-                console.error('Gagal mengirim data ke server:', response.statusText);
+                // console.error('Gagal mengirim data ke server:', response.statusText);
+                Swal.fire(
+                    response.statusText,
+                    'Gagal mengirim data ke server',
+                    'error'
+                )
             }
         } catch (error) {
-            console.error('Terjadi kesalahan:', error);
+            // console.error('Terjadi kesalahan:', error);
+            Swal.fire(
+                'Terjadi kesalahan',
+                error,
+                'error'
+            )
         }
     }
 </script>

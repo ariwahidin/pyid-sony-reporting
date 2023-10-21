@@ -54,12 +54,13 @@ class Transaction extends CI_Controller
 
     public function prosesSimpanOrder()
     {
-        $req = json_decode(file_get_contents('php://input'), true);
-        var_dump($req);
-        $response = array(
-            'success' => true
-        );
-
+        $order_data = json_decode(file_get_contents('php://input'), true);
+        $result = $this->transaction_m->createOrder($order_data);
+        if ($result['status'] === 'success') {
+            $response = array('success' => true, 'message' => 'Data order berhasil disimpan.');
+        } else {
+            $response = array('status' => false, 'message' => 'Gagal simpan data order.');
+        }
         echo json_encode($response);
     }
 }
