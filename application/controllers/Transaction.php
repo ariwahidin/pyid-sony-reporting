@@ -80,4 +80,22 @@ class Transaction extends CI_Controller
         );
         echo json_encode($data);
     }
+
+    public function getDetailOrder($orderId)
+    {
+        $order = $this->transaction_m->getSalesOrderDetail($orderId);
+        if ($order->num_rows() > 0) {
+            $response = array(
+                'success' => true,
+                'data' => array(
+                    'detail' => $order->result()
+                )
+            );
+        } else {
+            $response = array(
+                'success' => false
+            );
+        }
+        echo json_encode($response);
+    }
 }

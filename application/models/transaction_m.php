@@ -90,4 +90,13 @@ class Transaction_m extends CI_Model
         $query = $this->db->get();
         return $query;
     }
+
+    public function getSalesOrderDetail($orderId)
+    {
+        $this->db->select('itemCode, frgnName, itemName, uom, price, qty, discItemPercent, discItemAmount, total');
+        $this->db->from('order_detail');
+        $this->db->where('idOrder', $orderId);
+        $query = $this->db->get();
+        return $query;
+    }
 }
