@@ -192,7 +192,7 @@
     <!-- Sweet alert init js-->
     <script src="<?= base_url('jar/html/default/') ?>assets/js/pages/sweetalerts.init.js"></script>
 
-   
+
 
     <div id="layout-wrapper">
 
@@ -349,7 +349,11 @@
                                 </ul>
                             </div>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="<?= base_url('transaction/salesorderdata') ?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                                <i class="ri-layout-3-line"></i> <span>Data Sales Order</span>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="<?= base_url('transaction/salesorder') ?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                                 <i class="ri-layout-3-line"></i> <span>Sales Order</span>

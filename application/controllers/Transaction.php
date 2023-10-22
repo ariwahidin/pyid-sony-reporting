@@ -63,4 +63,21 @@ class Transaction extends CI_Controller
         }
         echo json_encode($response);
     }
+
+    public function salesorderdata()
+    {
+        $this->render('transaction/sales_order_data');
+    }
+
+    public function getDataSalesOrder()
+    {
+        $order = $this->transaction_m->getDataSalesOrder();
+        $data = array(
+            'success' => true,
+            'data' => array(
+                'order' => $order->result()
+            )
+        );
+        echo json_encode($data);
+    }
 }

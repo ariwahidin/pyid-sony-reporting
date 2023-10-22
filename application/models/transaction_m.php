@@ -73,10 +73,21 @@ class Transaction_m extends CI_Model
 
             $this->db->trans_commit();
             return array('status' => 'success');
-
         } catch (Exception $e) {
             $this->db->trans_rollback(); // Batalkan transaksi jika terjadi kesalahan
             return array('status' => 'failed', 'error_message' => $e->getMessage());
         }
+    }
+
+    public function getDataSalesOrder()
+    {
+        $user_id = $this->session->userdata('user_data')['user_id'];
+        $this->db->select('a.id, a.CustName, a.CustAddress, a.custCity, a.custPhone, a.Subtotal, a.DiscPercent, a.DiscAmount, a.GrandTotal, a.CreatedAt, b.username');
+        $this->db->from('order_header a');
+        $this->db->join('master_user b', 'a.CreatedBy = b.id', 'inner');
+        $this->db->where('a.CreatedBy', $user_id);
+        $this->db->order_by('a.id', 'DESC');
+        $query = $this->db->get();
+        return $query;
     }
 }

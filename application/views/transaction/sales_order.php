@@ -799,7 +799,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     }).then(function() {
-                        window.location.href = "<?= base_url('transaction/salesorder') ?>"
+                        window.location.href = "<?= base_url('transaction/salesorderdata') ?>"
                     })
                 } else {
                     Swal.fire(
