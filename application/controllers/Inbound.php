@@ -6,7 +6,7 @@ class Inbound extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(['master_m', 'customer_m', 'item_m', 'top_m', 'user_m', 'transaction_m']);
+        $this->load->model(['inbound_m']);
         is_not_logged_in();
     }
 
@@ -21,6 +21,16 @@ class Inbound extends CI_Controller
     {
         $data = array();
         $this->render('inbound/create_inbound', $data);
+    }
+
+    public function getRow(){
+        $this->inbound_m->createTempActivity($_POST);
+        $id = $this->db->insert_id();
+        $row = $this->inbound_m->getTempActivity($id);
+        $data = array(
+            'activity' => $row->row()
+        );
+        $this->load->view('inbound/row', $data);
     }
 
 

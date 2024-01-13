@@ -64,9 +64,9 @@ class User_m extends CI_Model
 
     function getUserActive($username = null, $password = null)
     {
-        $this->db->select('a.id, a.username, a.cardcode, a.role, b.CardName as cardname');
+        $this->db->select('a.id, a.username, a.cardcode, a.role');
         $this->db->from('master_user a');
-        $this->db->join('master_subdist b', 'a.cardcode = b.CardCode', 'inner');
+        // $this->db->join('master_subdist b', 'a.cardcode = b.CardCode', 'inner');
         if ($username != null && $password != null) {
             $this->db->where('a.username', $username);
             $this->db->where('a.password', $password);

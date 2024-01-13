@@ -26,7 +26,7 @@ class Auth extends CI_Controller
 				'user_id' => $login->row()->id,
 				'username' => $login->row()->username,
 				'role' => $login->row()->role,
-				'cardname' => $login->row()->cardname
+				// 'cardname' => $login->row()->cardname
 			);
 			$this->session->set_userdata('user_data', $user_data);
 			$response = array(
