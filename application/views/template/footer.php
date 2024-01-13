@@ -7,9 +7,10 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-                <script>
+                <!-- <script>
                     document.write(new Date().getFullYear())
-                </script> © Pandurasa.
+                </script>  -->
+                PT. Puninar Yusen Logistics Indonesia
             </div>
             <!-- <div class="col-sm-6">
                 <div class="text-sm-end d-none d-sm-block">

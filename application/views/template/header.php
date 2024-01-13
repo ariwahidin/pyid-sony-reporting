@@ -4,12 +4,12 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Pandurasa | Subdistribution</title>
+    <title>Yusen Logistics</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png">
+    <link rel="shortcut icon" href="<?= base_url('jar/html/default/') ?>assets/images/yusen-kotak.jpg">
 
     <!-- gridjs css -->
     <link rel="stylesheet" href="<?= base_url('jar/html/default/') ?>assets/libs/gridjs/theme/mermaid.min.css">
@@ -204,19 +204,19 @@
                         <div class="navbar-brand-box horizontal-logo">
                             <a href="index.html" class="logo logo-dark">
                                 <span class="logo-sm">
-                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="22">
+                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/yusen-logo.png" alt="" height="22">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="17">
+                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/yusen-logo.png" alt="" height="17">
                                 </span>
                             </a>
 
                             <a href="index.html" class="logo logo-light">
                                 <span class="logo-sm">
-                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="22">
+                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/yusen-logo.png" alt="" height="22">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="17">
+                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/yusen-logo.png" alt="" height="17">
                                 </span>
                             </a>
                         </div>
@@ -295,17 +295,17 @@
                         <img src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="22">
                     </span>
                     <span class="logo-lg">
-                        <img src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="17">
+                        <img src="<?= base_url('jar/html/default/') ?>assets/images/yusen-logo.png" alt="" height="17">
                     </span>
                 </a>
                 <!-- Light Logo-->
                 <a href="#" class="logo logo-light">
                     <span class="logo-sm">
-                        <img style="border-radius: 10%;" src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="30">
+                        <img style="border-radius: 10%;" src="<?= base_url('jar/html/default/') ?>assets/images/yusen-kotak.jpg" alt="" height="30">
                     </span>
                     <span class="logo-lg">
-                        <img style="border-radius: 10%; margin-top: -5px;" src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="25">
-                        &nbsp;<span style="color: white; font-size: 16px; text-decoration: underline;"><strong>Pandurasa</strong> Kharisma</span>
+                        <img style="border-radius: 10%; margin-top: -5px;" src="<?= base_url('jar/html/default/') ?>assets/images/yusen-kotak.jpg" alt="" height="40">
+                        &nbsp;<span style="color: white; font-size: 16px;"><strong>Yamaha Motor</strong></span>
                     </span>
                 </a>
                 <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -325,7 +325,7 @@
                                 <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link menu-link <?= $this->uri->segment(1) == 'master' ? 'active' : '' ?>" href="#sidebarMaster" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                                 <i class="ri-apps-2-line"></i> <span data-key="t-apps">Master</span>
                             </a>
@@ -363,10 +363,10 @@
                             <a class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                                 <i class="ri-layout-3-line"></i> <span>Delivery Order</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
-                            <a class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                                <i class="ri-layout-3-line"></i> <span>Goods Receipt</span>
+                            <a href="<?=base_url('inbound/index')?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                                <i class="ri-layout-3-line"></i> <span>Daily Activity</span>
                             </a>
                         </li>
                         <!-- end Dashboard Menu -->

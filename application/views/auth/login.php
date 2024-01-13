@@ -4,12 +4,12 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Sign In | Pandurasa Subdistribution System</title>
+    <title>Sign In | Yamaha Motor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png">
+    <link rel="shortcut icon" href="<?= base_url('jar/html/default/') ?>assets/images/yusen-kotak.jpg">
 
     <!-- Layout config Js -->
     <script src="<?= base_url('jar/html/default/') ?>assets/js/layout.js"></script>
@@ -47,8 +47,8 @@
                                             <div class="mb-4">
                                                 <a href="index.html" class="d-block">
                                                     <h3 class="text-white mb-1">
-                                                        <img id="logo" src="<?= base_url('jar/html/default/') ?>assets/images/pandurasa_kharisma_pt.png" alt="" height="45">
-                                                        <span style="text-decoration: underline;">Pandurasa Kharisma</span>
+                                                        <img id="logo" src="<?= base_url('jar/html/default/') ?>assets/images/yusen-kotak.jpg" alt="" height="70">
+                                                        <span style="text-decoration: underline;">Yamaha Motor Indonesia</span>
                                                     </h3>
                                                 </a>
                                             </div>
@@ -87,7 +87,7 @@
                                         <div>
 
                                             <h5 class="text-primary">Welcome!</h5>
-                                            <p class="text-muted">Sign in to continue to Pandurasa subdistribution system.</p>
+                                            <p class="text-muted">Sign in to continue.</p>
                                         </div>
 
                                         <div class="mt-4">
