@@ -19,11 +19,15 @@ class Inbound extends CI_Controller
 
     public function index()
     {
-        $data = array();
+        $checker = $this->inbound_m->getChecker();
+        $data = array(
+            'checker' => $checker
+        );
         $this->render('inbound/create_inbound', $data);
     }
 
-    public function getRow(){
+    public function getRow()
+    {
         $this->inbound_m->createTempActivity($_POST);
         $id = $this->db->insert_id();
         $row = $this->inbound_m->getTempActivity($id);
@@ -31,6 +35,61 @@ class Inbound extends CI_Controller
             'activity' => $row->row()
         );
         $this->load->view('inbound/row', $data);
+    }
+
+    public function getRowCompleteAct()
+    {
+        $data = array(
+            'completed' => $this->inbound_m->getCompletedActivity()
+        );
+        $this->load->view('inbound/row_complete_ctivity', $data);
+    }
+
+    public function editActivity()
+    {
+        $response = array();
+        $post = $_POST;
+        $timeString = $post['time'];
+        $dateTime = new DateTime($timeString);
+        $newFormat = $dateTime->format('Y-m-d H:i:s');
+
+        $params = array(
+            'id' => $post['id'],
+            'activity' => $post['activity'],
+            'time' => $newFormat
+        );
+
+        $this->inbound_m->editActivity($params);
+
+        if ($this->db->affected_rows() > 0) {
+            $row = $this->inbound_m->getTempActivity($post['id']);
+            $response['data'] = $row->row();
+            $checkFinish = $this->inbound_m->checkFinishActivity($post['id']);
+            if ($checkFinish->num_rows() > 0) {
+                if ($this->inbound_m->finishActivity($post['id'])) {
+                    $response['isFinish'] = true;
+                } else {
+                    $response['isFinish'] = false;
+                }
+            } else {
+                $response['isFinish'] = false;
+            }
+        }
+
+        echo json_encode($response);
+    }
+
+    public function editUserActivity()
+    {
+        $post = $_POST;
+        $response = array();
+        $this->inbound_m->editUserActivity($post);
+        if ($this->db->affected_rows() > 0) {
+            $response['success'] = true;
+        } else {
+            $response['success'] = false;
+        }
+        echo json_encode($response);
     }
 
 

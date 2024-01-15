@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="<?= $this->uri->segment(2) == 'salesorder' ? 'sm' : 'lg' ?>" data-sidebar-image="none" data-preloader="disable">
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="<?= ($this->uri->segment(1) == 'inbound' && $this->uri->segment(2) == 'index') ? 'sm' : 'lg' ?>" data-sidebar-image="none" data-preloader="disable">
 
 <head>
 
@@ -23,6 +23,7 @@
     <link href="<?= base_url('jar/html/default/') ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="<?= base_url('jar/html/default/') ?>assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+
 
     <!-- Sweet Alert css-->
     <link href="<?= base_url('jar/html/default/') ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
@@ -365,7 +366,7 @@
                             </a>
                         </li> -->
                         <li class="nav-item">
-                            <a href="<?=base_url('inbound/index')?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                            <a href="<?= base_url('inbound/index') ?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                                 <i class="ri-layout-3-line"></i> <span>Daily Activity</span>
                             </a>
                         </li>
