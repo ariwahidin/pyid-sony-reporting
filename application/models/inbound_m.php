@@ -3,11 +3,8 @@ class Inbound_m extends CI_Model
 {
     public function currentDateTime()
     {
-        // Set the timezone to Asia/Jakarta (Indonesian timezone)
         $timezone = new DateTimeZone('Asia/Jakarta');
-        // Get the current date and time in the specified timezone
         $dateTime = new DateTime('now', $timezone);
-        // Format the date and time as a string
         $formattedDateTime = $dateTime->format('Y-m-d H:i:s');
         return $formattedDateTime;
     }
@@ -19,6 +16,7 @@ class Inbound_m extends CI_Model
             'no_sj' => $post['sj'],
             'qty' => $post['qty'],
             'checker' => $post['checker'],
+            'checker_id' => $post['checker_id'],
             'tanggal' => $post['date'],
             'created_date' => $this->currentDateTime(),
             'created_by' => $user_id,
@@ -37,8 +35,16 @@ class Inbound_m extends CI_Model
         if ($id != null) {
             $sql .= " WHERE id='$id'";
         }
+
+        $sql .= " ORDER BY id DESC";
         $query = $this->db->query($sql);
         return $query;
+    }
+
+    public function deleteRowTrans($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('tb_trans_temp');
     }
 
     public function getCompletedActivity()
@@ -55,6 +61,16 @@ class Inbound_m extends CI_Model
         time_format(putaway_duration, '%H:%i') as putaway_duration 
         from tb_trans 
         where date(created_date) = date(now())";
+
+        if (isset($_POST['checker'])) {
+            if ($_POST['checker'] != '') {
+                $checker = $_POST['checker'];
+                $sql .= " AND checker like '%$checker%'";
+            }
+        }
+
+        $sql .= " ORDER BY id DESC";
+
         $query = $this->db->query($sql);
         return $query;
     }
@@ -71,6 +87,7 @@ class Inbound_m extends CI_Model
         $data = array(
             $post['activity'] => $post['time']
         );
+
         $where = array(
             'id' => $post['id']
         );
@@ -90,18 +107,16 @@ class Inbound_m extends CI_Model
 
     public function finishActivity($id)
     {
-        $this->db->trans_begin(); // Memulai transaksi
+        $this->db->trans_begin();
 
         try {
-            // Langkah 1: Pilih data dari table_a
             $data1 = $this->getTempActivity($id)->row_array();
-
-            // var_dump($data1);
 
             $params_insert = array(
                 'no_sj' => $data1['no_sj'],
                 'qty' => $data1['qty'],
                 'checker' => $data1['checker'],
+                'checker_id' => $data1['checker_id'],
                 'ref_date' => $data1['tanggal'],
                 'unload_st_time' => $data1['start_unloading'],
                 'unload_fin_time' => $data1['stop_unloading'],
@@ -116,27 +131,16 @@ class Inbound_m extends CI_Model
                 'created_by' => $data1['created_by']
             );
 
-            // var_dump($params_insert);
-            // exit;
-
-
-            // Langkah 2: Sisipkan data ke table_b
             $this->db->insert('tb_trans', $params_insert);
 
-            // Langkah 3: Hapus data dari table_a
             $this->db->delete('tb_trans_temp', array('id' => $id));
 
-            // Komit transaksi jika semua langkah berhasil
             $this->db->trans_commit();
 
-            // Output true jika transaksi berhasil
             return true;
         } catch (Exception $e) {
-            // Rollback transaksi jika terjadi kesalahan
             $this->db->trans_rollback();
             log_message('error', 'Error in transaction: ' . $e->getMessage());
-
-            // Output false jika terjadi kesalahan atau rollback
             return false;
         }
     }
@@ -145,7 +149,8 @@ class Inbound_m extends CI_Model
     {
         $data = array(
             'no_sj' => $post['sj'],
-            'qty' => $post['checker'],
+            'qty' => $post['qty'],
+            'checker_id' => $post['checker_id'],
             'checker' => $post['checker'],
             'tanggal' => $post['ref_date']
         );

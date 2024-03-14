@@ -32,7 +32,35 @@ class Inbound extends CI_Controller
         $id = $this->db->insert_id();
         $row = $this->inbound_m->getTempActivity($id);
         $data = array(
-            'activity' => $row->row()
+            'activity' => $row
+        );
+        $this->load->view('inbound/row', $data);
+    }
+
+    public function deleteTransTemp()
+    {
+        $post = $this->input->post();
+        $id = $post['id'];
+        $this->inbound_m->deleteRowTrans($id);
+        if ($this->db->affected_rows() > 0) {
+            $response = array(
+                'success' => true,
+                'message' => 'Delete data successfully'
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => 'Failed deleting data'
+            );
+        }
+        echo json_encode($response);
+    }
+
+    public function getAllRowTemp()
+    {
+        $row = $this->inbound_m->getTempActivity();
+        $data = array(
+            'activity' => $row
         );
         $this->load->view('inbound/row', $data);
     }
@@ -40,7 +68,7 @@ class Inbound extends CI_Controller
     public function getRowCompleteAct()
     {
         $data = array(
-            'completed' => $this->inbound_m->getCompletedActivity()
+            'completed' => $this->inbound_m->getCompletedActivity($_POST)
         );
         $this->load->view('inbound/row_complete_ctivity', $data);
     }
@@ -92,81 +120,7 @@ class Inbound extends CI_Controller
         echo json_encode($response);
     }
 
-
-
-    // public function loadDataForSalesOrder()
-    // {
-
-    //     $item = $this->transaction_m->getItemSubdist();
-    //     $customer = $this->transaction_m->getCustomerSubdist();
-    //     $data = array(
-    //         'item' => $item->result(),
-    //         'customer' => $customer->result()
-    //     );
-
-    //     $responseData = array(
-    //         'success' => true,
-    //         'data' => $data
-    //     );
-
-    //     echo json_encode($responseData);
-    // }
-
-    // public function validationSalesOrder()
-    // {
-    //     $req = json_decode(file_get_contents('php://input'), true);
-    //     // var_dump($req);
-    //     $response = array(
-    //         'success' => true
-    //     );
-
-    //     echo json_encode($response);
-    // }
-
-    // public function prosesSimpanOrder()
-    // {
-    //     $order_data = json_decode(file_get_contents('php://input'), true);
-    //     $result = $this->transaction_m->createOrder($order_data);
-    //     if ($result['status'] === 'success') {
-    //         $response = array('success' => true, 'message' => 'Data order berhasil disimpan.');
-    //     } else {
-    //         $response = array('status' => false, 'message' => 'Gagal simpan data order.');
-    //     }
-    //     echo json_encode($response);
-    // }
-
-    // public function salesorderdata()
-    // {
-    //     $this->render('transaction/sales_order_data');
-    // }
-
-    // public function getDataSalesOrder()
-    // {
-    //     $order = $this->transaction_m->getDataSalesOrder();
-    //     $data = array(
-    //         'success' => true,
-    //         'data' => array(
-    //             'order' => $order->result()
-    //         )
-    //     );
-    //     echo json_encode($data);
-    // }
-
-    // public function getDetailOrder($orderId)
-    // {
-    //     $order = $this->transaction_m->getSalesOrderDetail($orderId);
-    //     if ($order->num_rows() > 0) {
-    //         $response = array(
-    //             'success' => true,
-    //             'data' => array(
-    //                 'detail' => $order->result()
-    //             )
-    //         );
-    //     } else {
-    //         $response = array(
-    //             'success' => false
-    //         );
-    //     }
-    //     echo json_encode($response);
-    // }
+    public function keepAlive(){
+        
+    }
 }

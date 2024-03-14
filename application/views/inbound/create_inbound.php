@@ -9,6 +9,32 @@
     .stop-button {
         display: none;
     }
+
+    .custom-buttonx {
+        background-color: lightgreen !important;
+        /* Hijau */
+        border: none;
+        color: lawngreen;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }
+
+    .custom-buttonx:hover {
+        background-color: #45a049 !important;
+        /* Hijau yang lebih gelap */
+        color: white;
+    }
+
+    .dt-buttons {
+        display: inline-table;
+        padding-bottom: 10px;
+    }
 </style>
 <div class="row">
     <div class="col-12">
@@ -17,7 +43,6 @@
 
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                    <!-- <li class="breadcrumb-item"><a href="javascript: void(0);">Inbound</a></li> -->
                 </ol>
             </div>
 
@@ -29,7 +54,7 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header align-items-center d-flex">
-                <h4 class="card-title mb-0 flex-grow-1">Table activity</h4>
+                <h4 class="card-title mb-0 flex-grow-1"><strong id="clock"></strong></h4>
                 <div class="flex-shrink-0">
                     <div class="form-check form-switch form-switch-right form-switch-md">
                         <button class="btn btn-success addMembers-modal" onclick="showModalCreate()"><i class="ri-add-fill me-1 align-bottom"></i> Create activity</button>
@@ -72,20 +97,18 @@
     <div class="col-xl-12">
         <div class="card">
             <div class="card-header align-items-center d-flex">
-                <h4 class="card-title mb-0 flex-grow-1">Completed Activities</h4>
-                <div class="flex-shrink-0">
-                    <div class="form-check form-switch form-switch-right form-switch-md">
-                        <label for="default-showcode" class="form-label text-muted">Date : </label>
-                        <!-- <input class="form-check-input code-switcher" type="checkbox" id="default-showcode"> -->
-                    </div>
-                </div>
+                <!-- <h4 class="card-title mb-0 flex-grow-1">Completed Activities</h4> -->
+                <input type="text" class="form-control" style="width: 200px; margin-right: 10px;" id="sChecker" placeholder="Checker">
+                <input type="date" class="form-control" style="width: 200px; margin-right: 10px;" id="sStartDate" placeholder="Start Date">
+                <input type="date" class="form-control" style="width: 200px; margin-right: 10px;" id="sEndDate" placeholder="End Date">
+                <button class="btn btn-outline-primary btn-icon waves-effect waves-light" id="sButton"><i class="ri-filter-fill"></i></button>
             </div>
 
             <div class="card-body">
                 <!-- <p class="text-muted">Use <code>table</code> class to show bootstrap-based default table.</p> -->
                 <div class="live-preview">
                     <div class="table-responsive">
-                        <table class="table align-middle table-nowrap mb-0" id="tableCompleteActivities">
+                        <table class="table table-bordered table-striped align-middle table-nowrap mb-0" id="tableCompleteActivities">
                             <thead>
                                 <tr>
                                     <th scope="col">SJ No.</th>
@@ -134,7 +157,7 @@
                         <select class="form-control" name="" id="inChecker">
                             <option value="">--Pilih Checker--</option>
                             <?php foreach ($checker->result() as $c) { ?>
-                                <option value="<?= $c->name ?>"><?= $c->name ?></option>
+                                <option value="<?= $c->id ?>"><?= $c->name ?></option>
                             <?php } ?>
                         </select>
                         <!-- <input type="text" id="inChecker" class="form-control" placeholder="Masukan Checker" value="Juna"> -->
@@ -160,11 +183,31 @@
     </div>
 </div>
 
+
+<script src="https://cdn.datatables.net/buttons/2.1.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.html5.min.js"></script>
+
+
 <script>
     let tableComlpeteActivity = null;
     $(document).ready(function() {
-        // tableComlpeteActivity = $('#tableCompleteActivities').DataTable();
         getRowComplete();
+        getAllRowTemp();
+
+        $('#sButton').on('click', function() {
+            let checker = $('#sChecker').val().trim();
+            let startDate = $('#sStartDate').val().trim();
+            let endDate = $('#sEndDate').val().trim();
+            let dataToPost = {
+                checker: checker,
+                startDate: startDate,
+                endDate: endDate
+            }
+            getRowComplete(dataToPost);
+        })
     })
 </script>
 <script>
@@ -175,12 +218,24 @@
         $('#createTask').modal('show');
     }
 
+    function getAllRowTemp() {
+        $.ajax({
+            type: "POST",
+            url: "<?= base_url('inbound/getAllRowTemp') ?>",
+            success: function(data) {
+                $("#tableActivity tbody").prepend(data);
+                $("#createTask").modal('hide');
+            }
+        });
+    }
+
     function addRow() {
         var rowActivity = {
             sj: $('#inNoSJ').val(),
             qty: $('#inQty').val(),
             date: $('#inDate').val(),
-            checker: $('#inChecker').val(),
+            checker_id: $('#inChecker').val(),
+            checker: $('#inChecker option:selected').text(),
             startUnloading: null,
             stopUnloading: null,
             durationUnloading: null,
@@ -191,6 +246,7 @@
             stopPutaway: null,
             durationPutaway: null
         };
+
 
         $.ajax({
             type: "POST",
@@ -203,12 +259,11 @@
         });
     }
 
-    function getRowComplete() {
-        var rowActivity = {};
+    function getRowComplete(dataToPost = null) {
         $.ajax({
-            type: "POST",
             url: "<?= base_url('inbound/getRowCompleteAct') ?>",
-            data: rowActivity,
+            type: "POST",
+            data: dataToPost,
             success: function(data) {
 
                 if (tableComlpeteActivity != null) {
@@ -216,29 +271,19 @@
                 }
                 $("#tableCompleteActivities tbody").html(data);
 
-                tableComlpeteActivity = $('#tableCompleteActivities').DataTable();
+                tableComlpeteActivity = $('#tableCompleteActivities').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [{
+                        extend: 'excelHtml5',
+                        text: 'Export Excel', // Tekstual tombol kustom
+                        className: 'custom-buttonx', // Menambahkan kelas CSS untuk penyesuaian tambahan
+                        title: 'YMI Daily Activity' // Judul file yang akan diunduh
+                    }]
+                });
             }
         });
     }
 
-
-    // function updateClock(dc) {
-    //     var now = new Date();
-    //     var hours = now.getHours();
-    //     var minutes = now.getMinutes();
-    //     var seconds = now.getSeconds();
-
-    //     // Pad single digit minutes and seconds with a leading zero
-    //     minutes = minutes < 10 ? '0' + minutes : minutes;
-    //     seconds = seconds < 10 ? '0' + seconds : seconds;
-
-    //     var timeString = hours + ':' + minutes + ':' + seconds;
-
-    //     document.getElementById(dc).innerText = timeString;
-
-    //     // Update every second
-    //     setTimeout(updateClock, 1000);
-    // }
 
     function stopClock(el) {
         let stopTime = new Date();
@@ -274,7 +319,7 @@
         editActivity(data);
 
         el.innerHTML = `<i class="ri-stop-circle-line align-bottom me-1"></i> Stop`;
-        el.style.backgroundColor = 'red';
+        el.style.backgroundColor = '#f06548';
         el.setAttribute('onclick', 'stopClock(this)');
     }
 
@@ -312,8 +357,6 @@
         });
     }
 
-
-
     function displayLog(id, time, idLogDuration = null) {
         var logElement = document.getElementById(id);
         logElement.innerHTML = formatTime(time);
@@ -322,29 +365,17 @@
         }
     }
 
-    // function calculateAndDisplayDuration(idElement, startTime, stopTime) {
-    //     var durationElement = document.getElementById(idElement);
-
-    //     if (startTime && stopTime) {
-    //         var durationInMillis = stopTime - startTime;
-    //         var durationInSeconds = Math.floor(durationInMillis / 1000);
-
-    //         var hours = Math.floor(durationInSeconds / 3600);
-    //         var minutes = Math.floor((durationInSeconds % 3600) / 60);
-    //         var seconds = durationInSeconds % 60;
-
-    //         // Pad single digit minutes and seconds with a leading zero
-    //         minutes = minutes < 10 ? '0' + minutes : minutes;
-    //         seconds = seconds < 10 ? '0' + seconds : seconds;
-
-    //         var durationString = hours + ':' + minutes + ':' + seconds;
-    //         durationElement.innerText = durationString;
-    //     } else {
-    //         durationElement.innerText = 'N/A';
-    //     }
-    // }
-
-
+    function deleteRow(el) {
+        let id = $(el).data('id');
+        $.post('deleteTransTemp', {
+            id
+        }, function(response) {
+            if (response.success == true) {
+                $('#tableActivity tbody').html('');
+                getAllRowTemp();
+            }
+        }, 'json');
+    }
 
     function formatTime(time) {
         var hours = time.getHours();
@@ -376,6 +407,7 @@
     function showModalEdit(el) {
 
         let elSj = $(el).data('id-sj');
+        let checker_id = $(el).data('check-id');
         let elChecker = $(el).data('id-ch');
         let elQty = $(el).data('id-qty');
         let elDate = $(el).data('id-dt');
@@ -387,8 +419,6 @@
             el_date: elDate
         }
 
-        console.log(elId);
-        console.log('___________________');
 
         let sj = $('#' + elSj).text();
         let checker = $('#' + elChecker).text();
@@ -396,7 +426,7 @@
         let date = $('#' + elDate).text();
 
         $('#inNoSJ').val(sj);
-        $('#inChecker').val(checker);
+        $('#inChecker').val(checker_id);
         $('#inQty').val(qty);
         $('#inDate').val(date);
         $('#taskid-input').val($(el).data('id'))
@@ -410,7 +440,8 @@
 
     function editUserActivity(el) {
         let sj = $('#inNoSJ').val();
-        let checker = $('#inChecker').val();
+        let checker_id = $('#inChecker').val();
+        let checker = $('#inChecker option:selected').text();
         let qty = $('#inQty').val();
         let refDate = $('#inDate').val();
         let id = $('#taskid-input').val();
@@ -422,6 +453,7 @@
 
         let rowActivity = {
             sj: sj,
+            checker_id: checker_id,
             checker: checker,
             qty: qty,
             ref_date: refDate,
@@ -444,4 +476,27 @@
             }
         });
     }
+
+    function updateClock() {
+        var currentDate = new Date();
+        var hours = currentDate.getHours().toString().padStart(2, '0');
+        var minutes = currentDate.getMinutes().toString().padStart(2, '0');
+        var seconds = currentDate.getSeconds().toString().padStart(2, '0');
+        var day = currentDate.getDate().toString().padStart(2, '0');
+        var month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Bulan dimulai dari 0
+        var year = currentDate.getFullYear();
+
+        var dateString = year + '-' + month + '-' + day;
+        var timeString = hours + ':' + minutes + ':' + seconds;
+        var dateTimeString = dateString + ' ' + timeString;
+
+        document.getElementById('clock').innerText = dateTimeString;
+    }
+
+    // function keepAlive(){
+    //     $.post
+    // }
+
+    setInterval(updateClock, 1000);
+    updateClock();
 </script>

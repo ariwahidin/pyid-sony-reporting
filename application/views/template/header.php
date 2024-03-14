@@ -321,11 +321,11 @@
                     </div>
                     <ul class="navbar-nav" id="navbar-nav">
                         <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link menu-link <?= $this->uri->segment(1) == 'dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                                 <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
                             </a>
-                        </li>
+                        </li> -->
                         <!-- <li class="nav-item">
                             <a class="nav-link menu-link <?= $this->uri->segment(1) == 'master' ? 'active' : '' ?>" href="#sidebarMaster" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
                                 <i class="ri-apps-2-line"></i> <span data-key="t-apps">Master</span>
@@ -368,6 +368,11 @@
                         <li class="nav-item">
                             <a href="<?= base_url('inbound/index') ?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                                 <i class="ri-layout-3-line"></i> <span>Daily Activity</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('master/listChecker') ?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                                <i class="ri-layout-3-line"></i> <span>List Checker</span>
                             </a>
                         </li>
                         <!-- end Dashboard Menu -->
