@@ -36,6 +36,9 @@
         padding-bottom: 10px;
     }
 </style>
+<script>
+    startLoading();
+</script>
 <div class="row">
     <div class="col-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -197,6 +200,11 @@
         getRowComplete();
         getAllRowTemp();
 
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementById('inDate').value = today;
+        document.getElementById('sStartDate').value = today;
+        document.getElementById('sEndDate').value = today;
+
         $('#sButton').on('click', function() {
             let checker = $('#sChecker').val().trim();
             let startDate = $('#sStartDate').val().trim();
@@ -230,6 +238,21 @@
     }
 
     function addRow() {
+
+        let sj = $('#inNoSJ').val();
+        let qty = $('#inQty').val();
+        let date = $('#inDate').val();
+        let checker_id = $('#inChecker').val();
+
+        if (sj.trim() == '' || qty.trim() == '' || date.trim() == '' || checker_id.trim() == '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: "Please fill in all fields before proceeding"
+            });
+            return;
+        }
+
         var rowActivity = {
             sj: $('#inNoSJ').val(),
             qty: $('#inQty').val(),
@@ -275,9 +298,9 @@
                     dom: 'Bfrtip',
                     buttons: [{
                         extend: 'excelHtml5',
-                        text: 'Export Excel', // Tekstual tombol kustom
-                        className: 'custom-buttonx', // Menambahkan kelas CSS untuk penyesuaian tambahan
-                        title: 'YMI Daily Activity' // Judul file yang akan diunduh
+                        text: 'Export Excel',
+                        className: 'custom-buttonx',
+                        title: 'YMI Daily Activity'
                     }]
                 });
             }
@@ -493,10 +516,14 @@
         document.getElementById('clock').innerText = dateTimeString;
     }
 
-    // function keepAlive(){
-    //     $.post
-    // }
+    function keepAlive() {
+        $.post('keepAlive', {}, function(response) {
+            console.log(response);
+        }, 'json');
+    }
 
+    setTimeout(stopLoading, 1500);
+    setInterval(keepAlive, 180000);
     setInterval(updateClock, 1000);
     updateClock();
 </script>

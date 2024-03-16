@@ -49,6 +49,8 @@ class Inbound_m extends CI_Model
 
     public function getCompletedActivity()
     {
+        // var_dump($_POST);
+        // die;
         $sql = "select no_sj, qty, checker, ref_date,
         time_format(time(unload_st_time), '%H:%i') as start_unload,
         time_format(time(unload_fin_time), '%H:%i') as stop_unload,
@@ -60,7 +62,15 @@ class Inbound_m extends CI_Model
         time_format(time(putaway_fin_time), '%H:%i') as stop_putaway,
         time_format(putaway_duration, '%H:%i') as putaway_duration 
         from tb_trans 
-        where date(created_date) = date(now())";
+        where ";
+
+        if (isset($_POST['startDate']) != '' && isset($_POST['endDate']) != '') {
+            $startDate = $_POST['startDate'];
+            $endDate = $_POST['endDate'];
+            $sql .= " date(created_date) between date('$startDate') and date('$endDate')";
+        } else {
+            $sql .= " date(created_date) = date(now())";
+        }
 
         if (isset($_POST['checker'])) {
             if ($_POST['checker'] != '') {
@@ -68,6 +78,7 @@ class Inbound_m extends CI_Model
                 $sql .= " AND checker like '%$checker%'";
             }
         }
+
 
         $sql .= " ORDER BY id DESC";
 

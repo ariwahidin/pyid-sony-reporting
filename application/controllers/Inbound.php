@@ -26,6 +26,15 @@ class Inbound extends CI_Controller
         $this->render('inbound/create_inbound', $data);
     }
 
+    public function keepAlive()
+    {
+        $response = array(
+            'success' => true,
+            'message' => 'keep a live'
+        );
+        echo json_encode($response);
+    }
+
     public function getRow()
     {
         $this->inbound_m->createTempActivity($_POST);
@@ -120,7 +129,5 @@ class Inbound extends CI_Controller
         echo json_encode($response);
     }
 
-    public function keepAlive(){
-        
-    }
+
 }
