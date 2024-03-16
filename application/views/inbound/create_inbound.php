@@ -114,6 +114,7 @@
                         <table class="table table-bordered table-striped align-middle table-nowrap mb-0" id="tableCompleteActivities">
                             <thead>
                                 <tr>
+                                    <th scope="col">No.</th>
                                     <th scope="col">SJ No.</th>
                                     <th scope="col">Checker</th>
                                     <th scope="col">Ref. Date</th>
@@ -288,6 +289,8 @@
             type: "POST",
             data: dataToPost,
             success: function(data) {
+
+                console.log(data);
 
                 if (tableComlpeteActivity != null) {
                     tableComlpeteActivity.destroy();

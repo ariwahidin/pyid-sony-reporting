@@ -82,6 +82,8 @@ class Inbound_m extends CI_Model
 
         $sql .= " ORDER BY id DESC";
 
+        // print_r($sql);
+
         $query = $this->db->query($sql);
         return $query;
     }

@@ -1,8 +1,10 @@
 <?php
 if ($completed->num_rows() > 0) {
+    $no=1;
     foreach ($completed->result() as $val) {
 ?>
         <tr>
+            <th scope="row"><a href="#" class="fw-medium"><?= $no++; ?></a></th>
             <th scope="row"><a href="#" class="fw-medium"><?= $val->no_sj ?></a></th>
             <td style="background: lightgreen;"><?= $val->checker ?></td>
             <td><?= $val->ref_date ?></td>
