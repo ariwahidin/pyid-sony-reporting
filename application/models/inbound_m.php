@@ -14,6 +14,7 @@ class Inbound_m extends CI_Model
         $user_id = $this->session->userdata('user_data')['user_id'];
         $params = array(
             'no_sj' => $post['sj'],
+            'no_truck' => $post['noTruck'],
             'qty' => $post['qty'],
             'checker' => $post['checker'],
             'checker_id' => $post['checker_id'],
@@ -51,7 +52,7 @@ class Inbound_m extends CI_Model
     {
         // var_dump($_POST);
         // die;
-        $sql = "select no_sj, qty, checker, ref_date,
+        $sql = "select no_sj, no_truck, qty, checker, ref_date,
         time_format(time(unload_st_time), '%H:%i') as start_unload,
         time_format(time(unload_fin_time), '%H:%i') as stop_unload,
         time_format(unload_duration, '%H:%i') as unload_duration,
@@ -127,6 +128,7 @@ class Inbound_m extends CI_Model
 
             $params_insert = array(
                 'no_sj' => $data1['no_sj'],
+                'no_truck' => $data1['no_truck'],
                 'qty' => $data1['qty'],
                 'checker' => $data1['checker'],
                 'checker_id' => $data1['checker_id'],
@@ -162,6 +164,7 @@ class Inbound_m extends CI_Model
     {
         $data = array(
             'no_sj' => $post['sj'],
+            'no_truck' => $post['no_truck'],
             'qty' => $post['qty'],
             'checker_id' => $post['checker_id'],
             'checker' => $post['checker'],

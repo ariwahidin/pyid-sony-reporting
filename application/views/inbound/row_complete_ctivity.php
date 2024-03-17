@@ -6,6 +6,7 @@ if ($completed->num_rows() > 0) {
         <tr>
             <th scope="row"><a href="#" class="fw-medium"><?= $no++; ?></a></th>
             <th scope="row"><a href="#" class="fw-medium"><?= $val->no_sj ?></a></th>
+            <th scope="row"><a href="#" class="fw-medium"><?= $val->no_truck ?></a></th>
             <td style="background: lightgreen;"><?= $val->checker ?></td>
             <td><?= $val->ref_date ?></td>
             <td><?= $val->start_unload ?></td>

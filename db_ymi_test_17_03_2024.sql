@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Host:                         localhost
--- Server version:               5.7.24 - MySQL Community Server (GPL)
--- Server OS:                    Win32
--- HeidiSQL Version:             10.2.0.5599
+-- Host:                         127.0.0.1
+-- Server version:               5.7.33 - MySQL Community Server (GPL)
+-- Server OS:                    Win64
+-- HeidiSQL Version:             11.2.0.6213
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -10,6 +10,12 @@
 /*!50503 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+-- Dumping database structure for db_ymi_test
+CREATE DATABASE IF NOT EXISTS `db_ymi_test` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `db_ymi_test`;
 
 -- Dumping structure for table db_ymi_test.master_customer
 CREATE TABLE IF NOT EXISTS `master_customer` (
@@ -29,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `master_customer` (
 
 -- Dumping data for table db_ymi_test.master_customer: ~100 rows (approximately)
 /*!40000 ALTER TABLE `master_customer` DISABLE KEYS */;
-REPLACE INTO `master_customer` (`CustId`, `CardCode`, `CardName`, `Address`, `City`, `ZipCode`, `CreditLine`, `Phone`, `created_at`, `created_by`) VALUES
+INSERT INTO `master_customer` (`CustId`, `CardCode`, `CardName`, `Address`, `City`, `ZipCode`, `CreditLine`, `Phone`, `created_at`, `created_by`) VALUES
 	(1, 'ECOM01AAU01', 'PT. ANDALAN ANTAR UTAMA', 'TALAVERA OFFICE PARK LT.16 JL.LETJEN TB.SIMATUPANG KAV.22-26 RT.001 RW.001 CILANDAK BARAT CILANDAK', 'JAKARTA SELATAN', 'NULL', 50000000, 'NULL', '2023-10-16 10:21:23', 1),
 	(2, 'ECOM01ABY01', 'PT. ANGAN BERSAMA YAKIN SELARAS : FUDGYBRO', 'JL. GARUDA BLOK C2, NO.11 BINTARO JAYA', 'JAKARTA SELATAN', 'NULL', 0, 'NULL', '2023-10-16 10:21:23', 1),
 	(3, 'ECOM01AHA01', 'ANTHONY HALIM', 'Taman Kebon Jeruk Blok J No.17 Kembangan Srengseng', 'JAKARTA BARAT', '11630', 0, 'NULL', '2023-10-16 10:21:23', 1),
@@ -136,15 +142,29 @@ REPLACE INTO `master_customer` (`CustId`, `CardCode`, `CardName`, `Address`, `Ci
 CREATE TABLE IF NOT EXISTS `master_employee` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
+  `position` varchar(100) DEFAULT NULL,
+  `created_by` varchar(100) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `update_by` varchar(100) DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `delete_by` varchar(100) DEFAULT NULL,
+  `delete_at` datetime DEFAULT NULL,
+  `is_delete` enum('Y','N') DEFAULT 'N',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
--- Dumping data for table db_ymi_test.master_employee: ~3 rows (approximately)
+-- Dumping data for table db_ymi_test.master_employee: ~8 rows (approximately)
 /*!40000 ALTER TABLE `master_employee` DISABLE KEYS */;
-REPLACE INTO `master_employee` (`id`, `name`) VALUES
-	(1, 'ADI'),
-	(2, 'DANI'),
-	(3, 'DADANG');
+INSERT INTO `master_employee` (`id`, `name`, `position`, `created_by`, `created_at`, `update_by`, `update_at`, `delete_by`, `delete_at`, `is_delete`) VALUES
+	(1, 'ADI', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N'),
+	(2, 'DANI', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N'),
+	(3, 'DADANG', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N'),
+	(4, 'Rudi', 'checker', 'admin', '2024-03-04 14:19:44', NULL, NULL, NULL, NULL, 'N'),
+	(5, 'asdada', 'checker', 'admin', '2024-03-04 14:24:50', NULL, NULL, 'admin', '2024-03-04 14:55:08', 'Y'),
+	(6, 'Natalia', 'checker', 'admin', '2024-03-04 14:25:04', NULL, NULL, NULL, NULL, 'N'),
+	(7, 'Kintamani', 'checker', 'admin', '2024-03-04 14:26:28', NULL, NULL, NULL, NULL, 'N'),
+	(8, 'Cyntiya', 'checker', 'admin', '2024-03-04 14:56:23', NULL, NULL, NULL, NULL, 'N'),
+	(9, 'Ridwan', 'checker', 'admin', '2024-03-14 19:49:01', NULL, NULL, NULL, NULL, 'N');
 /*!40000 ALTER TABLE `master_employee` ENABLE KEYS */;
 
 -- Dumping structure for table db_ymi_test.master_item
@@ -157,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `master_item` (
 
 -- Dumping data for table db_ymi_test.master_item: ~1,516 rows (approximately)
 /*!40000 ALTER TABLE `master_item` DISABLE KEYS */;
-REPLACE INTO `master_item` (`ItemCode`, `ItemName`, `FrgnName`, `BrandCode`) VALUES
+INSERT INTO `master_item` (`ItemCode`, `ItemName`, `FrgnName`, `BrandCode`) VALUES
 	('ALB0100', 'ALB - Mozzarella 250 g # 12 x 250 g', '9311766000007', 102),
 	('ALB0110', 'ALB - Mozzarella 500 g # 12 x 500 g', '9311766000014', 102),
 	('ALB0120', 'ALB - Shredded Cheddar 250 g # 16 x 250 g', '9311766000212', 102),
@@ -1696,7 +1716,7 @@ CREATE TABLE IF NOT EXISTS `master_item_subdist` (
 
 -- Dumping data for table db_ymi_test.master_item_subdist: ~1,516 rows (approximately)
 /*!40000 ALTER TABLE `master_item_subdist` DISABLE KEYS */;
-REPLACE INTO `master_item_subdist` (`id`, `ItemCode`, `ItemName`, `FrgnName`, `BrandCode`, `Price`, `isDelete`, `CreatedBy`, `CreatedAt`, `UpdatedBy`, `UpdatedAt`, `DeletedBy`, `DeletedAt`) VALUES
+INSERT INTO `master_item_subdist` (`id`, `ItemCode`, `ItemName`, `FrgnName`, `BrandCode`, `Price`, `isDelete`, `CreatedBy`, `CreatedAt`, `UpdatedBy`, `UpdatedAt`, `DeletedBy`, `DeletedAt`) VALUES
 	(1, 'ALB0100', 'ALB - Mozzarella 250 g # 12 x 250 g', '9311766000007', '102', 250000, 'n', 1, '2023-10-17 13:20:25', NULL, NULL, NULL, NULL),
 	(2, 'ALB0110', 'ALB - Mozzarella 500 g # 12 x 500 g', '9311766000014', '102', 250000, 'n', 1, '2023-10-17 13:20:25', NULL, NULL, NULL, NULL),
 	(3, 'ALB0120', 'ALB - Shredded Cheddar 250 g # 16 x 250 g', '9311766000212', '102', 250000, 'n', 1, '2023-10-17 13:20:25', NULL, NULL, NULL, NULL),
@@ -3233,7 +3253,7 @@ CREATE TABLE IF NOT EXISTS `master_subdist` (
 
 -- Dumping data for table db_ymi_test.master_subdist: ~39 rows (approximately)
 /*!40000 ALTER TABLE `master_subdist` DISABLE KEYS */;
-REPLACE INTO `master_subdist` (`CardCode`, `CardName`, `Serviced_by`, `GroupName`, `Dept`, `Group_Cust`, `Address`, `Area`, `City`, `Province`, `Island`, `Region`) VALUES
+INSERT INTO `master_subdist` (`CardCode`, `CardName`, `Serviced_by`, `GroupName`, `Dept`, `Group_Cust`, `Address`, `Area`, `City`, `Province`, `Island`, `Region`) VALUES
 	('RT01LMP01', 'PT. LIMEKT PAPER', 'PK JAKARTA', 'Sub Distributor', 'RET', 'Limekt Paper', 'Jl MT Haryono 187, Kel Jagalan, Kec Semarang Tengah, Kota Semerang, Prov. Jawa Tengah', 'Luar Kota', 'Pontianak', 'Kalimantan Barat', 'Kalimantan', 'Central'),
 	('RTB1LCB01', 'CAHAYA BOGA UTAMA CV', '3PL BALI', 'Sub Distributor', 'RET', 'Cahaya Boga Utama', 'JL. Kebo Iwa Selatan (Belakang Kebo Iwa Square) No.23', 'Luar Kota', 'Bali', 'Bali', 'Bali', 'East'),
 	('RT01MSC01', 'CV. MAJU SUKSES CEMERLANG', 'PK JAKARTA', 'Sub Distributor', 'RET', 'Maju Sukses Cemerlang', 'JL. MAPELONG LINK IV (KAIWOLO) WALIAN SATU - TOMOHON SELATAN', 'Luar Kota', 'Tomohon', 'Sulawesi Utara', 'Sulawesi', 'East'),
@@ -3290,7 +3310,7 @@ CREATE TABLE IF NOT EXISTS `master_top` (
 
 -- Dumping data for table db_ymi_test.master_top: ~4 rows (approximately)
 /*!40000 ALTER TABLE `master_top` DISABLE KEYS */;
-REPLACE INTO `master_top` (`GroupNum`, `Descript`, `ExtraDays`, `ExtraMonth`, `CreatedBy`, `CreatedAt`, `UpdatedBy`, `UpdatedAt`) VALUES
+INSERT INTO `master_top` (`GroupNum`, `Descript`, `ExtraDays`, `ExtraMonth`, `CreatedBy`, `CreatedAt`, `UpdatedBy`, `UpdatedAt`) VALUES
 	(1, 'Cash Basis', 0, NULL, NULL, '2023-10-13 09:53:27', NULL, NULL),
 	(2, '+7 Days', 7, NULL, NULL, '2023-10-13 09:53:27', NULL, NULL),
 	(3, '+15 Days', 15, NULL, NULL, '2023-10-13 09:53:27', NULL, NULL),
@@ -3313,7 +3333,7 @@ CREATE TABLE IF NOT EXISTS `master_user` (
 
 -- Dumping data for table db_ymi_test.master_user: ~2 rows (approximately)
 /*!40000 ALTER TABLE `master_user` DISABLE KEYS */;
-REPLACE INTO `master_user` (`id`, `username`, `password`, `cardcode`, `role`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES
+INSERT INTO `master_user` (`id`, `username`, `password`, `cardcode`, `role`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES
 	(1, 'akasia', 'akasia321', 'RTS02DOW01', 'subdist', '2023-10-16 08:57:12', NULL, NULL, NULL),
 	(2, 'admin', 'admin123', NULL, NULL, '2024-03-04 10:28:37', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `master_user` ENABLE KEYS */;
@@ -3340,7 +3360,7 @@ CREATE TABLE IF NOT EXISTS `order_detail` (
 
 -- Dumping data for table db_ymi_test.order_detail: ~32 rows (approximately)
 /*!40000 ALTER TABLE `order_detail` DISABLE KEYS */;
-REPLACE INTO `order_detail` (`id`, `idOrder`, `itemCode`, `frgnName`, `itemName`, `uom`, `price`, `qty`, `discItemPercent`, `discItemAmount`, `total`, `createdBy`, `cretedAt`, `updatedBy`, `updatedAt`) VALUES
+INSERT INTO `order_detail` (`id`, `idOrder`, `itemCode`, `frgnName`, `itemName`, `uom`, `price`, `qty`, `discItemPercent`, `discItemAmount`, `total`, `createdBy`, `cretedAt`, `updatedBy`, `updatedAt`) VALUES
 	(1, 1, 'ALB0170', '9311766000120', 'ALB - Grated Parmesan 100 g # 30 x 100 g', NULL, 250000, 4, 0, NULL, 1000000, 1, '2023-10-21 19:55:46', NULL, NULL),
 	(2, 1, 'ALB0190', '9311766000205', 'ALB - Grated Parmesan 2 kg # 6 x 2 kg', NULL, 250000, 2, 0, NULL, 500000, 1, '2023-10-21 19:55:46', NULL, NULL),
 	(3, 1, 'ALB0100', '9311766000007', 'ALB - Mozzarella 250 g # 12 x 250 g', NULL, 250000, 2, 0, NULL, 500000, 1, '2023-10-21 19:55:46', NULL, NULL),
@@ -3397,7 +3417,7 @@ CREATE TABLE IF NOT EXISTS `order_header` (
 
 -- Dumping data for table db_ymi_test.order_header: ~10 rows (approximately)
 /*!40000 ALTER TABLE `order_header` DISABLE KEYS */;
-REPLACE INTO `order_header` (`id`, `CustId`, `CustName`, `CustAddress`, `custCity`, `CustPhone`, `Subtotal`, `DiscPercent`, `DiscAmount`, `GrandTotal`, `CreatedAt`, `CreatedBy`, `UpdatedAt`, `DeletedBy`, `DeletedAt`) VALUES
+INSERT INTO `order_header` (`id`, `CustId`, `CustName`, `CustAddress`, `custCity`, `CustPhone`, `Subtotal`, `DiscPercent`, `DiscAmount`, `GrandTotal`, `CreatedAt`, `CreatedBy`, `UpdatedAt`, `DeletedBy`, `DeletedAt`) VALUES
 	(1, 1, 'PT. ANDALAN ANTAR UTAMA', 'TALAVERA OFFICE PARK LT.16 JL.LETJEN TB.SIMATUPANG KAV.22-26 RT.001 RW.001 CILANDAK BARAT CILANDAK', 'JAKARTA SELATAN', 'NULL', 2250000, 10, 150000, 2100000, '2023-10-21 19:55:46', 1, NULL, NULL, NULL),
 	(11, 3, 'ANTHONY HALIM', 'Taman Kebon Jeruk Blok J No.17 Kembangan Srengseng', 'JAKARTA BARAT', 'NULL', 1500000, 0, 0, 1500000, '2023-10-21 20:16:38', 1, NULL, NULL, NULL),
 	(21, 2, 'PT. ANGAN BERSAMA YAKIN SELARAS : FUDGYBRO', 'JL. GARUDA BLOK C2, NO.11 BINTARO JAYA', 'JAKARTA SELATAN', 'NULL', 1250000, 0, 0, 1250000, '2023-10-21 21:13:34', 1, NULL, NULL, NULL),
@@ -3414,8 +3434,10 @@ REPLACE INTO `order_header` (`id`, `CustId`, `CustName`, `CustAddress`, `custCit
 CREATE TABLE IF NOT EXISTS `tb_trans` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `no_sj` varchar(255) DEFAULT NULL,
+  `no_truck` varchar(100) DEFAULT NULL,
   `qty` int(11) DEFAULT NULL,
   `checker` varchar(255) DEFAULT NULL,
+  `checker_id` int(11) DEFAULT NULL,
   `ref_date` date DEFAULT NULL,
   `unload_st_time` time DEFAULT NULL,
   `unload_fin_time` time DEFAULT NULL,
@@ -3429,24 +3451,53 @@ CREATE TABLE IF NOT EXISTS `tb_trans` (
   `created_by` varchar(255) DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 
--- Dumping data for table db_ymi_test.tb_trans: ~5 rows (approximately)
+-- Dumping data for table db_ymi_test.tb_trans: ~23 rows (approximately)
 /*!40000 ALTER TABLE `tb_trans` DISABLE KEYS */;
-REPLACE INTO `tb_trans` (`id`, `no_sj`, `qty`, `checker`, `ref_date`, `unload_st_time`, `unload_fin_time`, `unload_duration`, `checking_st_time`, `checking_fin_time`, `checking_duration`, `putaway_st_time`, `putaway_fin_time`, `putaway_duration`, `created_by`, `created_date`) VALUES
-	(1, 'TEST001', 500, 'ADI', '2022-01-14', '10:07:44', '10:07:54', '00:00:10', '10:07:47', '10:07:55', '00:00:08', '10:07:48', '10:07:56', '00:00:08', '1', '2024-03-04 10:07:56'),
-	(2, 'TEST001', 500, 'ADI', '2022-01-14', '10:08:42', '10:09:33', '00:00:51', '10:08:50', '10:09:35', '00:00:45', '10:08:52', '10:09:41', '00:00:49', '1', '2024-03-04 10:09:41'),
-	(3, 'TEST003', 500, 'ADI', '2022-01-14', '10:15:43', '10:16:06', '00:00:23', '10:15:44', '10:16:07', '00:00:23', '10:15:45', '10:16:09', '00:00:24', '1', '2024-03-04 10:16:09'),
-	(4, 'TEST001', 500, 'DANI', '2022-01-14', '10:17:11', '10:17:43', '00:00:32', '10:17:11', '10:19:13', '00:02:02', '10:17:12', '10:19:14', '00:02:02', '1', '2024-03-04 10:19:15'),
-	(5, 'TEST001', 500, 'ADI', '2022-01-14', '10:17:19', '10:17:47', '00:00:28', '10:17:20', '10:19:26', '00:02:06', '10:17:21', '10:19:27', '00:02:06', '1', '2024-03-04 10:19:27');
+INSERT INTO `tb_trans` (`id`, `no_sj`, `no_truck`, `qty`, `checker`, `checker_id`, `ref_date`, `unload_st_time`, `unload_fin_time`, `unload_duration`, `checking_st_time`, `checking_fin_time`, `checking_duration`, `putaway_st_time`, `putaway_fin_time`, `putaway_duration`, `created_by`, `created_date`) VALUES
+	(1, 'TEST001', NULL, 500, 'ADI', NULL, '2022-01-14', '10:07:44', '10:07:54', '00:00:10', '10:07:47', '10:07:55', '00:00:08', '10:07:48', '10:07:56', '00:00:08', '1', '2024-03-04 10:07:56'),
+	(2, 'TEST001', NULL, 500, 'ADI', NULL, '2022-01-14', '10:08:42', '10:09:33', '00:00:51', '10:08:50', '10:09:35', '00:00:45', '10:08:52', '10:09:41', '00:00:49', '1', '2024-03-04 10:09:41'),
+	(3, 'TEST003', NULL, 500, 'ADI', NULL, '2022-01-14', '10:15:43', '10:16:06', '00:00:23', '10:15:44', '10:16:07', '00:00:23', '10:15:45', '10:16:09', '00:00:24', '1', '2024-03-04 10:16:09'),
+	(4, 'TEST001', NULL, 500, 'DANI', NULL, '2022-01-14', '10:17:11', '10:17:43', '00:00:32', '10:17:11', '10:19:13', '00:02:02', '10:17:12', '10:19:14', '00:02:02', '1', '2024-03-04 10:19:15'),
+	(5, 'TEST001', NULL, 500, 'ADI', NULL, '2022-01-14', '10:17:19', '10:17:47', '00:00:28', '10:17:20', '10:19:26', '00:02:06', '10:17:21', '10:19:27', '00:02:06', '1', '2024-03-04 10:19:27'),
+	(6, 'TEST001', NULL, 500, 'DANI', NULL, '2022-01-14', '13:30:16', '13:30:43', '00:00:27', '13:30:19', '13:30:44', '00:00:25', '13:30:20', '13:30:45', '00:00:25', '2', '2024-03-04 13:30:45'),
+	(7, 'TEST001', NULL, 500, 'Kintamani', 7, '2022-01-14', '15:31:12', '15:31:32', '00:00:20', '15:31:13', '15:31:33', '00:00:20', '15:31:15', '15:31:34', '00:00:19', '2', '2024-03-04 15:31:34'),
+	(8, 'TEST001', NULL, 500, 'Cyntiya', 8, '2022-01-14', '15:35:49', '15:42:57', '00:07:08', '15:35:50', '15:42:58', '00:07:08', '15:35:52', '15:42:59', '00:07:07', '2', '2024-03-04 15:42:59'),
+	(9, 'TEST001', NULL, 500, 'Natalia', 6, '2022-01-14', '15:35:33', '15:43:00', '00:07:27', '15:35:35', '15:43:01', '00:07:26', '15:35:36', '15:43:02', '00:07:26', '2', '2024-03-04 15:43:02'),
+	(10, 'TEST001', NULL, 500, 'DADANG', 3, '2022-01-14', '16:03:43', '16:03:49', '00:00:06', '16:03:44', '16:03:50', '00:00:06', '16:03:44', '16:03:53', '00:00:09', '2', '2024-03-04 16:03:53'),
+	(11, 'TEST001', NULL, 500, 'Kintamani', 7, '2022-01-14', '17:31:10', '17:31:22', '00:00:12', '17:31:11', '17:31:23', '00:00:12', '17:31:13', '17:31:25', '00:00:12', '2', '2024-03-04 17:31:25'),
+	(12, 'TEST001', NULL, 500, 'DADANG', 3, '2022-01-14', '08:31:10', '08:57:48', '00:26:38', '09:01:18', '09:01:19', '00:00:01', '09:01:20', '09:01:20', '00:00:00', '2', '2024-03-05 09:01:21'),
+	(13, 'TEST001', NULL, 500, 'DANI', 2, '2022-01-14', '09:01:26', '09:01:29', '00:00:03', '09:01:27', '09:01:30', '00:00:03', '09:01:28', '09:01:31', '00:00:03', '2', '2024-03-05 09:01:31'),
+	(14, 'TEST001', NULL, 500, 'DANI', 2, '2022-01-14', '09:07:49', '09:08:21', '00:00:32', '09:07:50', '09:30:51', '00:23:01', '09:07:51', '09:35:50', '00:27:59', '2', '2024-03-05 09:35:50'),
+	(15, 'TEST001', NULL, 20, 'Cyntiya', 8, '2022-01-14', '09:01:51', '09:04:01', '00:02:10', '09:07:47', '09:30:28', '00:22:41', '09:07:48', '09:35:54', '00:28:06', '2', '2024-03-05 09:35:54'),
+	(16, 'TEST001', NULL, 500, 'DANI', 2, '2022-01-14', '09:41:44', '09:43:00', '00:01:16', '09:41:34', '09:43:00', '00:01:26', '09:41:45', '09:43:01', '00:01:16', '2', '2024-03-05 09:43:01'),
+	(17, 'TEST001', NULL, 500, 'Kintamani', 7, '2022-01-14', '07:37:07', '09:05:36', '01:28:29', '07:37:11', '09:43:03', '02:05:52', '07:37:13', '09:39:29', '02:02:16', '2', '2024-03-05 09:43:03'),
+	(18, 'TEST001', NULL, 500, 'DADANG', 3, '2022-01-14', '09:31:12', '09:43:15', '00:12:03', '09:43:13', '09:43:15', '00:00:02', '09:35:58', '09:43:14', '00:07:16', '2', '2024-03-05 09:43:16'),
+	(19, 'TEST001', NULL, 500, 'Cyntiya', 8, '2022-01-14', '09:43:17', '09:43:23', '00:00:06', '09:43:17', '09:43:24', '00:00:07', '09:43:18', '09:43:25', '00:00:07', '2', '2024-03-05 09:43:25'),
+	(20, 'TEST001', NULL, 500, 'Kintamani', 7, '2022-01-14', '10:20:36', '10:58:08', '00:37:32', '10:20:37', '10:58:09', '00:37:32', '10:20:38', '10:58:10', '00:37:32', '2', '2024-03-05 10:58:10'),
+	(21, 'SJ899', NULL, 212, 'DADANG', 3, '2022-01-14', '10:51:15', '12:42:22', '01:51:07', '12:42:23', '12:42:25', '00:00:02', '12:42:24', '12:42:25', '00:00:01', '2', '2024-03-08 12:42:25'),
+	(22, 'TEST00132', NULL, 2133, 'Natalia', 6, '2022-01-28', '10:50:46', '13:24:49', '02:34:03', '10:50:47', '13:24:51', '02:34:04', '10:50:49', '12:42:27', '01:51:38', '2', '2024-03-08 12:42:27'),
+	(23, 'TEST001', NULL, 200, 'DADANG', 3, '2022-01-14', '13:25:18', '12:42:15', '-00:43:03', '12:42:19', '12:42:29', '00:00:10', '12:42:20', '12:42:29', '00:00:09', '2', '2024-03-08 12:42:29'),
+	(24, 'TEST001', NULL, 500, 'DANI', 2, '2022-01-14', '11:49:09', '19:48:01', '07:58:52', '11:49:10', '19:48:04', '07:58:54', '11:49:12', '19:48:06', '07:58:54', '2', '2024-03-14 19:48:06'),
+	(25, 'TEST001', NULL, 500, 'DADANG', 3, '2024-03-16', '11:17:52', '12:43:14', '01:25:22', '11:17:54', '12:43:16', '01:25:22', '11:17:55', '12:43:19', '01:25:24', '2', '2024-03-16 12:43:19'),
+	(26, 'SJK002', NULL, 500, 'DANI', 2, '2024-03-16', '12:55:23', '13:02:55', '00:07:32', '12:55:24', '13:32:44', '00:37:20', '12:55:27', '13:45:57', '00:50:30', '2', '2024-03-16 13:45:57'),
+	(27, 'SJK002', NULL, 500, 'ADI', 1, '2024-03-16', '13:03:44', '13:04:23', '00:00:39', '13:03:51', '15:52:16', '02:48:25', '13:03:52', '15:52:17', '02:48:25', '2', '2024-03-16 15:52:17'),
+	(28, 'TEST001', NULL, 500, 'Rudi', 4, '2024-03-16', '16:47:25', '20:30:30', '03:43:05', '16:47:26', '20:30:34', '03:43:08', '16:48:05', '20:30:36', '03:42:31', '2', '2024-03-16 20:30:36'),
+	(29, 'TEST001A', NULL, 500, 'Ridwan', 9, '2024-03-16', '20:51:03', '20:51:11', '00:00:08', '20:51:06', '20:51:13', '00:00:07', '20:51:08', '20:51:15', '00:00:07', '2', '2024-03-16 20:51:15'),
+	(30, 'TEST001', NULL, 500, 'Natalia', 6, '2024-03-16', '05:53:57', '14:10:22', '08:16:25', '05:53:58', '14:10:26', '08:16:28', '05:54:00', '14:10:30', '08:16:30', '2', '2024-03-17 14:10:30'),
+	(31, 'SJ9989', 'B 2220 GTL', 500, 'Natalia', 6, '2024-03-17', '19:51:38', '19:51:45', '00:00:07', '19:51:39', '19:51:46', '00:00:07', '19:51:41', '19:51:42', '00:00:01', '2', '2024-03-17 19:51:46'),
+	(32, 'SHJIK90999', 'B 9920 BBJ', 500, 'DANI', 2, '2024-03-17', '19:53:04', '20:26:09', '00:33:05', '19:53:06', '20:26:11', '00:33:05', '19:53:09', '20:26:12', '00:33:03', '2', '2024-03-17 20:26:12');
 /*!40000 ALTER TABLE `tb_trans` ENABLE KEYS */;
 
 -- Dumping structure for table db_ymi_test.tb_trans_temp
 CREATE TABLE IF NOT EXISTS `tb_trans_temp` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `no_sj` varchar(255) DEFAULT NULL,
+  `no_truck` varchar(100) DEFAULT NULL,
   `qty` int(11) DEFAULT NULL,
   `checker` varchar(255) DEFAULT NULL,
+  `checker_id` int(11) DEFAULT NULL,
   `tanggal` date DEFAULT NULL,
   `start_unloading` time DEFAULT NULL,
   `stop_unloading` time DEFAULT NULL,
@@ -3461,17 +3512,13 @@ CREATE TABLE IF NOT EXISTS `tb_trans_temp` (
   `created_date` datetime DEFAULT NULL,
   `session_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table db_ymi_test.tb_trans_temp: ~4 rows (approximately)
+-- Dumping data for table db_ymi_test.tb_trans_temp: ~2 rows (approximately)
 /*!40000 ALTER TABLE `tb_trans_temp` DISABLE KEYS */;
-REPLACE INTO `tb_trans_temp` (`id`, `no_sj`, `qty`, `checker`, `tanggal`, `start_unloading`, `stop_unloading`, `duration_unloading`, `start_checking`, `stop_checking`, `duration_checking`, `start_putaway`, `stop_putaway`, `duration_putaway`, `created_by`, `created_date`, `session_id`) VALUES
-	(1, 'TEST003', 500, 'DANI', '2022-01-14', '10:10:25', NULL, NULL, '10:10:26', NULL, NULL, '10:10:27', NULL, NULL, '1', '2024-03-04 10:10:23', '1709521553'),
-	(5, 'TEST001', 500, 'DANI', '2022-01-14', '10:21:32', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', '2024-03-04 10:21:23', '1709522182'),
-	(6, 'TEST001', 500, 'ADI', '2022-01-14', '10:25:18', '10:26:26', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', '2024-03-04 10:25:15', '1709522543'),
-	(7, 'TEST001', 500, 'DADANG', '2022-01-14', '10:37:02', NULL, NULL, '10:37:02', NULL, NULL, '10:37:04', NULL, NULL, '2', '2024-03-04 10:37:00', '1709523316');
 /*!40000 ALTER TABLE `tb_trans_temp` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

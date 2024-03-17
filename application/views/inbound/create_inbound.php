@@ -116,6 +116,7 @@
                                 <tr>
                                     <th scope="col">No.</th>
                                     <th scope="col">SJ No.</th>
+                                    <th scope="col">No. Truck</th>
                                     <th scope="col">Checker</th>
                                     <th scope="col">Ref. Date</th>
                                     <th scope="col">Start Unload</th>
@@ -156,15 +157,21 @@
                         <label for="task-title-input" class="form-label">Nomor SJ</label>
                         <input type="text" id="inNoSJ" class="form-control" placeholder="Masukan No Surat Jalan" value="TEST001">
                     </div>
-                    <div class="mb-3 position-relative">
-                        <label for="task-assign-input" class="form-label">Checker</label>
-                        <select class="form-control" name="" id="inChecker">
-                            <option value="">--Pilih Checker--</option>
-                            <?php foreach ($checker->result() as $c) { ?>
-                                <option value="<?= $c->id ?>"><?= $c->name ?></option>
-                            <?php } ?>
-                        </select>
-                        <!-- <input type="text" id="inChecker" class="form-control" placeholder="Masukan Checker" value="Juna"> -->
+                    <div class="mb-3 position-relative row">
+
+                        <div class="col-lg-6">
+                            <label for="task-assign-input" class="form-label">Checker</label>
+                            <select class="form-control" name="" id="inChecker">
+                                <option value="">--Pilih Checker--</option>
+                                <?php foreach ($checker->result() as $c) { ?>
+                                    <option value="<?= $c->id ?>"><?= $c->name ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="task-status" class="form-label">No Truck</label>
+                            <input type="text" id="inNoTruck" class="form-control" placeholder="Masukan No Truck" value="">
+                        </div>
                     </div>
                     <div class="row g-4 mb-3">
                         <div class="col-lg-6">
@@ -221,10 +228,12 @@
 </script>
 <script>
     function showModalCreate() {
+        $('#inNoSJ').val('');
         $('#addNewTodo').attr('onclick', 'addRow()');
         $('#addNewTodo').text('Create');
         $('#createTaskLabel').text('Create Activity');
         $('#createTask').modal('show');
+        // $('#inNoSJ').focus();
     }
 
     function getAllRowTemp() {
@@ -241,6 +250,7 @@
     function addRow() {
 
         let sj = $('#inNoSJ').val();
+        let noTruck = $('#inNoTruck').val();
         let qty = $('#inQty').val();
         let date = $('#inDate').val();
         let checker_id = $('#inChecker').val();
@@ -256,6 +266,7 @@
 
         var rowActivity = {
             sj: $('#inNoSJ').val(),
+            noTruck: $('#inNoTruck').val(),
             qty: $('#inQty').val(),
             date: $('#inDate').val(),
             checker_id: $('#inChecker').val(),
@@ -290,7 +301,7 @@
             data: dataToPost,
             success: function(data) {
 
-                console.log(data);
+                // console.log(data);
 
                 if (tableComlpeteActivity != null) {
                     tableComlpeteActivity.destroy();
@@ -433,6 +444,7 @@
     function showModalEdit(el) {
 
         let elSj = $(el).data('id-sj');
+        let elNoTruck = $(el).data('id-nt');
         let checker_id = $(el).data('check-id');
         let elChecker = $(el).data('id-ch');
         let elQty = $(el).data('id-qty');
@@ -440,18 +452,25 @@
 
         let elId = {
             el_sj: elSj,
+            el_nt: elNoTruck,
             el_checker: elChecker,
             el_qty: elQty,
             el_date: elDate
         }
 
+        console.log(elId);
+
 
         let sj = $('#' + elSj).text();
+        let noTruck = $('#' + elNoTruck).text();
         let checker = $('#' + elChecker).text();
         let qty = $('#' + elQty).text();
         let date = $('#' + elDate).text();
 
+        console.log(noTruck);
+
         $('#inNoSJ').val(sj);
+        $('#inNoTruck').val(noTruck);
         $('#inChecker').val(checker_id);
         $('#inQty').val(qty);
         $('#inDate').val(date);
@@ -466,6 +485,7 @@
 
     function editUserActivity(el) {
         let sj = $('#inNoSJ').val();
+        let noTruck = $('#inNoTruck').val();
         let checker_id = $('#inChecker').val();
         let checker = $('#inChecker option:selected').text();
         let qty = $('#inQty').val();
@@ -474,11 +494,13 @@
 
         let elId = JSON.parse($(el).data('el-id'));
 
-        console.log(elId);
+
+        // console.log(elId);
         // return false;
 
         let rowActivity = {
             sj: sj,
+            no_truck: noTruck,
             checker_id: checker_id,
             checker: checker,
             qty: qty,
@@ -495,6 +517,7 @@
                 if (response.success == true) {
                     $("#createTask").modal('hide');
                     $('#' + elId.el_sj).text(sj);
+                    $('#' + elId.el_nt).text(noTruck);
                     $('#' + elId.el_checker).text(checker);
                     $('#' + elId.el_qty).text(qty);
                     $('#' + elId.el_date).text(refDate);

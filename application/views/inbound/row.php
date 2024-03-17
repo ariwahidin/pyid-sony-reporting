@@ -8,6 +8,8 @@ foreach ($activity->result() as $data) {
                     <div class="text-left mb-2" id="">
                         <span>SJ No : <strong id="sj<?= $data->id ?>"><?= $data->no_sj ?></strong></span>
                         <br>
+                        <span>Truck : <strong id="nt<?= $data->id ?>"><?= $data->no_truck ?></strong></span>
+                        <br>
                         <span>Qty : <strong id="qty<?= $data->id ?>"><?= $data->qty ?></strong></span>
                         <br>
                         <span>Date: <strong id="dt<?= $data->id ?>"><?= $data->tanggal ?></strong></span>
@@ -133,6 +135,7 @@ foreach ($activity->result() as $data) {
                 <button onclick="showModalEdit(this)" 
                 data-id="<?= $data->id ?>" 
                 data-id-sj="sj<?= $data->id ?>" 
+                data-id-nt="nt<?= $data->id ?>" 
                 data-id-qty="qty<?= $data->id ?>" 
                 data-id-dt="dt<?= $data->id ?>" 
                 data-id-ch="ch<?= $data->id ?>" 
