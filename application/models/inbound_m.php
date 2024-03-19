@@ -29,10 +29,13 @@ class Inbound_m extends CI_Model
     public function getTempActivity($id = null)
     {
         $sql = "SELECT *, 
-                TIMEDIFF(stop_unloading, start_unloading) as duration_unloading, 
-                TIMEDIFF(stop_checking, start_checking) as duration_checking,
-                TIMEDIFF(stop_putaway, start_putaway) as duration_putaway 
-                FROM tb_trans_temp";
+        TIMEDIFF(stop_unloading, start_unloading) as duration_unloading, 
+        time_format(TIMEDIFF(time_format(time(stop_unloading), '%H:%i'),time_format(time(start_unloading), '%H:%i')), '%H:%i') AS duration_unloading_to_show,
+        TIMEDIFF(stop_checking, start_checking) as duration_checking,
+        time_format(TIMEDIFF(time_format(time(stop_checking), '%H:%i'),time_format(time(start_checking), '%H:%i')), '%H:%i') AS duration_checking_to_show,
+        TIMEDIFF(stop_putaway, start_putaway) as duration_putaway,
+        time_format(TIMEDIFF(time_format(time(stop_putaway), '%H:%i'),time_format(time(start_putaway), '%H:%i')), '%H:%i') AS duration_putaway_to_show
+        FROM tb_trans_temp";
         if ($id != null) {
             $sql .= " WHERE id='$id'";
         }
@@ -55,13 +58,14 @@ class Inbound_m extends CI_Model
         $sql = "select no_sj, no_truck, qty, checker, ref_date,
         time_format(time(unload_st_time), '%H:%i') as start_unload,
         time_format(time(unload_fin_time), '%H:%i') as stop_unload,
-        time_format(unload_duration, '%H:%i') as unload_duration,
+        time_format(TIMEDIFF(time_format(time(unload_fin_time), '%H:%i'),time_format(time(unload_st_time), '%H:%i')), '%H:%i') AS unload_duration,
         time_format(time(checking_st_time), '%H:%i') as start_checking,
         time_format(time(checking_fin_time), '%H:%i') as stop_checking,
-        time_format(checking_duration, '%H:%i') as checking_duration,
+        time_format(TIMEDIFF(time_format(time(checking_fin_time), '%H:%i'),time_format(time(checking_st_time), '%H:%i')), '%H:%i') AS checking_duration,
         time_format(time(putaway_st_time), '%H:%i') as start_putaway,
         time_format(time(putaway_fin_time), '%H:%i') as stop_putaway,
-        time_format(putaway_duration, '%H:%i') as putaway_duration 
+        time_format(TIMEDIFF(time_format(time(putaway_fin_time), '%H:%i'),time_format(time(putaway_st_time), '%H:%i')), '%H:%i') AS putaway_duration,
+        time_format(putaway_duration, '%H:%i') as putaway_duration
         from tb_trans 
         where ";
 

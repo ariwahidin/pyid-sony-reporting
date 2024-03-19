@@ -24,11 +24,11 @@ foreach ($activity->result() as $data) {
                 <div class="card-body text-left">
                     <div id="clockUnloading"></div>
                     <div class="text-left mb-2">
-                        <span>Start : <strong id="logStartUnloading<?= $data->id ?>"><?= $data->start_unloading ?></strong></span>
+                        <span>Start : <strong id="logStartUnloading<?= $data->id ?>"><?= $data->start_unloading == '' ? '' : date('H:i', strtotime($data->start_unloading)) ?></strong></span>
                         <br>
-                        <span>Stop : <strong id="logStopUnloading<?= $data->id ?>"><?= $data->stop_unloading ?></strong></span>
+                        <span>Stop : <strong id="logStopUnloading<?= $data->id ?>"><?= $data->stop_unloading == '' ? '' : date('H:i', strtotime($data->stop_unloading)) ?></strong></span>
                         <br>
-                        <span>Duration: <strong id="durationUnloading<?= $data->id ?>"><?= $data->duration_unloading ?></strong></span>
+                        <span>Duration: <strong id="durationUnloading<?= $data->id ?>"><?= $data->duration_unloading_to_show == '' ? '' : date('H:i', strtotime($data->duration_unloading_to_show)) ?></strong></span>
                     </div>
                     <div class="hstack gap-2 justify-content-center">
                         <?php if ($data->start_unloading == null && $data->stop_unloading == null) { ?>
@@ -59,11 +59,11 @@ foreach ($activity->result() as $data) {
                 <div class="card-body text-left">
                     <div id="clockChecking"></div>
                     <div class="text-left mb-2">
-                        <span>Start : <strong id="logStartChecking<?= $data->id ?>"><?= $data->start_checking ?></strong></span>
+                        <span>Start : <strong id="logStartChecking<?= $data->id ?>"><?= $data->start_checking == '' ? '' : date('H:i', strtotime($data->start_checking)) ?></strong></span>
                         <br>
-                        <span>Stop : <strong id="logStopChecking<?= $data->id ?>"><?= $data->stop_checking ?></strong></span>
+                        <span>Stop : <strong id="logStopChecking<?= $data->id ?>"><?= $data->stop_checking == '' ? '' : date('H:i', strtotime($data->stop_checking)) ?></strong></span>
                         <br>
-                        <span>Duration: <strong id="durationChecking<?= $data->id ?>"><?= $data->duration_checking ?></strong></span>
+                        <span>Duration: <strong id="durationChecking<?= $data->id ?>"><?= $data->duration_checking_to_show == '' ? '' : date('H:i', strtotime($data->duration_checking_to_show)) ?></strong></span>
                     </div>
                     <div class="hstack gap-2 justify-content-center">
 
@@ -95,11 +95,11 @@ foreach ($activity->result() as $data) {
                 <div class="card-body text-left">
                     <div id="clockPutaway"></div>
                     <div class="text-left mb-2">
-                        <span>Start : <strong id="logStartPutaway<?= $data->id ?>"><?= $data->start_putaway ?></strong></span>
+                        <span>Start : <strong id="logStartPutaway<?= $data->id ?>"><?= $data->start_putaway == '' ? '' : date('H:i', strtotime($data->start_putaway)) ?></strong></span>
                         <br>
-                        <span>Stop : <strong id="logStopPutaway<?= $data->id ?>"><?= $data->stop_putaway ?></strong></span>
+                        <span>Stop : <strong id="logStopPutaway<?= $data->id ?>"><?= $data->stop_putaway == '' ? '' : date('H:i', strtotime($data->stop_putaway)) ?></strong></span>
                         <br>
-                        <span>Duration: <strong id="durationPutaway<?= $data->id ?>"><?= $data->duration_putaway ?></strong></span>
+                        <span>Duration: <strong id="durationPutaway<?= $data->id ?>"><?= $data->duration_putaway_to_show == '' ? '' : date('H:i', strtotime($data->duration_putaway_to_show)) ?></strong></span>
                     </div>
                     <div class="hstack gap-2 justify-content-center">
 
@@ -132,15 +132,7 @@ foreach ($activity->result() as $data) {
         </td>
         <td>
             <div class="hstack gap-3 flex-wrap">
-                <button onclick="showModalEdit(this)" 
-                data-id="<?= $data->id ?>" 
-                data-id-sj="sj<?= $data->id ?>" 
-                data-id-nt="nt<?= $data->id ?>" 
-                data-id-qty="qty<?= $data->id ?>" 
-                data-id-dt="dt<?= $data->id ?>" 
-                data-id-ch="ch<?= $data->id ?>" 
-                data-check-id="<?= $data->checker_id ?>" 
-                class="link-success fs-15"><i class="ri-edit-2-line"></i></button>
+                <button onclick="showModalEdit(this)" data-id="<?= $data->id ?>" data-id-sj="sj<?= $data->id ?>" data-id-nt="nt<?= $data->id ?>" data-id-qty="qty<?= $data->id ?>" data-id-dt="dt<?= $data->id ?>" data-id-ch="ch<?= $data->id ?>" data-check-id="<?= $data->checker_id ?>" class="link-success fs-15"><i class="ri-edit-2-line"></i></button>
                 <button class="link-danger fs-15" onclick="deleteRow(this);" data-id="<?= $data->id ?>"><i class="ri-delete-bin-line"></i></button>
             </div>
         </td>

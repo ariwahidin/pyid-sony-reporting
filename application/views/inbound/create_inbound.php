@@ -241,6 +241,7 @@
             type: "POST",
             url: "<?= base_url('inbound/getAllRowTemp') ?>",
             success: function(data) {
+                $("#tableActivity tbody").empty();
                 $("#tableActivity tbody").prepend(data);
                 $("#createTask").modal('hide');
             }
@@ -288,7 +289,8 @@
             url: "<?= base_url('inbound/getRow') ?>",
             data: rowActivity,
             success: function(data) {
-                $("#tableActivity tbody").prepend(data);
+                // $("#tableActivity tbody").prepend(data);
+                getAllRowTemp();
                 $("#createTask").modal('hide');
             }
         });
@@ -367,29 +369,30 @@
             data: postData,
             dataType: "JSON",
             success: function(response) {
-                var logElement = document.getElementById(postData.idElement);
-                logElement.innerText = formatTime(postData.timeToShow)
+                // var logElement = document.getElementById(postData.idElement);
+                // logElement.innerText = formatTime(postData.timeToShow)
 
-                if (postData.activity == 'stop_unloading') {
-                    var durationElement = document.getElementById(postData.idDuration);
-                    durationElement.innerText = response.data.duration_unloading;
-                }
+                // if (postData.activity == 'stop_unloading') {
+                //     var durationElement = document.getElementById(postData.idDuration);
+                //     durationElement.innerText = response.data.duration_unloading;
+                // }
 
-                if (postData.activity == 'stop_checking') {
-                    var durationElement = document.getElementById(postData.idDuration);
-                    durationElement.innerText = response.data.duration_checking;
-                }
+                // if (postData.activity == 'stop_checking') {
+                //     var durationElement = document.getElementById(postData.idDuration);
+                //     durationElement.innerText = response.data.duration_checking;
+                // }
 
-                if (postData.activity == 'stop_putaway') {
-                    var durationElement = document.getElementById(postData.idDuration);
-                    durationElement.innerText = response.data.duration_putaway;
-                }
+                // if (postData.activity == 'stop_putaway') {
+                //     var durationElement = document.getElementById(postData.idDuration);
+                //     durationElement.innerText = response.data.duration_putaway;
+                // }
 
-                if (response.isFinish == true) {
-                    // alert(postData.idElement)
-                    $('#' + postData.idElement).closest('tr').remove();
-                    getRowComplete();
-                }
+                // if (response.isFinish == true) {
+                //     // alert(postData.idElement)
+                //     $('#' + postData.idElement).closest('tr').remove();
+                //     getRowComplete();
+                // }
+                getAllRowTemp();
             }
         });
     }
@@ -423,7 +426,7 @@
         minutes = minutes < 10 ? '0' + minutes : minutes;
         seconds = seconds < 10 ? '0' + seconds : seconds;
 
-        return hours + ':' + minutes + ':' + seconds;
+        return hours + ':' + minutes;
     }
 
     function formatDateTime(time) {
@@ -458,7 +461,7 @@
             el_date: elDate
         }
 
-        console.log(elId);
+        // console.log(elId);
 
 
         let sj = $('#' + elSj).text();
@@ -467,7 +470,7 @@
         let qty = $('#' + elQty).text();
         let date = $('#' + elDate).text();
 
-        console.log(noTruck);
+        // console.log(noTruck);
 
         $('#inNoSJ').val(sj);
         $('#inNoTruck').val(noTruck);
@@ -515,12 +518,13 @@
             dataType: "JSON",
             success: function(response) {
                 if (response.success == true) {
-                    $("#createTask").modal('hide');
-                    $('#' + elId.el_sj).text(sj);
-                    $('#' + elId.el_nt).text(noTruck);
-                    $('#' + elId.el_checker).text(checker);
-                    $('#' + elId.el_qty).text(qty);
-                    $('#' + elId.el_date).text(refDate);
+                    getAllRowTemp();
+                    // $("#createTask").modal('hide');
+                    // $('#' + elId.el_sj).text(sj);
+                    // $('#' + elId.el_nt).text(noTruck);
+                    // $('#' + elId.el_checker).text(checker);
+                    // $('#' + elId.el_qty).text(qty);
+                    // $('#' + elId.el_date).text(refDate);
                 }
             }
         });
