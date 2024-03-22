@@ -87,7 +87,9 @@
                                 <div class="col-lg-6">
                                     <div class="p-lg-5 p-4">
                                         <div>
-                                            <img id="logo" src="<?= base_url('jar/html/default/') ?>assets/images/small/yusen-logistics.png" alt="" height="60">
+                                            <img id="logo" src="<?= base_url('jar/html/default/') ?>assets/images/small/yusen-logistics.png" alt="" height="50">
+                                            &nbsp;
+                                            <img id="logo" src="<?= base_url('jar/html/default/') ?>assets/images/small/yamaha-indonesia.png" alt="" height="70">
                                             <!-- <h5 class="text-primary">Indonesia</h5> -->
                                             <!-- <p class="text-muted">Indonesia.</p> -->
                                         </div>

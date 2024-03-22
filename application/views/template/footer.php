@@ -783,7 +783,7 @@
 <script src="<?= base_url('jar/html/default/') ?>assets/libs/node-waves/waves.min.js"></script>
 <script src="<?= base_url('jar/html/default/') ?>assets/libs/feather-icons/feather.min.js"></script>
 <script src="<?= base_url('jar/html/default/') ?>assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
-<script src="<?= base_url('jar/html/default/') ?>assets/js/plugins.js"></script>
+<!-- <script src="<?= base_url('jar/html/default/') ?>assets/js/plugins.js"></script> -->
 
 <!-- apexcharts -->
 <script src="<?= base_url('jar/html/default/') ?>assets/libs/apexcharts/apexcharts.min.js"></script>
@@ -827,6 +827,8 @@
         event.preventDefault(); // Mencegah navigasi ke "#" (atau URL kosong) jika elemen <a> ditekan
         logout(); // Panggil fungsi logout saat tautan Logout diklik
     });
+
+    setTimeout(stopLoading, 1000);
 </script>
 </body>
 

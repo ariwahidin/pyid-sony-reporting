@@ -75,11 +75,11 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'db_ymi_test',
-	'dbdriver' => 'mysqli',
+	'hostname' => 'PYIDIT-NB13',
+	'username' => 'ari',
+	'password' => '@Aw18051995',
+	'database' => 'DB_YMI',
+	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),

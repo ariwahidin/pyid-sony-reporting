@@ -28,14 +28,7 @@ class Inbound_m extends CI_Model
 
     public function getTempActivity($id = null)
     {
-        $sql = "SELECT *, 
-        TIMEDIFF(stop_unloading, start_unloading) as duration_unloading, 
-        time_format(TIMEDIFF(time_format(time(stop_unloading), '%H:%i'),time_format(time(start_unloading), '%H:%i')), '%H:%i') AS duration_unloading_to_show,
-        TIMEDIFF(stop_checking, start_checking) as duration_checking,
-        time_format(TIMEDIFF(time_format(time(stop_checking), '%H:%i'),time_format(time(start_checking), '%H:%i')), '%H:%i') AS duration_checking_to_show,
-        TIMEDIFF(stop_putaway, start_putaway) as duration_putaway,
-        time_format(TIMEDIFF(time_format(time(stop_putaway), '%H:%i'),time_format(time(start_putaway), '%H:%i')), '%H:%i') AS duration_putaway_to_show
-        FROM tb_trans_temp";
+        $sql = "SELECT * FROM tb_trans_temp";
         if ($id != null) {
             $sql .= " WHERE id='$id'";
         }
@@ -51,11 +44,9 @@ class Inbound_m extends CI_Model
         $this->db->delete('tb_trans_temp');
     }
 
-    public function getCompletedActivity()
+    public function getActCompleteById()
     {
-        // var_dump($_POST);
-        // die;
-        $sql = "select no_sj, no_truck, qty, checker, ref_date,
+        $sql = "select id, no_sj, checker_id, no_truck, qty, checker, ref_date,
         time_format(time(unload_st_time), '%H:%i') as start_unload,
         time_format(time(unload_fin_time), '%H:%i') as stop_unload,
         time_format(TIMEDIFF(time_format(time(unload_fin_time), '%H:%i'),time_format(time(unload_st_time), '%H:%i')), '%H:%i') AS unload_duration,
@@ -64,17 +55,37 @@ class Inbound_m extends CI_Model
         time_format(TIMEDIFF(time_format(time(checking_fin_time), '%H:%i'),time_format(time(checking_st_time), '%H:%i')), '%H:%i') AS checking_duration,
         time_format(time(putaway_st_time), '%H:%i') as start_putaway,
         time_format(time(putaway_fin_time), '%H:%i') as stop_putaway,
-        time_format(TIMEDIFF(time_format(time(putaway_fin_time), '%H:%i'),time_format(time(putaway_st_time), '%H:%i')), '%H:%i') AS putaway_duration,
-        time_format(putaway_duration, '%H:%i') as putaway_duration
+        time_format(TIMEDIFF(time_format(time(putaway_fin_time), '%H:%i'),time_format(time(putaway_st_time), '%H:%i')), '%H:%i') AS putaway_duration
         from tb_trans 
         where ";
+
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $sql .= " id = '$id'";
+        }
+
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function getCompletedActivity()
+    {
+        $sql = "select *, 
+        unload_st_time as start_unload,
+        unload_fin_time as stop_unload,
+        checking_st_time as start_checking,
+        checking_fin_time as stop_checking,
+        putaway_st_time as start_putaway,
+        putaway_fin_time as stop_putaway
+        from tb_trans 
+        where is_deleted <> 'Y' ";
 
         if (isset($_POST['startDate']) != '' && isset($_POST['endDate']) != '') {
             $startDate = $_POST['startDate'];
             $endDate = $_POST['endDate'];
-            $sql .= " date(created_date) between date('$startDate') and date('$endDate')";
+            $sql .= " AND CONVERT(DATE, created_date) between CONVERT(DATE, '$startDate')and CONVERT(DATE, '$endDate')";
         } else {
-            $sql .= " date(created_date) = date(now())";
+            $sql .= " AND CONVERT(DATE, created_date) = CONVERT(DATE, GETDATE())";
         }
 
         if (isset($_POST['checker'])) {
@@ -93,6 +104,41 @@ class Inbound_m extends CI_Model
         return $query;
     }
 
+    public function updateActivityComplete($post)
+    {
+        $data = array(
+            'no_sj' => $post['no_sj'],
+            'no_truck' => $post['no_truck'],
+            'qty' => $post['qty'],
+            'checker' => $post['checker_name'],
+            'checker_id' => $post['checker_id'],
+            'ref_date' => $post['ref_date'],
+            'updated_by' => $this->session->userdata('user_data')['user_id'],
+            'updated_at' => $this->currentDateTime()
+        );
+
+        $where = array(
+            'id' => $post['id']
+        );
+
+        $this->db->update('tb_trans', $data, $where);
+    }
+
+    public function deleteActivityComplete($post)
+    {
+        $data = array(
+            'is_deleted' => 'Y',
+            'deleted_by' => $this->session->userdata('user_data')['user_id'],
+            'deleted_at' => $this->currentDateTime()
+        );
+
+        $where = array(
+            'id' => $post['id']
+        );
+
+        $this->db->update('tb_trans', $data, $where);
+    }
+
     public function getChecker()
     {
         $sql = "select * from master_employee";
@@ -109,7 +155,18 @@ class Inbound_m extends CI_Model
         $where = array(
             'id' => $post['id']
         );
+
         $this->db->update('tb_trans_temp', $data, $where);
+    }
+
+    public function hitungDurasi($tanggal_awal, $tanggal_akhir)
+    {
+        $durasi_detik = strtotime($tanggal_akhir) - strtotime($tanggal_awal);
+
+        // Konversi durasi detik menjadi jam:menit:detik
+        $durasi_format = gmdate("H:i:s", $durasi_detik);
+
+        return $durasi_format;
     }
 
     public function checkFinishActivity($id)
@@ -139,13 +196,13 @@ class Inbound_m extends CI_Model
                 'ref_date' => $data1['tanggal'],
                 'unload_st_time' => $data1['start_unloading'],
                 'unload_fin_time' => $data1['stop_unloading'],
-                'unload_duration' => $data1['duration_unloading'],
+                'unload_duration' => countDuration($data1['start_unloading'], $data1['stop_unloading']),
                 'checking_st_time' => $data1['start_checking'],
                 'checking_fin_time' => $data1['stop_checking'],
-                'checking_duration' => $data1['duration_checking'],
+                'checking_duration' => countDuration($data1['start_unloading'], $data1['stop_unloading']),
                 'putaway_st_time' => $data1['start_putaway'],
                 'putaway_fin_time' => $data1['stop_putaway'],
-                'putaway_duration' => $data1['duration_putaway'],
+                'putaway_duration' => countDuration($data1['start_putaway'], $data1['stop_putaway']),
                 'created_date' => $this->currentDateTime(),
                 'created_by' => $data1['created_by']
             );

@@ -6,7 +6,7 @@ class Inbound extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(['inbound_m']);
+        $this->load->model(['inbound_m', 'user_m']);
         is_not_logged_in();
     }
 
@@ -19,7 +19,7 @@ class Inbound extends CI_Controller
 
     public function index()
     {
-        $checker = $this->inbound_m->getChecker();
+        $checker = $this->user_m->getOperator();
         $data = array(
             'checker' => $checker
         );
@@ -37,7 +37,9 @@ class Inbound extends CI_Controller
 
     public function getRow()
     {
-        $this->inbound_m->createTempActivity($_POST);
+
+        $post = $this->input->post();
+        $this->inbound_m->createTempActivity($post);
         $id = $this->db->insert_id();
         $row = $this->inbound_m->getTempActivity($id);
         $data = array(
@@ -67,20 +69,122 @@ class Inbound extends CI_Controller
 
     public function getAllRowTemp()
     {
-        $row = $this->inbound_m->getTempActivity();
+        $rows = $this->inbound_m->getTempActivity();
+
+        foreach ($rows->result() as $data) {
+            $data->duration_unloading = countDuration($data->start_unloading, $data->stop_unloading);
+            $data->duration_checking = countDuration($data->start_checking, $data->stop_checking);
+            $data->duration_putaway = countDuration($data->start_putaway, $data->stop_putaway);
+        }
+
         $data = array(
-            'activity' => $row
+            'activity' => $rows
         );
+
         $this->load->view('inbound/row', $data);
+    }
+
+
+
+    public function getDataCompleteById()
+    {
+        $data = array(
+            'success' => true,
+            'data' => $this->inbound_m->getActCompleteById()->row()
+        );
+        echo json_encode($data);
     }
 
     public function getRowCompleteAct()
     {
+        $rows = $this->inbound_m->getCompletedActivity($_POST);
+
+        // print_r($rows->result());
+        // exit;
+
+        foreach ($rows->result() as $data) {
+            $data->duration_unloading = countDuration($data->start_unloading, $data->stop_unloading);
+            $data->duration_checking = countDuration($data->start_checking, $data->stop_checking);
+            $data->duration_putaway = countDuration($data->start_putaway, $data->stop_putaway);
+        }
+
         $data = array(
-            'completed' => $this->inbound_m->getCompletedActivity($_POST)
+            'completed' => $rows
         );
         $this->load->view('inbound/row_complete_ctivity', $data);
     }
+
+    public function getDataExcel()
+    {
+        $rows = $this->inbound_m->getCompletedActivity($_POST)->result();
+        $dataExcel = array();
+        $no = 1;
+        foreach ($rows as $val) {
+            $row = array();
+            $row['no'] = $no++;
+            $row['no_sj'] = $val->no_sj;
+            $row['no_truck'] = $val->no_truck;
+            $row['qty'] = $val->qty;
+            $row['checker'] = $val->checker;
+            $row['ref_date'] = $val->ref_date;
+            $row['start_unload'] = date('H:i', strtotime($val->start_unload));
+            $row['stop_unload'] = date('H:i', strtotime($val->stop_unload));
+            $row['unload_duration'] = date('H:i:s', strtotime($val->unload_duration));
+            $row['lead_time_unloading'] = roundMinutes(date('H:i:s', strtotime($val->unload_duration)));
+            $row['start_checking'] = date('H:i', strtotime($val->start_checking));
+            $row['stop_checking'] = date('H:i', strtotime($val->stop_checking));
+            $row['checking_duration'] = date('H:i:s', strtotime($val->checking_duration));
+            $row['lead_time_checking'] = roundMinutes(date('H:i:s', strtotime($val->checking_duration)));
+            $row['start_putaway'] = date('H:i', strtotime($val->start_putaway));
+            $row['stop_putaway'] = date('H:i', strtotime($val->stop_putaway));
+            $row['putaway_duration'] = date('H:i:s', strtotime($val->putaway_duration));
+            $row['lead_time_putaway'] = roundMinutes(date('H:i:s', strtotime($val->putaway_duration)));
+            $row['created_date'] = $val->created_date;
+            array_push($dataExcel, $row);
+        }
+
+        // var_dump($dataExcel);
+        // die;
+        $data = array(
+            'success' => true,
+            'data' => $dataExcel
+        );
+        echo json_encode($data);
+    }
+
+    public function editActivityComplete()
+    {
+        $post = $this->input->post();
+        $this->inbound_m->updateActivityComplete($post);
+        if ($this->db->affected_rows() > 0) {
+            $response = array(
+                'success' => true
+            );
+        } else {
+            $response = array(
+                'success' => false
+            );
+        }
+        echo json_encode($response);
+    }
+
+    public function deleteCompleteActivity()
+    {
+        $post = $this->input->post();
+        $this->inbound_m->deleteActivityComplete($post);
+        if ($this->db->affected_rows() > 0) {
+            $response = array(
+                'success' => true
+            );
+        } else {
+            $response = array(
+                'success' => false
+            );
+        }
+        echo json_encode($response);
+    }
+
+
 
     public function editActivity()
     {
@@ -119,6 +223,8 @@ class Inbound extends CI_Controller
     public function editUserActivity()
     {
         $post = $_POST;
+        // var_dump($post);
+        // die;
         $response = array();
         $this->inbound_m->editUserActivity($post);
         if ($this->db->affected_rows() > 0) {
@@ -128,6 +234,4 @@ class Inbound extends CI_Controller
         }
         echo json_encode($response);
     }
-
-
 }

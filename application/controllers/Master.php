@@ -6,6 +6,7 @@ class Master extends CI_Controller
     function __construct()
     {
         parent::__construct();
+        is_not_logged_in();
         $this->load->model(['master_m', 'customer_m', 'item_m', 'top_m', 'user_m', 'employee']);
     }
 
@@ -16,65 +17,9 @@ class Master extends CI_Controller
         $this->load->view('template/footer');
     }
 
-    public function top()
-    {
-        $data = array();
-        $this->render('master/top', $data);
-    }
+    
 
 
-    public function createChecker()
-    {
-        $post = $this->input->post();
-        date_default_timezone_set('Asia/Jakarta');
-        $created_at = date('Y-m-d H:i:s');
-        $params = array(
-            'name' => $post['checker'],
-            'position' => 'checker',
-            'created_by' => $_SESSION['user_data']['username'],
-            'created_at' => $created_at
-        );
-
-        $this->employee->createEmploye($params);
-        if ($this->db->affected_rows() > 0) {
-            $response = array(
-                'success' => true,
-                'message' => 'New checker has been created successfully'
-            );
-        } else {
-            $response = array(
-                'success' => false,
-                'message' => 'Failed to create new checker'
-            );
-        }
-        echo json_encode($response);
-    }
-
-    public function deleteChecker()
-    {
-        $post = $this->input->post();
-        $id = $post['id'];
-        date_default_timezone_set('Asia/Jakarta');
-        $datetime = date('Y-m-d H:i:s');
-        $params = array(
-            'delete_by' => $_SESSION['user_data']['username'],
-            'delete_at' =>  $datetime,
-            'is_delete' => 'Y'
-        );
-        $this->employee->deleteChecker($id, $params);
-        if ($this->db->affected_rows() > 0) {
-            $response = array(
-                'success' => true,
-                'message' => 'Success deleting data'
-            );
-        } else {
-            $response = array(
-                'success' => false,
-                'message' => 'Failed deleting data'
-            );
-        }
-        echo json_encode($response);
-    }
 
 
     public function listChecker()
@@ -217,10 +162,7 @@ class Master extends CI_Controller
         echo json_encode($response);
     }
 
-    public function user()
-    {
-        $this->render('master/user');
-    }
+
 
     public function getMasterUsers()
     {
@@ -243,7 +185,6 @@ class Master extends CI_Controller
             "recordsFiltered" => $this->item_m->count_filtered(),
             "data" => $data,
         );
-        //output dalam format JSON
         echo json_encode($output);
     }
 

@@ -105,19 +105,21 @@
                 <input type="date" class="form-control" style="width: 200px; margin-right: 10px;" id="sStartDate" placeholder="Start Date">
                 <input type="date" class="form-control" style="width: 200px; margin-right: 10px;" id="sEndDate" placeholder="End Date">
                 <button class="btn btn-outline-primary btn-icon waves-effect waves-light" id="sButton"><i class="ri-filter-fill"></i></button>
+                <button style="margin-left: 10px;" class="btn btn-outline-success" id="btnExcel">Excel</button>
             </div>
 
             <div class="card-body">
                 <!-- <p class="text-muted">Use <code>table</code> class to show bootstrap-based default table.</p> -->
                 <div class="live-preview">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped align-middle table-nowrap mb-0" id="tableCompleteActivities">
+                        <table style="font-size: 12px;" class="table table-bordered table-striped align-middle table-nowrap mb-0" id="tableCompleteActivities">
                             <thead>
                                 <tr>
                                     <th scope="col">No.</th>
                                     <th scope="col">SJ No.</th>
                                     <th scope="col">No. Truck</th>
                                     <th scope="col">Checker</th>
+                                    <th scope="col">Qty</th>
                                     <th scope="col">Ref. Date</th>
                                     <th scope="col">Start Unload</th>
                                     <th scope="col">Finish Unload</th>
@@ -128,6 +130,7 @@
                                     <th scope="col">Start Putaway</th>
                                     <th scope="col">Finish Putaway</th>
                                     <th scope="col">Putaway Duration</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -158,13 +161,12 @@
                         <input type="text" id="inNoSJ" class="form-control" placeholder="Masukan No Surat Jalan" value="TEST001">
                     </div>
                     <div class="mb-3 position-relative row">
-
                         <div class="col-lg-6">
                             <label for="task-assign-input" class="form-label">Checker</label>
                             <select class="form-control" name="" id="inChecker">
-                                <option value="">--Pilih Checker--</option>
+                                <option value="">Choose Checker</option>
                                 <?php foreach ($checker->result() as $c) { ?>
-                                    <option value="<?= $c->id ?>"><?= $c->name ?></option>
+                                    <option value="<?= $c->id ?>"><?= $c->fullname ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -176,7 +178,7 @@
                     <div class="row g-4 mb-3">
                         <div class="col-lg-6">
                             <label for="task-status" class="form-label">Quantity</label>
-                            <input type="text" id="inQty" class="form-control" placeholder="Masukan Checker" value="500">
+                            <input type="number" id="inQty" class="form-control" placeholder="Masukan Quantity" value="">
                         </div>
                         <div class="col-lg-6">
                             <label for="priority-field" class="form-label">Date</label>
@@ -195,11 +197,12 @@
 </div>
 
 
-<script src="https://cdn.datatables.net/buttons/2.1.1/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.html5.min.js"></script>
+<!-- <script src="<?= base_url() ?>myassets/js/dataTables.buttons.min.js"></script>
+<script src="<?= base_url() ?>myassets/js/jszip.min.js"></script>
+<script src="<?= base_url() ?>myassets/js/pdfmake.min.js"></script>
+<script src="<?= base_url() ?>myassets/js/vfs_fonts.js"></script>
+<script src="<?= base_url() ?>myassets/js/buttons.html5.min.js"></script> -->
+<script src="<?= base_url() ?>myassets/js/exceljs.min.js"></script>
 
 
 <script>
@@ -207,7 +210,6 @@
     $(document).ready(function() {
         getRowComplete();
         getAllRowTemp();
-
         var today = new Date().toISOString().split('T')[0];
         document.getElementById('inDate').value = today;
         document.getElementById('sStartDate').value = today;
@@ -224,16 +226,123 @@
             }
             getRowComplete(dataToPost);
         })
+
+        $('#tableCompleteActivities').on('click', '.btnEditComplete', async function() {
+            dataToPost = {
+                id: $(this).data('id')
+            };
+            let dataAct = await $.post('getDataCompleteById', dataToPost, () => {}, 'json');
+            dataAct = dataAct.data;
+
+            $('#inNoSJ').val(dataAct.no_sj);
+            $('#inNoTruck').val(dataAct.no_truck);
+            $('#inChecker').val(dataAct.checker_id);
+            $("#inChecker").trigger('change')
+            $('#inQty').val(dataAct.qty);
+            $('#inDate').val(dataAct.ref_date);
+            $('#taskid-input').val(dataToPost.id)
+
+            $('#addNewTodo').attr('onclick', 'editUserActivityComplete(this)');
+            $('#createTaskLabel').text('Edit Activity Complete');
+            $('#addNewTodo').text('Edit');
+            $('#createTask').modal('show');
+        });
+
+        $('#tableCompleteActivities').on('click', '.btnDeleteComplete', function() {
+            let id = $(this).data('id');
+            // alert(id);
+            Swal.fire({
+                icon: 'question',
+                title: "Are you sure to delete this activity?",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('deleteCompleteActivity', {
+                        id: id
+                    }, function(response) {
+                        if (response.success == true) {
+                            Swal.fire("Deleted!", "", "success");
+                            getRowComplete();
+                        }
+                    }, 'json');
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
+                }
+            });
+        })
+
+        $('#btnExcel').on('click', downloadExcel);
+
+        function downloadExcel() {
+            startLoading();
+            setTimeout(async function() {
+                    stopLoading();
+                    let checker = $('#sChecker').val().trim();
+                    let startDate = $('#sStartDate').val().trim();
+                    let endDate = $('#sEndDate').val().trim();
+                    let dataToPost = {
+                        checker: checker,
+                        startDate: startDate,
+                        endDate: endDate
+                    }
+                    let dataAct = await $.post('getDataExcel', dataToPost, function() {}, 'json');
+
+                    // var jsonData1 = [{
+                    //         Name: "John",
+                    //         Age: 30,
+                    //         City: "New York"
+                    //     },
+                    //     {
+                    //         Name: "Alice",
+                    //         Age: 25,
+                    //         City: "Los Angeles"
+                    //     },
+                    //     {
+                    //         Name: "Bob",
+                    //         Age: 35,
+                    //         City: "Chicago"
+                    //     }
+                    // ];
+
+                    var headers = Object.keys(dataAct.data[0]);
+                    var workbook = new ExcelJS.Workbook();
+                    var sheet1 = workbook.addWorksheet('Sheet 1');
+                    sheet1.addRow(headers);
+                    dataAct.data.forEach(function(row, ) {
+                        var rowData = headers.map(function(header) {
+                            return row[header];
+                        });
+                        sheet1.addRow(rowData);
+                    });
+
+                    workbook.xlsx.writeBuffer().then(function(buffer) {
+                        var blob = new Blob([buffer], {
+                            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        });
+                        var url = window.URL.createObjectURL(blob);
+                        var a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'YMI Daily Performance.xlsx';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    });
+                },
+                3000);
+        }
     })
 </script>
 <script>
     function showModalCreate() {
         $('#inNoSJ').val('');
+        $('#inChecker').val('');
+        $('#inNoTruck').val('');
+        $('#inQty').val('');
         $('#addNewTodo').attr('onclick', 'addRow()');
         $('#addNewTodo').text('Create');
         $('#createTaskLabel').text('Create Activity');
         $('#createTask').modal('show');
-        // $('#inNoSJ').focus();
     }
 
     function getAllRowTemp() {
@@ -246,6 +355,27 @@
                 $("#createTask").modal('hide');
             }
         });
+    }
+
+    function editUserActivityComplete(el) {
+        let dataToPost = {
+            id: $('#taskid-input').val(),
+            no_sj: $('#inNoSJ').val(),
+            checker_id: $('#inChecker').val(),
+            checker_name: $('#inChecker option:selected').text(),
+            no_truck: $('#inNoTruck').val(),
+            ref_date: $('#inDate').val(),
+            qty: $('#inQty').val()
+        };
+
+        // console.log(dataToPost);
+
+        $.post('editActivityComplete', dataToPost, function(response) {
+            if (response.success == true) {
+                getRowComplete();
+                $('#createTask').modal('hide');
+            }
+        }, 'json');
     }
 
     function addRow() {
@@ -289,7 +419,6 @@
             url: "<?= base_url('inbound/getRow') ?>",
             data: rowActivity,
             success: function(data) {
-                // $("#tableActivity tbody").prepend(data);
                 getAllRowTemp();
                 $("#createTask").modal('hide');
             }
@@ -297,28 +426,27 @@
     }
 
     function getRowComplete(dataToPost = null) {
+        var today = new Date().toISOString().split('T')[0];
+        let date;
+        if (dataToPost != null) {
+            date = $('#sStartDate').val() + ' until ' + $('#sEndDate').val();
+        } else {
+            date = today + ' until ' + today;
+        }
+
+        let excelName = 'YMI Daily Activity ' + date;
         $.ajax({
             url: "<?= base_url('inbound/getRowCompleteAct') ?>",
             type: "POST",
             data: dataToPost,
             success: function(data) {
 
-                // console.log(data);
-
                 if (tableComlpeteActivity != null) {
                     tableComlpeteActivity.destroy();
                 }
                 $("#tableCompleteActivities tbody").html(data);
 
-                tableComlpeteActivity = $('#tableCompleteActivities').DataTable({
-                    dom: 'Bfrtip',
-                    buttons: [{
-                        extend: 'excelHtml5',
-                        text: 'Export Excel',
-                        className: 'custom-buttonx',
-                        title: 'YMI Daily Activity'
-                    }]
-                });
+                tableComlpeteActivity = $('#tableCompleteActivities').DataTable();
             }
         });
     }
@@ -369,30 +497,11 @@
             data: postData,
             dataType: "JSON",
             success: function(response) {
-                // var logElement = document.getElementById(postData.idElement);
-                // logElement.innerText = formatTime(postData.timeToShow)
-
-                // if (postData.activity == 'stop_unloading') {
-                //     var durationElement = document.getElementById(postData.idDuration);
-                //     durationElement.innerText = response.data.duration_unloading;
-                // }
-
-                // if (postData.activity == 'stop_checking') {
-                //     var durationElement = document.getElementById(postData.idDuration);
-                //     durationElement.innerText = response.data.duration_checking;
-                // }
-
-                // if (postData.activity == 'stop_putaway') {
-                //     var durationElement = document.getElementById(postData.idDuration);
-                //     durationElement.innerText = response.data.duration_putaway;
-                // }
-
-                // if (response.isFinish == true) {
-                //     // alert(postData.idElement)
-                //     $('#' + postData.idElement).closest('tr').remove();
-                //     getRowComplete();
-                // }
                 getAllRowTemp();
+                if (response.isFinish == true) {
+                    $('#' + postData.idElement).closest('tr').remove();
+                    getRowComplete();
+                }
             }
         });
     }
@@ -422,25 +531,20 @@
         var minutes = time.getMinutes();
         var seconds = time.getSeconds();
 
-        // Pad single digit minutes and seconds with a leading zero
         minutes = minutes < 10 ? '0' + minutes : minutes;
         seconds = seconds < 10 ? '0' + seconds : seconds;
 
-        return hours + ':' + minutes;
+        return hours + ':' + minutes + ':' + seconds;
     }
 
     function formatDateTime(time) {
-        // Mendapatkan komponen waktu
         let year = time.getFullYear();
         let month = String(time.getMonth() + 1).padStart(2, '0');
         let day = String(time.getDate()).padStart(2, '0');
         let hours = String(time.getHours()).padStart(2, '0');
         let minutes = String(time.getMinutes()).padStart(2, '0');
         let seconds = String(time.getSeconds()).padStart(2, '0');
-
-        // Membuat string format baru
         let formattedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
         return formattedTime;
     }
 
@@ -449,38 +553,38 @@
         let elSj = $(el).data('id-sj');
         let elNoTruck = $(el).data('id-nt');
         let checker_id = $(el).data('check-id');
-        let elChecker = $(el).data('id-ch');
+        // let elChecker = $(el).data('id-ch');
         let elQty = $(el).data('id-qty');
         let elDate = $(el).data('id-dt');
 
-        let elId = {
-            el_sj: elSj,
-            el_nt: elNoTruck,
-            el_checker: elChecker,
-            el_qty: elQty,
-            el_date: elDate
-        }
+        // let elId = {
+        //     el_sj: elSj,
+        //     el_nt: elNoTruck,
+        //     el_checker: elChecker,
+        //     el_qty: elQty,
+        //     el_date: elDate
+        // }
 
-        // console.log(elId);
+        // console.log(elId)
 
 
         let sj = $('#' + elSj).text();
         let noTruck = $('#' + elNoTruck).text();
-        let checker = $('#' + elChecker).text();
+        // let checker = $('#' + elChecker).text();
         let qty = $('#' + elQty).text();
         let date = $('#' + elDate).text();
 
-        // console.log(noTruck);
 
         $('#inNoSJ').val(sj);
         $('#inNoTruck').val(noTruck);
         $('#inChecker').val(checker_id);
+        $("#inChecker").trigger('change')
         $('#inQty').val(qty);
         $('#inDate').val(date);
         $('#taskid-input').val($(el).data('id'))
 
         $('#addNewTodo').attr('onclick', 'editUserActivity(this)');
-        $('#addNewTodo').data('el-id', JSON.stringify(elId));
+        // $('#addNewTodo').data('el-id', JSON.stringify(elId));
         $('#createTaskLabel').text('Edit Activity');
         $('#addNewTodo').text('Edit');
         $('#createTask').modal('show');
@@ -495,11 +599,8 @@
         let refDate = $('#inDate').val();
         let id = $('#taskid-input').val();
 
-        let elId = JSON.parse($(el).data('el-id'));
+        // let elId = JSON.parse($(el).data('el-id'));
 
-
-        // console.log(elId);
-        // return false;
 
         let rowActivity = {
             sj: sj,
@@ -511,6 +612,8 @@
             id: id
         }
 
+        // console.log(rowActivity);
+
         $.ajax({
             type: "POST",
             url: "<?= base_url('inbound/editUserActivity') ?>",
@@ -519,12 +622,6 @@
             success: function(response) {
                 if (response.success == true) {
                     getAllRowTemp();
-                    // $("#createTask").modal('hide');
-                    // $('#' + elId.el_sj).text(sj);
-                    // $('#' + elId.el_nt).text(noTruck);
-                    // $('#' + elId.el_checker).text(checker);
-                    // $('#' + elId.el_qty).text(qty);
-                    // $('#' + elId.el_date).text(refDate);
                 }
             }
         });
@@ -552,7 +649,7 @@
         }, 'json');
     }
 
-    setTimeout(stopLoading, 1500);
+    setTimeout(stopLoading, 1250);
     setInterval(keepAlive, 180000);
     setInterval(updateClock, 1000);
     updateClock();

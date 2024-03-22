@@ -28,7 +28,7 @@ foreach ($activity->result() as $data) {
                         <br>
                         <span>Stop : <strong id="logStopUnloading<?= $data->id ?>"><?= $data->stop_unloading == '' ? '' : date('H:i', strtotime($data->stop_unloading)) ?></strong></span>
                         <br>
-                        <span>Duration: <strong id="durationUnloading<?= $data->id ?>"><?= $data->duration_unloading_to_show == '' ? '' : date('H:i', strtotime($data->duration_unloading_to_show)) ?></strong></span>
+                        <span>Duration: <strong id="durationUnloading<?= $data->id ?>"><?= $data->duration_unloading == '' ? '' : date('H:i:s', strtotime($data->duration_unloading)) ?></strong></span>
                     </div>
                     <div class="hstack gap-2 justify-content-center">
                         <?php if ($data->start_unloading == null && $data->stop_unloading == null) { ?>
@@ -63,7 +63,7 @@ foreach ($activity->result() as $data) {
                         <br>
                         <span>Stop : <strong id="logStopChecking<?= $data->id ?>"><?= $data->stop_checking == '' ? '' : date('H:i', strtotime($data->stop_checking)) ?></strong></span>
                         <br>
-                        <span>Duration: <strong id="durationChecking<?= $data->id ?>"><?= $data->duration_checking_to_show == '' ? '' : date('H:i', strtotime($data->duration_checking_to_show)) ?></strong></span>
+                        <span>Duration: <strong id="durationChecking<?= $data->id ?>"><?= $data->duration_checking == '' ? '' : date('H:i:s', strtotime($data->duration_checking)) ?></strong></span>
                     </div>
                     <div class="hstack gap-2 justify-content-center">
 
@@ -99,7 +99,7 @@ foreach ($activity->result() as $data) {
                         <br>
                         <span>Stop : <strong id="logStopPutaway<?= $data->id ?>"><?= $data->stop_putaway == '' ? '' : date('H:i', strtotime($data->stop_putaway)) ?></strong></span>
                         <br>
-                        <span>Duration: <strong id="durationPutaway<?= $data->id ?>"><?= $data->duration_putaway_to_show == '' ? '' : date('H:i', strtotime($data->duration_putaway_to_show)) ?></strong></span>
+                        <span>Duration: <strong id="durationPutaway<?= $data->id ?>"><?= $data->duration_putaway == '' ? '' : date('H:i', strtotime($data->duration_putaway)) ?></strong></span>
                     </div>
                     <div class="hstack gap-2 justify-content-center">
 

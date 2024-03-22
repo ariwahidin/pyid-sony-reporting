@@ -9,7 +9,7 @@ class Employee extends CI_Model
 
     public function getChecker()
     {
-        $sql = "SELECT * FROM master_employee WHERE POSITION = 'checker' AND is_delete <> 'Y'";
+        $sql = "SELECT * FROM master_user WHERE role = 4 ";
         $query = $this->db->query($sql);
         return $query;
     }

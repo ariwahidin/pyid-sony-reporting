@@ -183,6 +183,7 @@
         var divLoading = document.querySelector(".pLoading");
         divLoading.style.display = "block";
     }
+    startLoading();
 </script>
 
 
@@ -230,8 +231,6 @@
                             </span>
                         </button>
 
-                        <!-- App Search-->
-
                     </div>
 
                     <div class="d-flex align-items-center">
@@ -252,7 +251,6 @@
                             </div>
                         </div>
 
-
                         <div class="ms-1 header-item d-none d-sm-flex">
                             <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" data-toggle="fullscreen">
                                 <i class='bx bx-fullscreen fs-22'></i>
@@ -271,16 +269,16 @@
                                     <img class="rounded-circle header-profile-user" src="<?= base_url('jar/html/default/') ?>assets/images/users/user-dummy-img.jpg" alt="Header Avatar">
                                     <span class="text-start ms-xl-2">
                                         <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?= $this->session->userdata('user_data')['username'] ?></span>
-                                        <!-- <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text"><?= $this->session->userdata('user_data')['username'] ?></span> -->
                                     </span>
                                 </span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <!-- item-->
                                 <h6 class="dropdown-header">Welcome <?= $this->session->userdata('user_data')['username'] ?></h6>
                                 <a id="logoutLink" class="dropdown-item" href="#"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
@@ -321,64 +319,20 @@
                     </div>
                     <ul class="navbar-nav" id="navbar-nav">
                         <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-                        <!-- <li class="nav-item">
-                            <a class="nav-link menu-link <?= $this->uri->segment(1) == 'dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard') ?>" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                                <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboards</span>
-                            </a>
-                        </li> -->
-                        <!-- <li class="nav-item">
-                            <a class="nav-link menu-link <?= $this->uri->segment(1) == 'master' ? 'active' : '' ?>" href="#sidebarMaster" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
-                                <i class="ri-apps-2-line"></i> <span data-key="t-apps">Master</span>
-                            </a>
-                            <div class="collapse menu-dropdown <?= $this->uri->segment(1) == 'master' ? 'collapse show' : '' ?> " id="sidebarMaster">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('master/user') ?>" class="nav-link <?= $this->uri->segment(2) == 'user' ? 'active' : '' ?>"> Users </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('master/subdist') ?>" class="nav-link <?= $this->uri->segment(2) == 'subdist' ? 'active' : '' ?>"> Sub Distributor </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('master/top') ?>" class="nav-link <?= $this->uri->segment(2) == 'top' ? 'active' : '' ?>"> TOP </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('master/customer') ?>" class="nav-link <?= $this->uri->segment(2) == 'customer' ? 'active' : '' ?>"> Customer </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="<?= base_url('master/item') ?>" class="nav-link <?= $this->uri->segment(2) == 'item' ? 'active' : '' ?>">Item SKU</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= base_url('transaction/salesorderdata') ?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                                <i class="ri-layout-3-line"></i> <span>Data Sales Order</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= base_url('transaction/salesorder') ?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                                <i class="ri-layout-3-line"></i> <span>Sales Order</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                                <i class="ri-layout-3-line"></i> <span>Delivery Order</span>
-                            </a>
-                        </li> -->
-                        <li class="nav-item">
-                            <a href="<?= base_url('inbound/index') ?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                                <i class="ri-layout-3-line"></i> <span>Daily Activity</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= base_url('master/listChecker') ?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                                <i class="ri-layout-3-line"></i> <span>List Checker</span>
-                            </a>
-                        </li>
-                        <!-- end Dashboard Menu -->
+
+                        <?php
+                        foreach (list_menu()->result() as $menu) {
+                        ?>
+                            <li class="nav-item">
+                                <a href="<?= base_url($menu->url) ?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                                    <i class="ri-layout-3-line"></i> <span><?= $menu->menu_name ?></span>
+                                </a>
+                            </li>
+                        <?php
+                        }
+                        ?>
                     </ul>
                 </div>
-                <!-- Sidebar -->
             </div>
 
             <div class="sidebar-background"></div>
