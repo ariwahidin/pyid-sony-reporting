@@ -73,6 +73,7 @@ class User_m extends CI_Model
             $this->db->where('a.password', $password);
         }
         $query = $this->db->get();
+        // print_r($this->db->last_query());
         return $query;
     }
 

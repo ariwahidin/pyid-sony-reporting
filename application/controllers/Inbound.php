@@ -26,6 +26,34 @@ class Inbound extends CI_Controller
         $this->render('inbound/create_inbound', $data);
     }
 
+    public function createTask()
+    {
+        $post = $this->input->post();
+        print_r($post);
+        if($post['']);
+        exit;
+        $this->inbound_m->createNewTask($params);
+    }
+
+    public function task()
+    {
+        $checker = $this->user_m->getOperator();
+        $data = array(
+            'checker' => $checker
+        );
+        $this->render('inbound/inbound_task/inbound_task', $data);
+    }
+
+    public function getAllRowTask()
+    {
+        $post = $this->input->post();
+        $task = $this->inbound_m->getTaskByUser($post);
+        $data = array(
+            'task' => $task
+        );
+        $this->load->view('inbound/inbound_task/row_task', $data);
+    }
+
     public function keepAlive()
     {
         $response = array(
@@ -231,6 +259,210 @@ class Inbound extends CI_Controller
             $response['success'] = true;
         } else {
             $response['success'] = false;
+        }
+        echo json_encode($response);
+    }
+
+    public function startUnloading()
+    {
+        $post = $this->input->post();
+        $id = $post['id'];
+        $cek = $this->inbound_m->getTransTemp($id)->row();
+        if (!is_null($cek->start_unloading)) {
+            $response = array(
+                'success' => false,
+                'message' => 'Unloading already started please reload this page!'
+            );
+        } else {
+            $params = array(
+                'start_unloading' => currentDateTime(),
+            );
+
+            $this->inbound_m->startUnload($id, $params);
+            if ($this->db->affected_rows() > 0) {
+                $response = array(
+                    'success' => true,
+                    'message' => 'Unloading started successfully'
+                );
+            } else {
+                $response = array(
+                    'success' => false,
+                    'message' => 'Failed to start unload!'
+                );
+            }
+        }
+        echo json_encode($response);
+    }
+
+    public function stopUnloading()
+    {
+        $post = $this->input->post();
+        $id = $post['id'];
+        $cek = $this->inbound_m->getTransTemp($id)->row();
+        if (!is_null($cek->stop_unloading)) {
+            $response = array(
+                'success' => false,
+                'message' => 'Unloading already stoped please reload this page!'
+            );
+        } else {
+            $params = array(
+                'stop_unloading' => currentDateTime(),
+            );
+
+            $this->inbound_m->stopUnload($id, $params);
+            if ($this->db->affected_rows() > 0) {
+
+                $checkFinish = $this->inbound_m->checkFinishActivity($id);
+                if ($checkFinish->num_rows() > 0) {
+                    $this->inbound_m->finishActivity($id);
+                }
+
+                $response = array(
+                    'success' => true,
+                    'message' => 'Stop unloading successfully'
+                );
+            } else {
+                $response = array(
+                    'success' => false,
+                    'message' => 'Failed to stop unload!'
+                );
+            }
+        }
+        echo json_encode($response);
+    }
+
+    public function startChecking()
+    {
+        $post = $this->input->post();
+        $id = $post['id'];
+        $cek = $this->inbound_m->getTransTemp($id)->row();
+        if (!is_null($cek->start_checking)) {
+            $response = array(
+                'success' => false,
+                'message' => 'Checking already started please reload this page!'
+            );
+        } else {
+            $params = array(
+                'start_checking' => currentDateTime(),
+            );
+
+            $this->inbound_m->startChecking($id, $params);
+            if ($this->db->affected_rows() > 0) {
+                $response = array(
+                    'success' => true,
+                    'message' => 'Checking started successfully'
+                );
+            } else {
+                $response = array(
+                    'success' => false,
+                    'message' => 'Failed to start unload!'
+                );
+            }
+        }
+        echo json_encode($response);
+    }
+
+    public function stopChecking()
+    {
+        $post = $this->input->post();
+        $id = $post['id'];
+        $cek = $this->inbound_m->getTransTemp($id)->row();
+        if (!is_null($cek->stop_checking)) {
+            $response = array(
+                'success' => false,
+                'message' => 'Checking already stoped please reload this page!'
+            );
+        } else {
+            $params = array(
+                'stop_checking' => currentDateTime(),
+            );
+
+            $this->inbound_m->stopChecking($id, $params);
+            if ($this->db->affected_rows() > 0) {
+
+                $checkFinish = $this->inbound_m->checkFinishActivity($id);
+                if ($checkFinish->num_rows() > 0) {
+                    $this->inbound_m->finishActivity($id);
+                }
+
+                $response = array(
+                    'success' => true,
+                    'message' => 'Stop checking successfully'
+                );
+            } else {
+                $response = array(
+                    'success' => false,
+                    'message' => 'Failed to stop checking!'
+                );
+            }
+        }
+        echo json_encode($response);
+    }
+    public function startPutaway()
+    {
+        $post = $this->input->post();
+        $id = $post['id'];
+        $cek = $this->inbound_m->getTransTemp($id)->row();
+
+        if (!is_null($cek->start_putaway)) {
+            $response = array(
+                'success' => false,
+                'message' => 'Putaway already started please reload this page!'
+            );
+        } else {
+            $params = array(
+                'start_putaway' => currentDateTime(),
+            );
+
+            $this->inbound_m->startPutaway($id, $params);
+            if ($this->db->affected_rows() > 0) {
+                $response = array(
+                    'success' => true,
+                    'message' => 'Putaway started successfully'
+                );
+            } else {
+                $response = array(
+                    'success' => false,
+                    'message' => 'Failed to start putaway!'
+                );
+            }
+        }
+        echo json_encode($response);
+    }
+
+    public function stopPutaway()
+    {
+        $post = $this->input->post();
+        $id = $post['id'];
+        $cek = $this->inbound_m->getTransTemp($id)->row();
+        if (!is_null($cek->stop_putaway)) {
+            $response = array(
+                'success' => false,
+                'message' => 'Putaway already stoped please reload this page!'
+            );
+        } else {
+            $params = array(
+                'stop_putaway' => currentDateTime(),
+            );
+
+            $this->inbound_m->stopPutaway($id, $params);
+            if ($this->db->affected_rows() > 0) {
+
+                $checkFinish = $this->inbound_m->checkFinishActivity($id);
+                if ($checkFinish->num_rows() > 0) {
+                    $this->inbound_m->finishActivity($id);
+                }
+
+                $response = array(
+                    'success' => true,
+                    'message' => 'Stop putaway successfully'
+                );
+            } else {
+                $response = array(
+                    'success' => false,
+                    'message' => 'Failed to stop putaway!'
+                );
+            }
         }
         echo json_encode($response);
     }

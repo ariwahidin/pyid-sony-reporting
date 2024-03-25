@@ -78,3 +78,16 @@ function roundMinutes($timeString)
     // Mengembalikan hasil pembulatan
     return $roundedMinutes . " Menit";
 }
+
+function currentDateTime()
+{
+    $timezone = new DateTimeZone('Asia/Jakarta');
+    $dateTime = new DateTime('now', $timezone);
+    $formattedDateTime = $dateTime->format('Y-m-d H:i:s');
+    return $formattedDateTime;
+}
+
+function userId()
+{
+    return $_SESSION['user_data']['user_id'];
+}

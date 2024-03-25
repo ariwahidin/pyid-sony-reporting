@@ -75,10 +75,14 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'PYIDIT-NB13',
+	// 'hostname' => 'PYIDIT-NB13',
+	// 'username' => 'ari',
+	// 'password' => '@Aw18051995',
+	// 'database' => 'DB_YMI',
+	'hostname' => 'AW\Ari',
 	'username' => 'ari',
 	'password' => '@Aw18051995',
-	'database' => 'DB_YMI',
+	'database' => 'DB_YMI_15',
 	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

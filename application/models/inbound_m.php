@@ -26,6 +26,11 @@ class Inbound_m extends CI_Model
         $this->db->insert('tb_trans_temp', $params);
     }
 
+    public function createNewTask($params)
+    {
+        return $this->db->insert('tb_trans_temp', $params);
+    }
+
     public function getTempActivity($id = null)
     {
         $sql = "SELECT * FROM tb_trans_temp";
@@ -234,5 +239,56 @@ class Inbound_m extends CI_Model
 
         $this->db->where('id', $post['id']);
         $this->db->update('tb_trans_temp', $data);
+    }
+
+    public function getTaskByUser($post = null)
+    {
+        if (isset($post['search'])) {
+            if ($post['search'] != '') {
+                $search = $post['search'];
+                $this->db->like('no_sj', $search, 'both');
+            }
+        }
+        return $this->db->get('tb_trans_temp');
+    }
+
+    public function getTransTemp($id)
+    {
+        return $this->db->get_where('tb_trans_temp', ['id' => $id]);
+    }
+
+    public function startUnload($id, $params)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('tb_trans_temp', $params);
+    }
+    public function stopUnload($id, $params)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('tb_trans_temp', $params);
+    }
+
+    public function startChecking($id, $params)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('tb_trans_temp', $params);
+    }
+
+    public function stopChecking($id, $params)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('tb_trans_temp', $params);
+    }
+
+    public function startPutaway($id, $params)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('tb_trans_temp', $params);
+    }
+
+    public function stopPutaway($id, $params)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('tb_trans_temp', $params);
     }
 }
