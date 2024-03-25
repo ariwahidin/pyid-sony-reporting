@@ -27,8 +27,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // exit;
 
 // exit;
-$config['base_url'] = 'http://localhost/ymi';
-// $config['base_url'] = 'https://'.$_SERVER['HTTP_HOST'].'/ymi';
+// $config['base_url'] = 'http://localhost:88/ymi';
+$config['base_url'] = 'https://'.$_SERVER['HTTP_HOST'].'/ymi';
 
 /*
 |--------------------------------------------------------------------------

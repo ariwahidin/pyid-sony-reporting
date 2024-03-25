@@ -241,6 +241,12 @@ class Inbound_m extends CI_Model
         $this->db->update('tb_trans_temp', $data);
     }
 
+    public function editTask($id, $params)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('tb_trans_temp', $params);
+    }
+
     public function getTaskByUser($post = null)
     {
         if (isset($post['search'])) {
@@ -249,7 +255,18 @@ class Inbound_m extends CI_Model
                 $this->db->like('no_sj', $search, 'both');
             }
         }
-        return $this->db->get('tb_trans_temp');
+
+        if (isset($post['id'])) {
+            if ($post['id'] != '') {
+                $id = $post['id'];
+                $this->db->where('a.id', $id);
+            }
+        }
+
+        $this->db->select('a.*, b.fullname as checker_name');
+        $this->db->from('tb_trans_temp a');
+        $this->db->join('master_user b', 'a.checker_id = b.id');
+        return $this->db->get();
     }
 
     public function getTransTemp($id)

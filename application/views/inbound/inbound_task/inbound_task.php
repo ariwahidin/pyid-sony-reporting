@@ -49,7 +49,7 @@
 
 
 <div class="modal fade" id="createTask" tabindex="-1" aria-labelledby="createTaskLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-success-subtle">
                 <h5 class="modal-title" id="createTaskLabel">Create Activity</h5>
@@ -60,28 +60,29 @@
                 <form autocomplete="off" action="#" id="creatask">
                     <input type="hidden" id="proses" name="proses" class="form-control">
                     <input type="hidden" id="id_task" name="id_task" class="form-control">
-                    <div class="mb-3">
-                        <label for="task-title-input" class="form-label">Nomor SJ</label>
-                        <input type="text" id="sj" name="sj" class="form-control" placeholder="Masukan No Surat Jalan" value="TEST001">
-                    </div>
+
 
                     <div class="row g-4 mb-3">
-                        <div class="col-lg-6">
+                        <div class="col col-lg-4">
+                            <label for="task-title-input" class="form-label">SJ No</label>
+                            <input type="text" id="sj" name="sj" class="form-control" placeholder="" value="" required>
+                        </div>
+                        <div class="col col-lg-4">
                             <label for="priority-field" class="form-label">SJ Date</label>
-                            <input type="date" id="sj_date" name="sj_date" class="form-control" placeholder="Due date" value="">
+                            <input type="date" id="sj_date" name="sj_date" class="form-control" placeholder="" value="">
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-3 col-lg-4">
                             <label for="priority-field" class="form-label">SJ Time</label>
-                            <input type="time" id="sj_time" name="sj_time" class="form-control" placeholder="Due date" value="">
+                            <input type="time" id="sj_time" name="sj_time" class="form-control" placeholder="" value="">
                         </div>
                     </div>
 
                     <div class="row g-4 mb-3">
-                        <div class="col-lg-4">
+                        <div class="col col-lg-4">
                             <label for="priority-field" class="form-label">Expedisi</label>
                             <input type="text" id="expedisi" name="expedisi" class="form-control" placeholder="" value="">
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col col-lg-4">
                             <label for="priority-field" class="form-label">Driver</label>
                             <input type="text" id="driver" name="driver" class="form-control" placeholder="" value="">
                         </div>
@@ -92,36 +93,46 @@
                     </div>
 
                     <div class="mb-3 position-relative row">
-                        <div class="col-lg-6">
+
+                        <div class="col col-lg-4">
+                            <label for="task-status" class="form-label">Qty</label>
+                            <input type="number" id="qty" name="qty" class="form-control" placeholder="" value="">
+                        </div>
+                        <div class="col col-lg-4">
+                            <label for="task-status" class="form-label">Alocation Code</label>
+                            <input type="text" id="alocation" name="alocation" class="form-control" value="">
+                        </div>
+                        <div class="col col-lg-4">
+                            <label for="priority-field" class="form-label">Factory Code</label>
+                            <input type="text" id="factory" name="factory" class="form-control" value="">
+                        </div>
+
+
+                    </div>
+
+                    <div class="row g-4 mb-3">
+                        <div class="col col-lg-3">
                             <label for="task-assign-input" class="form-label">Checker</label>
-                            <select class="form-control" name="checker" id="checker">
+                            <select class="form-control" name="checker" id="checker" required>
                                 <option value="">Choose Checker</option>
                                 <?php foreach ($checker->result() as $c) { ?>
                                     <option value="<?= $c->id ?>"><?= $c->fullname ?></option>
                                 <?php } ?>
                             </select>
                         </div>
-                        <div class="col-lg-6">
-                            <label for="task-status" class="form-label">Qty</label>
-                            <input type="number" id="qty" name="qty" class="form-control" placeholder="Masukan Qty" value="">
-                        </div>
-
-                    </div>
-
-                    <div class="row g-4 mb-3">
-                        <div class="col-lg-6">
-                            <label for="task-status" class="form-label">Alocation Code</label>
-                            <input type="text" id="alocation" name="alocation" class="form-control" value="">
+                        <div class="col col-lg-3">
+                            <label for="task-assign-input" class="form-label">Pintu Unloading</label>
+                            <input type="text" id="pintu_unloading" name="pintu_unloading" class="form-control" value="">
                         </div>
                         <div class="col-lg-6">
-                            <label for="priority-field" class="form-label">Factory Code</label>
-                            <input type="text" id="factory" name="factory" class="form-control" value="">
+                            <label for="priority-field" class="form-label">Remarks</label>
+                            <input type="text" id="remarks" name="remarks" class="form-control" value="">
                         </div>
                     </div>
 
                     <div class="hstack gap-2 justify-content-end">
                         <button type="button" class="btn btn-ghost-success" data-bs-dismiss="modal"><i class="ri-close-fill align-bottom"></i> Close</button>
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="submit" class="btn btn-primary" id="btnTask">Create</button>
                     </div>
                 </form>
             </div>
@@ -134,24 +145,97 @@
 
         getAllRowTask();
 
+        $("input[type='text']").on("input", function() {
+            $(this).val($(this).val().toUpperCase());
+        });
+
+        $("#creatask").on("keypress", "input", function(event) {
+            if (event.which === 13) {
+                event.preventDefault(); // Prevent default behavior of Enter key
+                var inputs = $(this).closest("form").find(":input");
+                var index = inputs.index(this);
+
+                // Find next empty input field
+                for (var i = index + 1; i < inputs.length; i++) {
+                    if ($(inputs[i]).is(":text") && $(inputs[i]).val() === '') {
+                        $(inputs[i]).focus();
+                        break;
+                    }
+                }
+            }
+        });
+
         $('#creatask').on('submit', function(e) {
             e.preventDefault();
             let form = new FormData(this);
-            $.ajax({
-                url: 'createTask',
-                type: 'POST',
-                data: form,
-                processData: false,
-                contentType: false,
-                dataType: 'JSON',
-                success: function(response) {
+            let proses = $('#proses').val();
+            if (proses === 'new_task') {
+                $.ajax({
+                    url: 'createTask',
+                    type: 'POST',
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'JSON',
+                    success: function(response) {
+                        if (response.success == true) {
+                            getAllRowTask();
+                            $('#createTask').modal('hide');
+                        }
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: 'editTask',
+                    type: 'POST',
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'JSON',
+                    success: function(response) {
+                        if (response.success == true) {
+                            getAllRowTask();
+                            $('#createTask').modal('hide');
+                        }
+                    }
+                });
+            }
 
-                }
-            });
         })
 
         $('#btnCreate').on('click', function() {
+            $('#createTaskLabel').text('Create new task');
+            $('#btnTask').text('Submit');
             $('#proses').val('new_task');
+            $('#createTask').modal('show');
+        })
+
+        $('#content').on('click', '.btnEdit', async function() {
+
+            let id = $(this).data('id');
+
+            let result = await $.post('getTaskById', {
+                id: id
+            }, function(response) {}, 'json');
+
+            let task = result.task;
+
+            $('#proses').val('edit_task');
+            $('#id_task').val(id);
+            $('#checker').val(task.checker_id);
+            $('#alocation').val(task.alloc_code);
+            $('#factory').val(task.factory_code);
+            $('#expedisi').val(task.ekspedisi);
+            $('#no_truck').val(task.no_truck);
+            $('#qty').val(task.qty);
+            $('#sj').val(task.no_sj);
+            $('#sj_date').val(task.sj_date);
+            $('#sj_time').val(task.sj_time);
+            $('#driver').val(task.driver);
+            $('#remarks').val(task.remarks);
+            $('#pintu_unloading').val(task.pintu_unloading);
+            $('#btnTask').text('Edit');
+            $('#createTaskLabel').text('Edit task');
             $('#createTask').modal('show');
         })
 

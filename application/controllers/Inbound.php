@@ -29,10 +29,79 @@ class Inbound extends CI_Controller
     public function createTask()
     {
         $post = $this->input->post();
-        print_r($post);
-        if($post['']);
-        exit;
-        $this->inbound_m->createNewTask($params);
+        if ($post['proses'] === 'new_task') {
+            $params = array(
+                'no_sj' => $post['sj'],
+                'no_truck' => $post['no_truck'],
+                'qty' => $post['qty'],
+                'checker_id' => $post['checker'],
+                'tanggal' => $post['sj_date'],
+                'sj_date' => $post['sj_date'],
+                'sj_time' => date('H:i:s', strtotime($post['sj_time'])),
+                'ekspedisi' => $post['expedisi'],
+                'driver' => $post['driver'],
+                'factory_code' => $post['factory'],
+                'alloc_code' => $post['alocation'],
+                'pintu_unloading' => $post['pintu_unloading'],
+                'remarks' => $post['remarks'],
+                'created_date' => currentDateTime(),
+                'created_by' => userId()
+            );
+            $this->inbound_m->createNewTask($params);
+
+            if ($this->db->affected_rows() > 0) {
+                $response = array(
+                    'success' => true,
+                    'message' => 'New task has been created successfully'
+                );
+            } else {
+                $response = array(
+                    'success' => false,
+                    'message' => 'Failed to create new task!'
+                );
+            }
+        }
+
+        echo json_encode($response);
+    }
+
+    public function editTask()
+    {
+        $post = $this->input->post();
+
+        if ($post['proses'] === 'edit_task') {
+            $id = $post['id_task'];
+            $params = array(
+                'no_sj' => $post['sj'],
+                'no_truck' => $post['no_truck'],
+                'qty' => $post['qty'],
+                'checker_id' => $post['checker'],
+                'tanggal' => $post['sj_date'],
+                'sj_date' => $post['sj_date'],
+                'sj_time' => date('H:i:s', strtotime($post['sj_time'])),
+                'ekspedisi' => $post['expedisi'],
+                'driver' => $post['driver'],
+                'factory_code' => $post['factory'],
+                'alloc_code' => $post['alocation'],
+                'pintu_unloading' => $post['pintu_unloading'],
+                'remarks' => $post['remarks'],
+            );
+            $this->inbound_m->editTask($id, $params);
+
+            if ($this->db->affected_rows() > 0) {
+                $response = array(
+                    'success' => true,
+                    'message' => 'Edit task successfully'
+                );
+            } else {
+                $response = array(
+                    'success' => false,
+                    'message' => 'Failed to edit task!'
+                );
+            }
+        }
+
+        echo json_encode($response);
     }
 
     public function task()
@@ -52,6 +121,17 @@ class Inbound extends CI_Controller
             'task' => $task
         );
         $this->load->view('inbound/inbound_task/row_task', $data);
+    }
+
+    public function getTaskById()
+    {
+        $post = $this->input->post();
+        $task = $this->inbound_m->getTaskByUser($post);
+        $response = array(
+            'success' => true,
+            'task' => $task->row()
+        );
+        echo json_encode($response);
     }
 
     public function keepAlive()
