@@ -240,7 +240,7 @@
 
             // Alihkan ke halaman dashboard jika login berhasil
             if (data.success === true) {
-                window.location.href = "<?= base_url('inbound/index') ?>"; // Ganti dengan URL halaman dashboard yang sesuai
+                window.location.href = "<?= base_url('inbound/task') ?>"; // Ganti dengan URL halaman dashboard yang sesuai
             }
         }
 

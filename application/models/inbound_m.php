@@ -33,12 +33,14 @@ class Inbound_m extends CI_Model
 
     public function getTempActivity($id = null)
     {
-        $sql = "SELECT * FROM tb_trans_temp";
+        $sql = "SELECT a.*, b.name as ekspedisi_name, c.name as factory_name FROM tb_trans_temp a 
+        LEFT JOIN master_ekspedisi b on a.ekspedisi = b.id
+        LEFT JOIN master_factory c on a.factory_code = c.id";
         if ($id != null) {
-            $sql .= " WHERE id='$id'";
+            $sql .= " WHERE a.id='$id'";
         }
 
-        $sql .= " ORDER BY id DESC";
+        $sql .= " ORDER BY a.id DESC";
         $query = $this->db->query($sql);
         return $query;
     }
@@ -75,15 +77,16 @@ class Inbound_m extends CI_Model
 
     public function getCompletedActivity()
     {
-        $sql = "select *, 
-        unload_st_time as start_unload,
-        unload_fin_time as stop_unload,
-        checking_st_time as start_checking,
-        checking_fin_time as stop_checking,
-        putaway_st_time as start_putaway,
-        putaway_fin_time as stop_putaway
-        from tb_trans 
-        where is_deleted <> 'Y' ";
+        $sql = "select a.*, b.fullname as checker_name,
+        a.unload_st_time as start_unload,
+        a.unload_fin_time as stop_unload,
+        a.checking_st_time as start_checking,
+        a.checking_fin_time as stop_checking,
+        a.putaway_st_time as start_putaway,
+        a.putaway_fin_time as stop_putaway
+        from tb_trans a 
+        inner join master_user b on a.checker_id = b.id
+        where a.is_deleted <> 'Y' ";
 
         if (isset($_POST['startDate']) != '' && isset($_POST['endDate']) != '') {
             $startDate = $_POST['startDate'];
@@ -199,12 +202,22 @@ class Inbound_m extends CI_Model
                 'checker' => $data1['checker'],
                 'checker_id' => $data1['checker_id'],
                 'ref_date' => $data1['tanggal'],
+                'sj_date' => $data1['sj_date'],
+                'sj_time' => $data1['sj_time'],
+                'ekspedisi' => $data1['ekspedisi'],
+                'driver' => $data1['driver'],
+                'factory_code' => $data1['factory_code'],
+                'alloc_code' => $data1['alloc_code'],
+                'pintu_unloading' => $data1['pintu_unloading'],
+                'remarks' => $data1['remarks'],
+                'sj_created_at' => $data1['created_date'],
+                'sj_created_by' => $data1['created_by'],
                 'unload_st_time' => $data1['start_unloading'],
                 'unload_fin_time' => $data1['stop_unloading'],
                 'unload_duration' => countDuration($data1['start_unloading'], $data1['stop_unloading']),
                 'checking_st_time' => $data1['start_checking'],
                 'checking_fin_time' => $data1['stop_checking'],
-                'checking_duration' => countDuration($data1['start_unloading'], $data1['stop_unloading']),
+                'checking_duration' => countDuration($data1['start_checking'], $data1['stop_checking']),
                 'putaway_st_time' => $data1['start_putaway'],
                 'putaway_fin_time' => $data1['stop_putaway'],
                 'putaway_duration' => countDuration($data1['start_putaway'], $data1['stop_putaway']),
@@ -263,8 +276,34 @@ class Inbound_m extends CI_Model
             }
         }
 
-        $this->db->select('a.*, b.fullname as checker_name');
+        $this->db->select('a.*, b.fullname as checker_name, c.name as ekspedisi_name, d.name as factory_name');
         $this->db->from('tb_trans_temp a');
+        $this->db->join('master_user b', 'a.checker_id = b.id');
+        $this->db->join('master_ekspedisi c', 'a.ekspedisi = c.id', 'left');
+        $this->db->join('master_factory d', 'a.factory_code = d.id', 'left');
+        // print_r($this->db->last_query());
+        return $this->db->get();
+    }
+
+
+    public function getTaskCompleteById($post = null)
+    {
+        if (isset($post['search'])) {
+            if ($post['search'] != '') {
+                $search = $post['search'];
+                $this->db->like('no_sj', $search, 'both');
+            }
+        }
+
+        if (isset($post['id'])) {
+            if ($post['id'] != '') {
+                $id = $post['id'];
+                $this->db->where('a.id', $id);
+            }
+        }
+
+        $this->db->select('a.*, b.fullname as checker_name');
+        $this->db->from('tb_trans a');
         $this->db->join('master_user b', 'a.checker_id = b.id');
         return $this->db->get();
     }

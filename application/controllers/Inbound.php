@@ -6,7 +6,7 @@ class Inbound extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(['inbound_m', 'user_m']);
+        $this->load->model(['inbound_m', 'user_m', 'ekspedisi_m', 'factory_m']);
         is_not_logged_in();
     }
 
@@ -20,10 +20,27 @@ class Inbound extends CI_Controller
     public function index()
     {
         $checker = $this->user_m->getOperator();
+        $factory = $this->factory_m->getFactory();
+        $ekspedisi = $this->ekspedisi_m->getEkspedisi();
         $data = array(
-            'checker' => $checker
+            'checker' => $checker,
+            'factory' => $factory,
+            'ekspedisi' => $ekspedisi,
         );
         $this->render('inbound/create_inbound', $data);
+    }
+
+    public function report()
+    {
+        $checker = $this->user_m->getOperator();
+        $factory = $this->factory_m->getFactory();
+        $ekspedisi = $this->ekspedisi_m->getEkspedisi();
+        $data = array(
+            'checker' => $checker,
+            'factory' => $factory,
+            'ekspedisi' => $ekspedisi,
+        );
+        $this->render('inbound/inbound_report', $data);
     }
 
     public function createTask()
@@ -107,8 +124,12 @@ class Inbound extends CI_Controller
     public function task()
     {
         $checker = $this->user_m->getOperator();
+        $factory = $this->factory_m->getFactory();
+        $ekspedisi = $this->ekspedisi_m->getEkspedisi();
         $data = array(
-            'checker' => $checker
+            'checker' => $checker,
+            'factory' => $factory,
+            'ekspedisi' => $ekspedisi,
         );
         $this->render('inbound/inbound_task/inbound_task', $data);
     }
@@ -127,6 +148,17 @@ class Inbound extends CI_Controller
     {
         $post = $this->input->post();
         $task = $this->inbound_m->getTaskByUser($post);
+        $response = array(
+            'success' => true,
+            'task' => $task->row()
+        );
+        echo json_encode($response);
+    }
+
+    public function getTaskCompleteById()
+    {
+        $post = $this->input->post();
+        $task = $this->inbound_m->getTaskCompleteById($post);
         $response = array(
             'success' => true,
             'task' => $task->row()
@@ -207,11 +239,8 @@ class Inbound extends CI_Controller
     {
         $rows = $this->inbound_m->getCompletedActivity($_POST);
 
-        // print_r($rows->result());
-        // exit;
-
         foreach ($rows->result() as $data) {
-            $data->duration_unloading = countDuration($data->start_unloading, $data->stop_unloading);
+            $data->duration_unloading = countDuration($data->start_unload, $data->stop_unload);
             $data->duration_checking = countDuration($data->start_checking, $data->stop_checking);
             $data->duration_putaway = countDuration($data->start_putaway, $data->stop_putaway);
         }

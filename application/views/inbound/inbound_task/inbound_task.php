@@ -80,7 +80,13 @@
                     <div class="row g-4 mb-3">
                         <div class="col col-lg-4">
                             <label for="priority-field" class="form-label">Expedisi</label>
-                            <input type="text" id="expedisi" name="expedisi" class="form-control" placeholder="" value="">
+                            <!-- <input type="text" id="expedisi" name="expedisi" class="form-control" placeholder="" value=""> -->
+                            <select class="form-control" name="expedisi" id="expedisi" required>
+                                <option value="">Choose Ekspedisi</option>
+                                <?php foreach ($ekspedisi->result() as $e) { ?>
+                                    <option value="<?= $e->id ?>"><?= $e->name ?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                         <div class="col col-lg-4">
                             <label for="priority-field" class="form-label">Driver</label>
@@ -104,7 +110,13 @@
                         </div>
                         <div class="col col-lg-4">
                             <label for="priority-field" class="form-label">Factory Code</label>
-                            <input type="text" id="factory" name="factory" class="form-control" value="">
+                            <!-- <input type="text" id="factory" name="factory" class="form-control" value=""> -->
+                            <select class="form-control" name="factory" id="factory" required>
+                                <option value="">Choose Factory</option>
+                                <?php foreach ($factory->result() as $f) { ?>
+                                    <option value="<?= $f->id ?>"><?= $f->name ?></option>
+                                <?php } ?>
+                            </select>
                         </div>
 
 
@@ -211,15 +223,13 @@
         })
 
         $('#content').on('click', '.btnEdit', async function() {
-
+            startLoading();
             let id = $(this).data('id');
-
             let result = await $.post('getTaskById', {
                 id: id
             }, function(response) {}, 'json');
 
             let task = result.task;
-
             $('#proses').val('edit_task');
             $('#id_task').val(id);
             $('#checker').val(task.checker_id);
@@ -237,7 +247,22 @@
             $('#btnTask').text('Edit');
             $('#createTaskLabel').text('Edit task');
             $('#createTask').modal('show');
+            stopLoading();
         })
+
+        $('#content').on('click', '.btnDelete', function() {
+            startLoading();
+            let id = $(this).data('id');
+            $.post('deleteTransTemp', {
+                id: id
+            }, function(response) {
+                stopLoading();
+                if (response.success == true) {
+                    getAllRowTask();
+                }
+            }, 'json');
+
+        });
 
         $('#content').on('click', '.btnUnloading', function() {
             let id = $(this).data('id');
