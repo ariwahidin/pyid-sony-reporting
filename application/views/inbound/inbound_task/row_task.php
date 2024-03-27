@@ -5,21 +5,24 @@
                 <div class="card-header bg-primary-subtle">
                     <div style="font-size: 11px;" class="row">
                         <div class="col-md-3 col-6 ps-3">
-                            <p class="m-0">Created : <span><?= date('Y-m-d H:i:s', strtotime($data->created_date)) ?></span></p>
-                            <p class="m-0">Pic : <span><?= $data->checker_name ?></span></p>
+                            <p class="m-0">Activity Date : <span><?= date('Y-m-d', strtotime($data->created_date)) ?></span></p>
+                            <p class="m-0">Sent Date : <span><?= date('Y-m-d', strtotime($data->sj_send_date)) ?></span></p>
                             <p class="m-0">SJ No : <span class=""><?= $data->no_sj ?></span></p>
                             <p class="m-0">SJ Date : <span><?= $data->sj_date == null ? '' : date('Y-m-d', strtotime($data->sj_date)) ?></span></p>
-                            <p class="m-0">SJ Time : <span><?= $data->sj_time == null ? '' : date('H:i:s', strtotime($data->sj_time)) ?></span></p>
+                            <p class="m-0">SJ Time : <span><?= $data->sj_time == null ? '' : date('H:i', strtotime($data->sj_time)) ?></span></p>
+                            <p class="m-0">Factory : <span><?= $data->factory_name ?></span></p>
+                            <p class="m-0">Checker : <span><?= $data->checker_name ?></span></p>
                             <p class="m-0">Qty : <span><?= $data->qty ?></span></p>
                         </div>
                         <div class="col-md-2 col-6">
+                            <p class="m-0">Time arival : <span><?=  $data->time_arival == null ? '' : date('H:i', strtotime($data->time_arival)) ?></span></p>
                             <p class="m-0">No Truck : <span><?= $data->no_truck ?></span></p>
                             <p class="m-0">Ekspedisi : <span><?= $data->ekspedisi_name ?></span></p>
                             <p class="m-0">Driver : <span><?= $data->driver ?></span></p>
                             <p class="m-0">Kode Alokasi : <span><?= $data->alloc_code ?></span></p>
-                            <p class="m-0">Factory : <span><?= $data->factory_name ?></span></p>
                             <p class="m-0">Pintu Unload : <span><?= $data->pintu_unloading ?></span></p>
                             <p class="m-0">Remarks : <span><?= $data->remarks ?></span></p>
+                            <p class="m-0">Created By : <span><?= $data->created_by_name ?></span></p>
                         </div>
                         <div class="col-md-6 pt-1">
                             <button class="btn btn-sm btn-primary btnEdit" data-id="<?= $data->id ?>">Edit</button>

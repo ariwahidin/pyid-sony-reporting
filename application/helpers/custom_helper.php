@@ -23,6 +23,23 @@ function list_menu()
     return $query;
 }
 
+function parentMenu()
+{
+    $CI = &get_instance();
+    $query = $CI->db->get('master_parent_menu');
+    return $query;
+}
+
+function child_menu($id)
+{
+    $where = array(
+        'parent_id' => $id
+    );
+    $CI = &get_instance();
+    $query = $CI->db->get_where('master_menu', $where);
+    return $query;
+}
+
 function countDuration($start, $stop)
 {
     // $date_a = '2024-01-01 17:10:10';

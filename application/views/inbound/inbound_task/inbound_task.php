@@ -49,7 +49,7 @@
 
 
 <div class="modal fade" id="createTask" tabindex="-1" aria-labelledby="createTaskLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-success-subtle">
                 <h5 class="modal-title" id="createTaskLabel">Create Activity</h5>
@@ -63,21 +63,39 @@
 
 
                     <div class="row g-4 mb-3">
-                        <div class="col col-lg-4">
+                        <div class="col col-lg-3">
+                            <label for="priority-field" class="form-label">Factory Code</label>
+                            <!-- <input type="text" id="factory" name="factory" class="form-control" value=""> -->
+                            <select class="form-control" name="factory" id="factory" required>
+                                <option value="">Choose Factory</option>
+                                <?php foreach ($factory->result() as $f) { ?>
+                                    <option value="<?= $f->id ?>"><?= $f->name ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="col col-lg-3">
                             <label for="task-title-input" class="form-label">SJ No</label>
                             <input type="text" id="sj" name="sj" class="form-control" placeholder="" value="" required>
                         </div>
-                        <div class="col col-lg-4">
+                        <div class="col col-lg-2">
+                            <label for="task-title-input" class="form-label">SJ Send Date</label>
+                            <input type="date" id="send_date" name="send_date" class="form-control" placeholder="" value="" required>
+                        </div>
+                        <div class="col col-lg-2">
                             <label for="priority-field" class="form-label">SJ Date</label>
                             <input type="date" id="sj_date" name="sj_date" class="form-control" placeholder="" value="">
                         </div>
-                        <div class="col-3 col-lg-4">
+                        <div class="col col-lg-2">
                             <label for="priority-field" class="form-label">SJ Time</label>
                             <input type="time" id="sj_time" name="sj_time" class="form-control" placeholder="" value="">
                         </div>
                     </div>
 
                     <div class="row g-4 mb-3">
+                        <div class="col-lg-4">
+                            <label for="task-status" class="form-label">No Truck</label>
+                            <input type="text" id="no_truck" name="no_truck" class="form-control" value="">
+                        </div>
                         <div class="col col-lg-4">
                             <label for="priority-field" class="form-label">Expedisi</label>
                             <!-- <input type="text" id="expedisi" name="expedisi" class="form-control" placeholder="" value=""> -->
@@ -92,34 +110,26 @@
                             <label for="priority-field" class="form-label">Driver</label>
                             <input type="text" id="driver" name="driver" class="form-control" placeholder="" value="">
                         </div>
-                        <div class="col-lg-4">
-                            <label for="task-status" class="form-label">No Truck</label>
-                            <input type="text" id="no_truck" name="no_truck" class="form-control" value="">
-                        </div>
                     </div>
 
                     <div class="mb-3 position-relative row">
 
-                        <div class="col col-lg-4">
-                            <label for="task-status" class="form-label">Qty</label>
-                            <input type="number" id="qty" name="qty" class="form-control" placeholder="" value="">
-                        </div>
-                        <div class="col col-lg-4">
+                        <div class="col col-lg-3">
                             <label for="task-status" class="form-label">Alocation Code</label>
                             <input type="text" id="alocation" name="alocation" class="form-control" value="">
                         </div>
-                        <div class="col col-lg-4">
-                            <label for="priority-field" class="form-label">Factory Code</label>
-                            <!-- <input type="text" id="factory" name="factory" class="form-control" value=""> -->
-                            <select class="form-control" name="factory" id="factory" required>
-                                <option value="">Choose Factory</option>
-                                <?php foreach ($factory->result() as $f) { ?>
-                                    <option value="<?= $f->id ?>"><?= $f->name ?></option>
-                                <?php } ?>
-                            </select>
+                        <div class="col col-lg-3">
+                            <label for="task-assign-input" class="form-label">Pintu Unloading</label>
+                            <input type="text" id="pintu_unloading" name="pintu_unloading" class="form-control" value="">
                         </div>
-
-
+                        <div class="col col-lg-3">
+                            <label for="task-status" class="form-label">Qty</label>
+                            <input type="number" id="qty" name="qty" class="form-control" placeholder="" value="">
+                        </div>
+                        <div class="col col-lg-3">
+                            <label for="task-status" class="form-label">Time of arival</label>
+                            <input type="time" id="toa" name="toa" class="form-control" placeholder="" value="">
+                        </div>
                     </div>
 
                     <div class="row g-4 mb-3">
@@ -132,10 +142,7 @@
                                 <?php } ?>
                             </select>
                         </div>
-                        <div class="col col-lg-3">
-                            <label for="task-assign-input" class="form-label">Pintu Unloading</label>
-                            <input type="text" id="pintu_unloading" name="pintu_unloading" class="form-control" value="">
-                        </div>
+
                         <div class="col-lg-6">
                             <label for="priority-field" class="form-label">Remarks</label>
                             <input type="text" id="remarks" name="remarks" class="form-control" value="">
@@ -216,6 +223,15 @@
         })
 
         $('#btnCreate').on('click', function() {
+            moment.tz.setDefault('Asia/Jakarta');
+            let today = moment().format('YYYY-MM-DD');
+            let currentTime = moment().format('HH:mm')
+            $('#send_date').val(today);
+            $('#sj_date').val(today);
+
+            $('#sj_time').val(currentTime);
+            $('#toa').val(currentTime);
+
             $('#createTaskLabel').text('Create new task');
             $('#btnTask').text('Submit');
             $('#proses').val('new_task');
@@ -243,6 +259,8 @@
             $('#sj_time').val(task.sj_time);
             $('#driver').val(task.driver);
             $('#remarks').val(task.remarks);
+            $('#send_date').val(task.sj_send_date);
+            $('#toa').val(task.time_arival);
             $('#pintu_unloading').val(task.pintu_unloading);
             $('#btnTask').text('Edit');
             $('#createTaskLabel').text('Edit task');

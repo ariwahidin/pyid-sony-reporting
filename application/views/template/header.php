@@ -28,6 +28,8 @@
     <!-- Sweet Alert css-->
     <link href="<?= base_url('jar/html/default/') ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
     <script src="<?= base_url() ?>myassets/js/jquery-3.7.0.js"></script>
+    <script src="<?= base_url() ?>myassets/js/moment.js"></script>
+    <script src="<?= base_url() ?>myassets/js/moment-time-zone.js"></script>
 
 </head>
 
@@ -305,13 +307,28 @@
                         <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
                         <?php
-                        foreach (list_menu()->result() as $menu) {
+                        foreach (parentMenu()->result() as $parent) {
                         ?>
+
                             <li class="nav-item">
-                                <a href="<?= base_url($menu->url) ?>" class="nav-link menu-link" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                                    <i class="ri-layout-3-line"></i> <span><?= $menu->menu_name ?></span>
+                                <a class="nav-link menu-link" href="#<?= $parent->name; ?>" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="<?= $parent->name ?>">
+                                    <i class="ri-pages-line"></i> <span data-key="t-pages"><?= $parent->name; ?></span>
                                 </a>
+                                <div class="collapse menu-dropdown show" id="<?= $parent->name ?>">
+                                    <ul class="nav nav-sm flex-column">
+                                        <?php
+                                        foreach (child_menu($parent->id)->result() as $child) {
+                                        ?>
+                                            <li class="nav-item">
+                                                <a href="<?= base_url($child->url) ?>" class="nav-link" data-key="t-starter"> <?= $child->menu_name ?> </a>
+                                            </li>
+                                        <?php
+                                        }
+                                        ?>
+                                    </ul>
+                                </div>
                             </li>
+
                         <?php
                         }
                         ?>

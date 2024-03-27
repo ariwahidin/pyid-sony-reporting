@@ -83,9 +83,12 @@ class Inbound_m extends CI_Model
         a.checking_st_time as start_checking,
         a.checking_fin_time as stop_checking,
         a.putaway_st_time as start_putaway,
-        a.putaway_fin_time as stop_putaway
+        a.putaway_fin_time as stop_putaway,
+        c.name as factory_name, d.name as ekspedisi_name
         from tb_trans a 
         inner join master_user b on a.checker_id = b.id
+        left join master_factory c on a.factory_code = c.id
+        left join master_ekspedisi d on a.ekspedisi = d.id
         where a.is_deleted <> 'Y' ";
 
         if (isset($_POST['startDate']) != '' && isset($_POST['endDate']) != '') {
@@ -136,8 +139,8 @@ class Inbound_m extends CI_Model
     {
         $data = array(
             'is_deleted' => 'Y',
-            'deleted_by' => $this->session->userdata('user_data')['user_id'],
-            'deleted_at' => $this->currentDateTime()
+            'deleted_by' => userId(),
+            'deleted_at' => currentDateTime()
         );
 
         $where = array(
@@ -199,12 +202,12 @@ class Inbound_m extends CI_Model
                 'no_sj' => $data1['no_sj'],
                 'no_truck' => $data1['no_truck'],
                 'qty' => $data1['qty'],
-                'checker' => $data1['checker'],
                 'checker_id' => $data1['checker_id'],
-                'ref_date' => $data1['tanggal'],
+                'sj_send_date' => $data1['sj_send_date'],
                 'sj_date' => $data1['sj_date'],
                 'sj_time' => $data1['sj_time'],
                 'ekspedisi' => $data1['ekspedisi'],
+                'time_arival' => $data1['time_arival'],
                 'driver' => $data1['driver'],
                 'factory_code' => $data1['factory_code'],
                 'alloc_code' => $data1['alloc_code'],
@@ -260,6 +263,12 @@ class Inbound_m extends CI_Model
         $this->db->update('tb_trans_temp', $params);
     }
 
+    public function editTaskCompleted($id, $params)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('tb_trans', $params);
+    }
+
     public function getTaskByUser($post = null)
     {
         if (isset($post['search'])) {
@@ -276,11 +285,12 @@ class Inbound_m extends CI_Model
             }
         }
 
-        $this->db->select('a.*, b.fullname as checker_name, c.name as ekspedisi_name, d.name as factory_name');
+        $this->db->select('a.*, b.fullname as checker_name, c.name as ekspedisi_name, d.name as factory_name, e.fullname as created_by_name');
         $this->db->from('tb_trans_temp a');
         $this->db->join('master_user b', 'a.checker_id = b.id');
         $this->db->join('master_ekspedisi c', 'a.ekspedisi = c.id', 'left');
         $this->db->join('master_factory d', 'a.factory_code = d.id', 'left');
+        $this->db->join('master_user e', 'a.created_by = e.id', 'left');
         // print_r($this->db->last_query());
         return $this->db->get();
     }

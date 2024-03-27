@@ -46,15 +46,20 @@ class Inbound extends CI_Controller
     public function createTask()
     {
         $post = $this->input->post();
+
+        // var_dump($post);
+        // exit;
+
         if ($post['proses'] === 'new_task') {
             $params = array(
                 'no_sj' => $post['sj'],
                 'no_truck' => $post['no_truck'],
                 'qty' => $post['qty'],
                 'checker_id' => $post['checker'],
-                'tanggal' => $post['sj_date'],
+                'sj_send_date' => $post['send_date'],
                 'sj_date' => $post['sj_date'],
                 'sj_time' => date('H:i:s', strtotime($post['sj_time'])),
+                'time_arival' => date('H:i:s', strtotime($post['toa'])),
                 'ekspedisi' => $post['expedisi'],
                 'driver' => $post['driver'],
                 'factory_code' => $post['factory'],
@@ -86,6 +91,9 @@ class Inbound extends CI_Controller
     {
         $post = $this->input->post();
 
+        // var_dump($post);
+        // die;
+
         if ($post['proses'] === 'edit_task') {
             $id = $post['id_task'];
             $params = array(
@@ -93,7 +101,6 @@ class Inbound extends CI_Controller
                 'no_truck' => $post['no_truck'],
                 'qty' => $post['qty'],
                 'checker_id' => $post['checker'],
-                'tanggal' => $post['sj_date'],
                 'sj_date' => $post['sj_date'],
                 'sj_time' => date('H:i:s', strtotime($post['sj_time'])),
                 'ekspedisi' => $post['expedisi'],
@@ -101,6 +108,8 @@ class Inbound extends CI_Controller
                 'factory_code' => $post['factory'],
                 'alloc_code' => $post['alocation'],
                 'pintu_unloading' => $post['pintu_unloading'],
+                'sj_send_date' => $post['send_date'],
+                'time_arival' => $post['toa'],
                 'remarks' => $post['remarks'],
             );
             $this->inbound_m->editTask($id, $params);
@@ -251,6 +260,23 @@ class Inbound extends CI_Controller
         $this->load->view('inbound/row_complete_ctivity', $data);
     }
 
+    public function tableReport()
+    {
+        $post = $this->input->post();
+        $rows = $this->inbound_m->getCompletedActivity($post);
+
+        foreach ($rows->result() as $data) {
+            $data->duration_unloading = countDuration($data->start_unload, $data->stop_unload);
+            $data->duration_checking = countDuration($data->start_checking, $data->stop_checking);
+            $data->duration_putaway = countDuration($data->start_putaway, $data->stop_putaway);
+        }
+
+        $data = array(
+            'completed' => $rows
+        );
+        $this->load->view('inbound/table_report', $data);
+    }
+
     public function getDataExcel()
     {
         $rows = $this->inbound_m->getCompletedActivity($_POST)->result();
@@ -258,25 +284,31 @@ class Inbound extends CI_Controller
         $no = 1;
         foreach ($rows as $val) {
             $row = array();
-            $row['no'] = $no++;
-            $row['no_sj'] = $val->no_sj;
-            $row['no_truck'] = $val->no_truck;
-            $row['qty'] = $val->qty;
-            $row['checker'] = $val->checker;
-            $row['ref_date'] = $val->ref_date;
-            $row['start_unload'] = date('H:i', strtotime($val->start_unload));
-            $row['stop_unload'] = date('H:i', strtotime($val->stop_unload));
-            $row['unload_duration'] = date('H:i:s', strtotime($val->unload_duration));
-            $row['lead_time_unloading'] = roundMinutes(date('H:i:s', strtotime($val->unload_duration)));
-            $row['start_checking'] = date('H:i', strtotime($val->start_checking));
-            $row['stop_checking'] = date('H:i', strtotime($val->stop_checking));
-            $row['checking_duration'] = date('H:i:s', strtotime($val->checking_duration));
-            $row['lead_time_checking'] = roundMinutes(date('H:i:s', strtotime($val->checking_duration)));
-            $row['start_putaway'] = date('H:i', strtotime($val->start_putaway));
-            $row['stop_putaway'] = date('H:i', strtotime($val->stop_putaway));
-            $row['putaway_duration'] = date('H:i:s', strtotime($val->putaway_duration));
-            $row['lead_time_putaway'] = roundMinutes(date('H:i:s', strtotime($val->putaway_duration)));
-            $row['created_date'] = $val->created_date;
+            $row['NO'] = $no++;
+            $row['TANGGAL AKTIVITAS'] = date('Y-m-d', strtotime($val->sj_created_at));
+            $row['TANGGAL KIRIM'] = date('Y-m-d', strtotime($val->sj_send_date));
+            $row['TANGGAL UNLOAD'] = date('Y-m-d', strtotime($val->sj_send_date));
+            $row['FACTORY'] = $val->factory_name;
+            $row['SURAT JALAN'] = $val->no_sj;
+            $row['NO TRUCK'] = $val->no_truck;
+            $row['EXPEDISI'] = $val->ekspedisi_name;
+            $row['NAMA SUPIR'] = $val->driver;
+            $row['ALOCATION'] = $val->alloc_code;
+            $row['PINTU UNLOADING'] = $val->pintu_unloading;
+            $row['QTY'] = $val->qty;
+            $row['CHECKER'] = $val->checker_name;
+            $row['START UNLOAD'] = date('H:i', strtotime($val->start_unload));
+            $row['STOP UNLOAD'] = date('H:i', strtotime($val->stop_unload));
+            $row['UNLOAD DURATION'] = date('H:i:s', strtotime($val->unload_duration));
+            $row['LEAD TIME UNLOAD'] = roundMinutes(date('H:i:s', strtotime($val->unload_duration)));
+            $row['START CHECKING'] = date('H:i', strtotime($val->start_checking));
+            $row['STOP CHECKING'] = date('H:i', strtotime($val->stop_checking));
+            $row['CHECKING DURATION'] = date('H:i:s', strtotime($val->checking_duration));
+            $row['LEAD TIME CHECKING'] = roundMinutes(date('H:i:s', strtotime($val->checking_duration)));
+            $row['START PUTAWAY'] = date('H:i', strtotime($val->start_putaway));
+            $row['STOP PUTAWAY'] = date('H:i', strtotime($val->stop_putaway));
+            $row['PUTAWAY DURATION'] = date('H:i:s', strtotime($val->putaway_duration));
+            $row['LEAD TIME PUTAWAY'] = roundMinutes(date('H:i:s', strtotime($val->putaway_duration)));
             array_push($dataExcel, $row);
         }
 
@@ -318,6 +350,46 @@ class Inbound extends CI_Controller
                 'success' => false
             );
         }
+        echo json_encode($response);
+    }
+
+    public function editTaskCompleted()
+    {
+        $post = $this->input->post();
+        $id = $post['id_task'];
+        $params = array(
+            'no_sj' => $post['sj'],
+            'no_truck' => $post['no_truck'],
+            'qty' => $post['qty'],
+            'checker_id' => $post['checker'],
+            'sj_date' => $post['sj_date'],
+            'sj_time' => date('H:i:s', strtotime($post['sj_time'])),
+            'ekspedisi' => $post['expedisi'],
+            'driver' => $post['driver'],
+            'factory_code' => $post['factory'],
+            'alloc_code' => $post['alocation'],
+            'pintu_unloading' => $post['pintu_unloading'],
+            'sj_send_date' => $post['send_date'],
+            'time_arival' => $post['toa'],
+            'remarks' => $post['remarks'],
+            'updated_by' => userId(),
+            'updated_at' => currentDateTime()
+        );
+        
+        $this->inbound_m->editTaskCompleted($id, $params);
+
+        if ($this->db->affected_rows() > 0) {
+            $response = array(
+                'success' => true,
+                'message' => 'Edit successfully'
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to edit!'
+            );
+        }
+
         echo json_encode($response);
     }
 
