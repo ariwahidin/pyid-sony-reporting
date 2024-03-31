@@ -6,6 +6,7 @@ class Dashboard extends CI_Controller
     function __construct()
     {
         parent::__construct();
+        $this->load->model(['inbound_m', 'user_m', 'ekspedisi_m', 'factory_m']);
         is_not_logged_in();
     }
 
@@ -21,5 +22,13 @@ class Dashboard extends CI_Controller
         $data = array();
         $this->render('dashboard/index', $data);
     }
+
+    public function getAllProccessInbound()
+    {
+        $inbound = $this->inbound_m->getAllInboundProccess();
+        $data = array(
+            'inbound' => $inbound
+        );
+        $this->load->view('dashboard/table_inbound', $data);
+    }
 }
- 

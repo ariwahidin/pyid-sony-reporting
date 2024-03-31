@@ -8,8 +8,16 @@
 
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Inbound Task </a>
+                        <span id="spConnect"></span>
+                    </li>
                 </ol>
             </div>
+
+            <!-- <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                </ol>
+            </div> -->
 
         </div>
     </div>
@@ -162,7 +170,35 @@
 <script>
     $(document).ready(function() {
 
+        var socket;
         getAllRowTask();
+        initWebSocket();
+
+        function initWebSocket() {
+            socket = new WebSocket('ws://localhost:8001/inbound');
+
+            socket.onopen = function() {
+                $('#spConnect').html(`<i class="ri-swap-box-fill"></i>`);
+                console.log('WebSocket connection opened');
+                socket.send('ping');
+            };
+
+            socket.onmessage = function(event) {
+                console.log('Received message: ' + event.data);
+            };
+
+            socket.onclose = function(event) {
+                $('#spConnect').html(`<i class="ri-alert-fill"></i>`);
+                console.log('WebSocket connection closed');
+                // Try to re-initiate connection after a delay
+                setTimeout(initWebSocket, 5000); // Retry after 5 seconds
+            };
+
+            socket.onerror = function(error) {
+                console.error('WebSocket error: ' + error);
+                // Handle WebSocket error, if necessary
+            };
+        }
 
         $("input[type='text']").on("input", function() {
             $(this).val($(this).val().toUpperCase());
@@ -460,6 +496,7 @@
                 let content = $('#content');
                 content.empty();
                 content.html(response)
+                initWebSocket()
             });
         }
 
