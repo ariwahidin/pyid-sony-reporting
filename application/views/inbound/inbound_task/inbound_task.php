@@ -46,9 +46,11 @@
                     </div>
                 </form>
             </div>
-            <div class="mt-3 ms-3 mt-lg-0">
-                <button class="btn btn-primary" id="btnCreate">Create new task</button>
-            </div>
+            <?php if ($_SESSION['user_data']['role'] != 4) { ?>
+                <div class="mt-3 ms-3 mt-lg-0">
+                    <button class="btn btn-primary" id="btnCreate">Create new task</button>
+                </div>
+            <?php } ?>
         </div>
     </div>
 </div>

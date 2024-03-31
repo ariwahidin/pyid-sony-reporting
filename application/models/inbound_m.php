@@ -291,6 +291,10 @@ class Inbound_m extends CI_Model
         $this->db->join('master_ekspedisi c', 'a.ekspedisi = c.id', 'left');
         $this->db->join('master_factory d', 'a.factory_code = d.id', 'left');
         $this->db->join('master_user e', 'a.created_by = e.id', 'left');
+
+        if ($_SESSION['user_data']['role'] == 4) {
+            $this->db->where('checker_id', userId());
+        }
         // print_r($this->db->last_query());
         return $this->db->get();
     }
@@ -362,7 +366,7 @@ class Inbound_m extends CI_Model
     {
         $sql = "select a.no_sj, b.fullname as checker_name,
         start_unloading as start_unload, stop_unloading as stop_unload,
-        start_checking, stop_checking, start_putaway, stop_putaway, created_at
+        start_checking, stop_checking, start_putaway, stop_putaway, created_date as created_at
         from tb_trans_temp a 
         inner join  master_user b on a.checker_id = b.id
         union all
@@ -371,7 +375,7 @@ class Inbound_m extends CI_Model
         a.putaway_st_time as start_putaway, a.putaway_fin_time as stop_putaway, a.sj_created_at as created_at
         FROM tb_trans a
         INNER JOIN master_user b ON a.checker_id = b.id
-        order by created_at asc";
+        order by created_at desc";
         $query = $this->db->query($sql);
         return $query;
     }

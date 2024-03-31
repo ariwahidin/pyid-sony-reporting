@@ -15,7 +15,7 @@
                             <p class="m-0">Qty : <span><?= $data->qty ?></span></p>
                         </div>
                         <div class="col-md-2 col-6">
-                            <p class="m-0">Time arival : <span><?=  $data->time_arival == null ? '' : date('H:i', strtotime($data->time_arival)) ?></span></p>
+                            <p class="m-0">Time arival : <span><?= $data->time_arival == null ? '' : date('H:i', strtotime($data->time_arival)) ?></span></p>
                             <p class="m-0">No Truck : <span><?= $data->no_truck ?></span></p>
                             <p class="m-0">Ekspedisi : <span><?= $data->ekspedisi_name ?></span></p>
                             <p class="m-0">Driver : <span><?= $data->driver ?></span></p>
@@ -24,10 +24,12 @@
                             <p class="m-0">Remarks : <span><?= $data->remarks ?></span></p>
                             <p class="m-0">Created By : <span><?= $data->created_by_name ?></span></p>
                         </div>
-                        <div class="col-md-6 pt-1">
-                            <button class="btn btn-sm btn-primary btnEdit" data-id="<?= $data->id ?>">Edit</button>
-                            <button class="btn btn-sm btn-danger btnDelete" data-id="<?= $data->id ?>">Delete</button>
-                        </div>
+                        <?php if ($_SESSION['user_data']['role'] != 4) { ?>
+                            <div class="col-md-6 pt-1">
+                                <button class="btn btn-sm btn-primary btnEdit" data-id="<?= $data->id ?>">Edit</button>
+                                <button class="btn btn-sm btn-danger btnDelete" data-id="<?= $data->id ?>">Delete</button>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="card-body">

@@ -15,9 +15,9 @@
             $duration_unload = countDuration($data->start_unload, $data->stop_unload);
             $duration_checking = countDuration($data->start_checking, $data->stop_checking);
             $duration_putaway = countDuration($data->start_putaway, $data->stop_putaway);
-            $minute_unload = ($duration_unload != '') ? roundMinutes($duration_unload) : '';
-            $minute_checking = ($duration_checking != '') ? roundMinutes($duration_checking) : '';
-            $minute_putaway = ($duration_putaway != '') ? roundMinutes($duration_putaway) : '';
+            $minute_unload = ($duration_unload != '') ? roundMinutes($duration_unload) : (($data->start_unload != null && $data->stop_unload == null) ? 'proccesing' : '');
+            $minute_checking = ($duration_checking != '') ? roundMinutes($duration_checking) : (($data->start_checking != null && $data->stop_checking == null) ? 'proccesing' : '');
+            $minute_putaway = ($duration_putaway != '') ? roundMinutes($duration_putaway) : (($data->start_putaway != null && $data->stop_putaway == null) ? 'proccesing' : '');
             $status = ($minute_unload != '' && $minute_checking != '' && $minute_putaway) ? 'DONE' : 'ON PROCCESS';
         ?>
 
