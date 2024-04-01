@@ -111,8 +111,11 @@
 
         var socket;
         initWebSocket();
+
         function initWebSocket() {
-            socket = new WebSocket('ws://localhost:8001');
+            let hostname = window.location.hostname;
+            console.log(hostname);
+            socket = new WebSocket('ws://' + hostname + ':8001');
 
             socket.onopen = function() {
                 $('#spConnect').html(`<i class="ri-swap-box-fill"></i>`);

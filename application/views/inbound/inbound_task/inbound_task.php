@@ -177,7 +177,9 @@
         initWebSocket();
 
         function initWebSocket() {
-            socket = new WebSocket('ws://localhost:8001/inbound');
+            let hostname = window.location.hostname;
+            // console.log(hostname);
+            socket = new WebSocket('ws://' + hostname + ':8001');
 
             socket.onopen = function() {
                 $('#spConnect').html(`<i class="ri-swap-box-fill"></i>`);
@@ -187,6 +189,7 @@
 
             socket.onmessage = function(event) {
                 console.log('Received message: ' + event.data);
+                getAllRowTask();
             };
 
             socket.onclose = function(event) {
@@ -237,6 +240,7 @@
                     success: function(response) {
                         if (response.success == true) {
                             getAllRowTask();
+                            socket.send('ping');
                             $('#createTask').modal('hide');
                         }
                     }
@@ -253,6 +257,7 @@
                         if (response.success == true) {
                             getAllRowTask();
                             $('#createTask').modal('hide');
+                            socket.send('ping');
                         }
                     }
                 });
@@ -315,6 +320,7 @@
                 stopLoading();
                 if (response.success == true) {
                     getAllRowTask();
+                    socket.send('ping');
                 }
             }, 'json');
 
@@ -351,6 +357,7 @@
                     });
                 } else {
                     getAllRowTask();
+                    socket.send('ping');
                 }
             }, 'json');
         }
@@ -374,6 +381,7 @@
                     });
                 } else {
                     getAllRowTask();
+                    socket.send('ping');
                 }
             }, 'json');
         }
@@ -407,6 +415,7 @@
                     });
                 } else {
                     getAllRowTask();
+                    socket.send('ping');
                 }
             }, 'json');
         }
@@ -430,6 +439,7 @@
                     });
                 } else {
                     getAllRowTask();
+                    socket.send('ping');
                 }
             }, 'json');
         }
@@ -463,6 +473,7 @@
                     });
                 } else {
                     getAllRowTask();
+                    socket.send('ping');
                 }
             }, 'json');
         }
@@ -486,6 +497,7 @@
                     });
                 } else {
                     getAllRowTask();
+                    socket.send('ping');
                 }
             }, 'json');
         }
@@ -498,7 +510,6 @@
                 let content = $('#content');
                 content.empty();
                 content.html(response)
-                initWebSocket()
             });
         }
 

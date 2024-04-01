@@ -364,18 +364,20 @@ class Inbound_m extends CI_Model
 
     public function getAllInboundProccess()
     {
-        $sql = "select a.no_sj, b.fullname as checker_name,
-        start_unloading as start_unload, stop_unloading as stop_unload,
-        start_checking, stop_checking, start_putaway, stop_putaway, created_date as created_at
-        from tb_trans_temp a 
-        inner join  master_user b on a.checker_id = b.id
-        union all
-        SELECT no_sj, b.fullname as checker_name, a.unload_st_time as start_unload,
-        a.unload_fin_time as stop_unload, a.checking_st_time as start_checking, a.checking_fin_time as stop_checking,
-        a.putaway_st_time as start_putaway, a.putaway_fin_time as stop_putaway, a.sj_created_at as created_at
-        FROM tb_trans a
-        INNER JOIN master_user b ON a.checker_id = b.id
-        order by created_at desc";
+        $sql = "select * from (
+            select a.no_sj, b.fullname as checker_name,
+            start_unloading as start_unload, stop_unloading as stop_unload,
+            start_checking, stop_checking, start_putaway, stop_putaway, created_date as created_at
+            from tb_trans_temp a 
+            inner join  master_user b on a.checker_id = b.id
+            union all
+            SELECT no_sj, b.fullname as checker_name, a.unload_st_time as start_unload,
+            a.unload_fin_time as stop_unload, a.checking_st_time as start_checking, a.checking_fin_time as stop_checking,
+            a.putaway_st_time as start_putaway, a.putaway_fin_time as stop_putaway, a.sj_created_at as created_at
+            FROM tb_trans a
+            INNER JOIN master_user b ON a.checker_id = b.id) ss
+            WHERE CONVERT(DATE, created_at) = CONVERT(DATE, GETDATE())
+            order by created_at desc";
         $query = $this->db->query($sql);
         return $query;
     }

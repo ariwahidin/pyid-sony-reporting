@@ -1,4 +1,4 @@
-<table class="table table-borderless table-centered align-middle table-nowrap mb-0">
+<table style="font-size: 12px;" class="table table-borderless table-centered align-middle table-nowrap mb-0">
     <thead class="text-muted table-light">
         <tr>
             <th scope="col">Date</th>
@@ -18,7 +18,7 @@
             $minute_unload = ($duration_unload != '') ? roundMinutes($duration_unload) : (($data->start_unload != null && $data->stop_unload == null) ? 'proccesing' : '');
             $minute_checking = ($duration_checking != '') ? roundMinutes($duration_checking) : (($data->start_checking != null && $data->stop_checking == null) ? 'proccesing' : '');
             $minute_putaway = ($duration_putaway != '') ? roundMinutes($duration_putaway) : (($data->start_putaway != null && $data->stop_putaway == null) ? 'proccesing' : '');
-            $status = ($minute_unload != '' && $minute_checking != '' && $minute_putaway) ? 'DONE' : 'ON PROCCESS';
+            $status = ($minute_unload != 'proccesing' && $minute_checking != 'proccesing' && $minute_putaway != 'proccesing' ) ? 'DONE' : '';
         ?>
 
             <tr>
