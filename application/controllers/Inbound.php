@@ -46,10 +46,6 @@ class Inbound extends CI_Controller
     public function createTask()
     {
         $post = $this->input->post();
-
-        // var_dump($post);
-        // exit;
-
         if ($post['proses'] === 'new_task') {
             $params = array(
                 'no_sj' => $post['sj'],
@@ -90,9 +86,6 @@ class Inbound extends CI_Controller
     public function editTask()
     {
         $post = $this->input->post();
-
-        // var_dump($post);
-        // die;
 
         if ($post['proses'] === 'edit_task') {
             $id = $post['id_task'];

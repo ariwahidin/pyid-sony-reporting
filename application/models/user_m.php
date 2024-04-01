@@ -149,30 +149,4 @@ class User_m extends CI_Model
         return $this->db->get();
     }
 
-
-    // public function deleteChecker()
-    // {
-    //     $post = $this->input->post();
-    //     $id = $post['id'];
-    //     date_default_timezone_set('Asia/Jakarta');
-    //     $datetime = date('Y-m-d H:i:s');
-    //     $params = array(
-    //         'delete_by' => $_SESSION['user_data']['username'],
-    //         'delete_at' =>  $datetime,
-    //         'is_delete' => 'Y'
-    //     );
-    //     $this->employee->deleteChecker($id, $params);
-    //     if ($this->db->affected_rows() > 0) {
-    //         $response = array(
-    //             'success' => true,
-    //             'message' => 'Success deleting data'
-    //         );
-    //     } else {
-    //         $response = array(
-    //             'success' => false,
-    //             'message' => 'Failed deleting data'
-    //         );
-    //     }
-    //     echo json_encode($response);
-    // }
 }
