@@ -32,6 +32,15 @@ class Dashboard extends CI_Controller
         $this->load->view('dashboard/table_inbound', $data);
     }
 
+    public function getAllProccessOutbound()
+    {
+        $outbound = $this->outbound_m->getAllOutboundProccess();
+        $data = array(
+            'outbound' => $outbound
+        );
+        $this->load->view('dashboard/table_outbound', $data);
+    }
+
     public function getPresentaseInbound()
     {
         $inbound = $this->inbound_m->getPresentaseInbound()->row();

@@ -135,9 +135,9 @@
 <script>
     $(document).ready(function() {
 
-        // var socket;
+        var socket;
         getAllRowTask();
-        // initWebSocket();
+        initWebSocket();
 
         // $('#createTask').modal('show');
 
@@ -148,34 +148,34 @@
             $('#createTask').modal('show');
         });
 
-        // function initWebSocket() {
-        //     let hostname = window.location.hostname;
-        //     // console.log(hostname);
-        //     socket = new WebSocket('ws://' + hostname + ':8001');
+        function initWebSocket() {
+            let hostname = window.location.hostname;
+            // console.log(hostname);
+            socket = new WebSocket('ws://' + hostname + ':8001');
 
-        //     socket.onopen = function() {
-        //         $('#spConnect').html(`<i class="ri-swap-box-fill"></i>`);
-        //         console.log('WebSocket connection opened');
-        //         socket.send('ping');
-        //     };
+            socket.onopen = function() {
+                $('#spConnect').html(`<i class="ri-swap-box-fill"></i>`);
+                // console.log('WebSocket connection opened');
+                socket.send('ping');
+            };
 
-        //     socket.onmessage = function(event) {
-        //         console.log('Received message: ' + event.data);
-        //         getAllRowTask();
-        //     };
+            socket.onmessage = function(event) {
+                // console.log('Received message: ' + event.data);
+                getAllRowTask();
+            };
 
-        //     socket.onclose = function(event) {
-        //         $('#spConnect').html(`<i class="ri-alert-fill"></i>`);
-        //         console.log('WebSocket connection closed');
-        //         // Try to re-initiate connection after a delay
-        //         setTimeout(initWebSocket, 5000); // Retry after 5 seconds
-        //     };
+            socket.onclose = function(event) {
+                $('#spConnect').html(`<i class="ri-alert-fill"></i>`);
+                // console.log('WebSocket connection closed');
+                // Try to re-initiate connection after a delay
+                setTimeout(initWebSocket, 5000); // Retry after 5 seconds
+            };
 
-        //     socket.onerror = function(error) {
-        //         console.error('WebSocket error: ' + error);
-        //         // Handle WebSocket error, if necessary
-        //     };
-        // }
+            socket.onerror = function(error) {
+                console.error('WebSocket error: ' + error);
+                // Handle WebSocket error, if necessary
+            };
+        }
 
         // $("input[type='text']").on("input", function() {
         //     $(this).val($(this).val().toUpperCase());
@@ -212,7 +212,7 @@
                     success: function(response) {
                         if (response.success == true) {
                             getAllRowTask();
-                            // socket.send('ping');
+                            socket.send('ping');
                             $('#createTask').modal('hide');
                         }
                     }
@@ -229,7 +229,7 @@
                         if (response.success == true) {
                             getAllRowTask();
                             $('#createTask').modal('hide');
-                            // socket.send('ping');
+                            socket.send('ping');
                         }
                     }
                 });
@@ -292,7 +292,7 @@
                 stopLoading();
                 if (response.success == true) {
                     getAllRowTask();
-                    // socket.send('ping');
+                    socket.send('ping');
                 }
             }, 'json');
 
@@ -309,6 +309,7 @@
                 if (response.success == true) {
                     stopLoading();
                     getAllRowTask();
+                    socket.send('ping');
                 }
             }, 'json');
         })

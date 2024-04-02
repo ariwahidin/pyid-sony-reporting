@@ -132,4 +132,25 @@ class Outbound_m extends CI_Model
         $query = $this->db->query($sql);
         return $query;
     }
+
+
+    public function getAllOutboundProccess()
+    {
+        $sql = "select * from (
+            select a.no_pl, b.fullname as checker_name,
+            start_picking, stop_picking,
+            start_checking, stop_checking, start_scanning, stop_scanning, created_date as created_at
+            from tb_out_temp a 
+            inner join  master_user b on a.checker_id = b.id
+            union all
+            SELECT no_pl, b.fullname as checker_name, a.start_picking,
+            a.stop_picking, a.start_checking, a.stop_checking,
+            a.start_scanning, a.stop_scanning, a.activity_created_date as created_at
+            FROM tb_out a
+            INNER JOIN master_user b ON a.checker_id = b.id) ss
+            -- WHERE CONVERT(DATE, created_at) = CONVERT(DATE, GETDATE())
+            order by created_at desc";
+        $query = $this->db->query($sql);
+        return $query;
+    }
 }
