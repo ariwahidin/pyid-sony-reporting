@@ -6,8 +6,9 @@
 
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboards </a>
-                        <span id="spConnect"></span>
+                    <li class="breadcrumb-item">
+                        <span class="me-3" id="spConnect"></span>
+                        <a href="javascript: void(0);">Dashboards </a>
                     </li>
                 </ol>
             </div>
@@ -188,7 +189,7 @@
             socket = new WebSocket('ws://' + hostname + ':8001');
 
             socket.onopen = function() {
-                $('#spConnect').html(`<i class="ri-swap-box-fill"></i>`);
+                $('#spConnect').html(`<span class="position-absolute mt-2 translate-middle badge border border-light rounded-circle bg-success p-2"><span class="visually-hidden">Connected</span></span>`);
                 console.log('WebSocket connection opened');
             };
 
@@ -200,7 +201,7 @@
             };
 
             socket.onclose = function(event) {
-                $('#spConnect').html(`<i class="ri-alert-fill"></i>`);
+                $('#spConnect').html(`<span class="position-absolute mt-2 translate-middle badge border border-light rounded-circle bg-danger p-2"><span class="visually-hidden">Not Connected</span></span>`);
                 console.log('WebSocket connection closed');
                 // Try to re-initiate connection after a delay
                 setTimeout(initWebSocket, 5000); // Retry after 5 seconds
