@@ -381,4 +381,18 @@ class Inbound_m extends CI_Model
         $query = $this->db->query($sql);
         return $query;
     }
+
+    public function getPresentaseInbound()
+    {
+        $sql = "SELECT 
+        (SELECT COUNT(*) FROM tb_trans_temp) AS inbound_proses,
+        (SELECT COUNT(*) FROM tb_trans) AS inbound_complete,
+        (SELECT COUNT(*) FROM tb_trans_temp) + (SELECT COUNT(*) FROM tb_trans) AS total_inbound,
+        CASE WHEN (SELECT COUNT(*) FROM tb_trans) <> 0 
+             THEN ((SELECT COUNT(*) FROM tb_trans) / CAST(((SELECT COUNT(*) FROM tb_trans_temp) + (SELECT COUNT(*) FROM tb_trans))   AS float)) * 100 
+             ELSE 0 
+        END AS presentase";
+        $query = $this->db->query($sql);
+        return $query;
+    }
 }

@@ -305,8 +305,6 @@ class Inbound extends CI_Controller
             array_push($dataExcel, $row);
         }
 
-        // var_dump($dataExcel);
-        // die;
         $data = array(
             'success' => true,
             'data' => $dataExcel
@@ -385,8 +383,6 @@ class Inbound extends CI_Controller
 
         echo json_encode($response);
     }
-
-
 
     public function editActivity()
     {

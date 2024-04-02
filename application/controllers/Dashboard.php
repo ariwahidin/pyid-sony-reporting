@@ -6,7 +6,7 @@ class Dashboard extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(['inbound_m', 'user_m', 'ekspedisi_m', 'factory_m']);
+        $this->load->model(['inbound_m', 'outbound_m', 'user_m', 'ekspedisi_m', 'factory_m']);
         is_not_logged_in();
     }
 
@@ -30,5 +30,23 @@ class Dashboard extends CI_Controller
             'inbound' => $inbound
         );
         $this->load->view('dashboard/table_inbound', $data);
+    }
+
+    public function getPresentaseInbound()
+    {
+        $inbound = $this->inbound_m->getPresentaseInbound()->row();
+        $response = array(
+            'data' => $inbound
+        );
+        echo json_encode($response);
+    }
+
+    public function getPresentaseOutbound()
+    {
+        $outbound = $this->outbound_m->getPresentaseOutbound()->row();
+        $response = array(
+            'data' => $outbound
+        );
+        echo json_encode($response);
     }
 }

@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
+
+    <!-- jsvectormap css -->
+    <link href="<?= base_url('jar/html/default/') ?>assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?= base_url('jar/html/default/') ?>assets/images/yusen-kotak.jpg">
 
@@ -30,6 +33,8 @@
     <script src="<?= base_url() ?>myassets/js/jquery-3.7.0.js"></script>
     <script src="<?= base_url() ?>myassets/js/moment.js"></script>
     <script src="<?= base_url() ?>myassets/js/moment-time-zone.js"></script>
+
+
 
 </head>
 
@@ -306,7 +311,7 @@
                     <ul class="navbar-nav" id="navbar-nav">
                         <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="<?=base_url('dashboard/index')?>">
+                            <a class="nav-link menu-link" href="<?= base_url('dashboard/index') ?>">
                                 <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboard">Dashboards</span>
                             </a>
                         </li>

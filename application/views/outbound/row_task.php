@@ -54,13 +54,13 @@
                                                 <?php
                                                 if ($data->start_picking === null && $data->stop_picking === null) {
                                                 ?>
-                                                    <button class="btn btn-sm btn-success rounded fs-2 btnPicking" data-id="<?= $data->id ?>" data-proses="start_picking">
+                                                    <button class="btn btn-sm btn-success rounded fs-2 btnActivity" data-id="<?= $data->id ?>" data-proses="start_picking">
                                                         <i class="bx bx-play"></i>
                                                     </button>
                                                 <?php
                                                 } elseif ($data->start_picking != null && $data->stop_picking === null) {
                                                 ?>
-                                                    <button class="btn btn-sm btn-danger rounded fs-2 btnPicking" data-id="<?= $data->id ?>" data-proses="stop_picking">
+                                                    <button class="btn btn-sm btn-danger rounded fs-2 btnActivity" data-id="<?= $data->id ?>" data-proses="stop_picking">
                                                         <i class="bx bx-stop"></i>
                                                     </button>
                                                 <?php
@@ -99,13 +99,13 @@
                                                 <?php
                                                 if ($data->start_checking === null && $data->stop_checking === null) {
                                                 ?>
-                                                    <button class="btn btn-sm btn-success rounded fs-2 btnChecking" data-id="<?= $data->id ?>" data-proses="start_checking">
+                                                    <button class="btn btn-sm btn-success rounded fs-2 btnActivity" data-id="<?= $data->id ?>" data-proses="start_checking">
                                                         <i class="bx bx-play"></i>
                                                     </button>
                                                 <?php
                                                 } elseif ($data->start_checking != null && $data->stop_checking === null) {
                                                 ?>
-                                                    <button class="btn btn-sm btn-danger rounded fs-2 btnChecking" data-id="<?= $data->id ?>" data-proses="stop_checking">
+                                                    <button class="btn btn-sm btn-danger rounded fs-2 btnActivity" data-id="<?= $data->id ?>" data-proses="stop_checking">
                                                         <i class="bx bx-stop"></i>
                                                     </button>
                                                 <?php
@@ -145,13 +145,13 @@
                                                     <?php
                                                     if ($data->start_scanning === null && $data->stop_scanning === null) {
                                                     ?>
-                                                        <button class="btn btn-sm btn-success rounded fs-2 btnScanning" data-id="<?= $data->id ?>" data-proses="start_scanning">
+                                                        <button class="btn btn-sm btn-success rounded fs-2 btnActivity" data-id="<?= $data->id ?>" data-proses="start_scanning">
                                                             <i class="bx bx-play"></i>
                                                         </button>
                                                     <?php
                                                     } elseif ($data->start_scanning != null && $data->stop_scanning === null) {
                                                     ?>
-                                                        <button class="btn btn-sm btn-danger rounded fs-2 btnScanning" data-id="<?= $data->id ?>" data-proses="stop_scanning">
+                                                        <button class="btn btn-sm btn-danger rounded fs-2 btnActivity" data-id="<?= $data->id ?>" data-proses="stop_scanning">
 
                                                             <i class="bx bx-stop"></i>
                                                         </button>

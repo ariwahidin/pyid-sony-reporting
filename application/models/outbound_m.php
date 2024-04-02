@@ -6,21 +6,27 @@ class Outbound_m extends CI_Model
         return $this->db->insert('tb_out_temp', $params);
     }
 
+    function editTask($id, $params)
+    {
+        $this->db->where(['id' => $id]);
+        $this->db->update('tb_out_temp', $params);
+    }
+
     public function getTaskByUser($post = null)
     {
-        // if (isset($post['search'])) {
-        //     if ($post['search'] != '') {
-        //         $search = $post['search'];
-        //         $this->db->like('no_sj', $search, 'both');
-        //     }
-        // }
+        if (isset($post['search'])) {
+            if ($post['search'] != '') {
+                $search = $post['search'];
+                $this->db->like('no_pl', $search, 'both');
+            }
+        }
 
-        // if (isset($post['id'])) {
-        //     if ($post['id'] != '') {
-        //         $id = $post['id'];
-        //         $this->db->where('a.id', $id);
-        //     }
-        // }
+        if (isset($post['id'])) {
+            if ($post['id'] != '') {
+                $id = $post['id'];
+                $this->db->where('a.id', $id);
+            }
+        }
 
         $this->db->select('a.*, b.fullname as checker_name, c.name as ekspedisi_name, e.fullname as created_by_name');
         $this->db->from('tb_out_temp a');
@@ -33,5 +39,97 @@ class Outbound_m extends CI_Model
         }
 
         return $this->db->get();
+    }
+
+    function prosesActivity($id, $params)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('tb_out_temp', $params);
+        if ($this->db->affected_rows() > 0) {
+            $act = $this->db->get_where('tb_out_temp', ['id' => $id])->row();
+            if ($act->stop_picking != null && $act->stop_checking != null && $act->stop_scanning != null) {
+                $data = array(
+                    'no_pl' => $act->no_pl,
+                    'no_truck' => $act->no_truck,
+                    'qty' => $act->qty,
+                    'checker_id' => $act->checker_id,
+                    'pl_date' => $act->pl_date,
+                    'pl_time' => $act->pl_time,
+                    'time_arival' => $act->time_arival,
+                    'ekspedisi' => $act->ekspedisi,
+                    'driver' => $act->driver,
+                    'start_picking' => $act->start_picking,
+                    'stop_picking' => $act->stop_picking,
+                    'duration_picking' => countDuration($act->start_picking, $act->stop_picking),
+                    'start_checking' => $act->start_checking,
+                    'stop_checking' => $act->stop_checking,
+                    'duration_checking' => countDuration($act->start_checking, $act->stop_checking),
+                    'start_scanning' => $act->start_scanning,
+                    'stop_scanning' => $act->stop_scanning,
+                    'duration_scanning' => countDuration($act->start_scanning, $act->stop_scanning),
+                    'remarks' => $act->remarks,
+                    'activity_created_date' => $act->created_date,
+                    'activity_created_by' => $act->created_by,
+                    'created_date' => currentDateTime(),
+                    'created_by' => userId(),
+                    'is_deleted' => 'N'
+                );
+                $this->db->insert('tb_out', $data);
+                if ($this->db->affected_rows() > 0) {
+                    $this->db->where(['id' => $id]);
+                    $this->db->delete('tb_out_temp');
+                }
+            }
+        }
+    }
+
+    function deleteOutTemp($post)
+    {
+        $this->db->where(['id' => $post['id']]);
+        $this->db->delete('tb_out_temp');
+    }
+
+    public function getCompletedActivity()
+    {
+        $sql = "select a.*, b.fullname as checker_name, d.name as ekspedisi_name
+        from tb_out a 
+        inner join master_user b on a.checker_id = b.id
+        left join master_ekspedisi d on a.ekspedisi = d.id
+        where a.is_deleted <> 'Y' ";
+
+        if (isset($_POST['startDate']) != '' && isset($_POST['endDate']) != '') {
+            $startDate = $_POST['startDate'];
+            $endDate = $_POST['endDate'];
+            $sql .= " AND CONVERT(DATE, created_date) between CONVERT(DATE, '$startDate')and CONVERT(DATE, '$endDate')";
+        } else {
+            $sql .= " AND CONVERT(DATE, created_date) = CONVERT(DATE, GETDATE())";
+        }
+
+        // if (isset($_POST['checker'])) {
+        //     if ($_POST['checker'] != '') {
+        //         $checker = $_POST['checker'];
+        //         $sql .= " AND checker like '%$checker%'";
+        //     }
+        // }
+
+
+        $sql .= " ORDER BY id DESC";
+
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function getPresentaseOutbound()
+    {
+        $sql = "SELECT 
+        (SELECT COUNT(*) FROM tb_out_temp) AS outbound_proses,
+        (SELECT COUNT(*) FROM tb_out) AS outbound_complete,
+        (SELECT COUNT(*) FROM tb_out_temp) + (SELECT COUNT(*) FROM tb_out) AS total_outbound,
+        CASE WHEN (SELECT COUNT(*) FROM tb_out) <> 0 
+             THEN ((SELECT COUNT(*) FROM tb_out) / CAST(((SELECT COUNT(*) FROM tb_out_temp) + (SELECT COUNT(*) FROM tb_out))   AS float)) * 100 
+             ELSE 0 
+        END AS presentase;";
+        $query = $this->db->query($sql);
+        return $query;
     }
 }

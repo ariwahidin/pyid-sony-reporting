@@ -788,9 +788,14 @@
 <!-- apexcharts -->
 <script src="<?= base_url('jar/html/default/') ?>assets/libs/apexcharts/apexcharts.min.js"></script>
 
+<!-- Vector map-->
+<script src="<?= base_url('jar/html/default/') ?>assets/libs/jsvectormap/js/jsvectormap.min.js"></script>
+<script src="<?= base_url('jar/html/default/') ?>assets/libs/jsvectormap/maps/world-merc.js"></script>
+
 <!-- projects js -->
 <script src="<?= base_url('jar/html/default/') ?>assets/js/pages/dashboard-projects.init.js"></script>
-
+<!-- Dashboard init -->
+<script src="<?= base_url('jar/html/default/') ?>assets/js/pages/dashboard-job.init.js"></script>
 <!-- App js -->
 <script src="<?= base_url('jar/html/default/') ?>assets/js/app.js"></script>
 

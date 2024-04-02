@@ -142,6 +142,8 @@
         // $('#createTask').modal('show');
 
         $('#btnCreate').on('click', function() {
+            $('#btnTask').text('Create');
+            $('#createTaskLabel').text('Create new');
             $('#proses').val('new_task');
             $('#createTask').modal('show');
         });
@@ -216,21 +218,21 @@
                     }
                 });
             } else {
-                // $.ajax({
-                //     url: 'editTask',
-                //     type: 'POST',
-                //     data: form,
-                //     processData: false,
-                //     contentType: false,
-                //     dataType: 'JSON',
-                //     success: function(response) {
-                //         if (response.success == true) {
-                //             getAllRowTask();
-                //             $('#createTask').modal('hide');
-                //             socket.send('ping');
-                //         }
-                //     }
-                // });
+                $.ajax({
+                    url: 'editTask',
+                    type: 'POST',
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'JSON',
+                    success: function(response) {
+                        if (response.success == true) {
+                            getAllRowTask();
+                            $('#createTask').modal('hide');
+                            // socket.send('ping');
+                        }
+                    }
+                });
             }
 
         })
@@ -251,62 +253,67 @@
         //     $('#createTask').modal('show');
         // })
 
-        // $('#content').on('click', '.btnEdit', async function() {
-        //     startLoading();
-        //     let id = $(this).data('id');
-        //     let result = await $.post('getTaskById', {
-        //         id: id
-        //     }, function(response) {}, 'json');
+        $('#content').on('click', '.btnEdit', async function() {
+            startLoading();
+            let id = $(this).data('id');
+            let result = await $.post('getTaskById', {
+                id: id
+            }, function(response) {
+                let task = response.data;
+                $('#proses').val('edit_task');
+                $('#id_task').val(id);
+                $('#no_pl').val(task.no_pl);
+                $('#pl_date').val(task.pl_date);
+                $('#pl_time').val(formatTime(task.pl_time));
+                $('#ekspedisi').val(task.ekspedisi);
+                $('#no_truck').val(task.no_truck);
+                $('#qty').val(task.qty);
+                $('#checker_id').val(task.checker_id);
+                // $('#sj_date').val(task.sj_date);
+                // $('#sj_time').val(task.sj_time);
+                $('#driver').val(task.driver);
+                $('#remarks').val(task.remarks);
+                // $('#send_date').val(task.sj_send_date);
+                // $('#toa').val(task.time_arival);
+                // $('#pintu_unloading').val(task.pintu_unloading);
+                $('#btnTask').text('Edit');
+                $('#createTaskLabel').text('Edit task');
+                $('#createTask').modal('show');
+                stopLoading();
+            }, 'json');
+        })
 
-        //     let task = result.task;
-        //     $('#proses').val('edit_task');
-        //     $('#id_task').val(id);
-        //     $('#checker').val(task.checker_id);
-        //     $('#alocation').val(task.alloc_code);
-        //     $('#factory').val(task.factory_code);
-        //     $('#expedisi').val(task.ekspedisi);
-        //     $('#no_truck').val(task.no_truck);
-        //     $('#qty').val(task.qty);
-        //     $('#sj').val(task.no_sj);
-        //     $('#sj_date').val(task.sj_date);
-        //     $('#sj_time').val(task.sj_time);
-        //     $('#driver').val(task.driver);
-        //     $('#remarks').val(task.remarks);
-        //     $('#send_date').val(task.sj_send_date);
-        //     $('#toa').val(task.time_arival);
-        //     $('#pintu_unloading').val(task.pintu_unloading);
-        //     $('#btnTask').text('Edit');
-        //     $('#createTaskLabel').text('Edit task');
-        //     $('#createTask').modal('show');
-        //     stopLoading();
-        // })
+        $('#content').on('click', '.btnDelete', function() {
+            startLoading();
+            let id = $(this).data('id');
+            $.post('deleteOut', {
+                id: id
+            }, function(response) {
+                stopLoading();
+                if (response.success == true) {
+                    getAllRowTask();
+                    // socket.send('ping');
+                }
+            }, 'json');
 
-        // $('#content').on('click', '.btnDelete', function() {
-        //     startLoading();
-        //     let id = $(this).data('id');
-        //     $.post('deleteTransTemp', {
-        //         id: id
-        //     }, function(response) {
-        //         stopLoading();
-        //         if (response.success == true) {
-        //             getAllRowTask();
-        //             socket.send('ping');
-        //         }
-        //     }, 'json');
+        });
 
-        // });
+        $('#content').on('click', '.btnActivity', function() {
+            startLoading();
+            let dataToPost = {
+                id: $(this).data('id'),
+                proses: $(this).data('proses')
+            };
 
-        // $('#content').on('click', '.btnUnloading', function() {
-        //     let id = $(this).data('id');
-        //     let proses = $(this).data('proses');
-        //     if (proses === 'start_unloading') {
-        //         startUnloading(id);
-        //     } else {
-        //         stopUnloading(id);
-        //     }
-        // })
+            $.post('prosesActivity', dataToPost, function(response) {
+                if (response.success == true) {
+                    stopLoading();
+                    getAllRowTask();
+                }
+            }, 'json');
+        })
 
-        // $('#btnSearch').on('click', getAllRowTask);
+        $('#btnSearch').on('click', getAllRowTask);
 
         // function startUnloading(id) {
         //     startLoading();
@@ -481,6 +488,30 @@
                 content.empty();
                 content.html(response)
             });
+        }
+
+        function formatTime(timeString) {
+            var timeComponents = timeString.split(':');
+
+            if (timeComponents.length !== 3) {
+                return 'Invalid time format';
+            }
+
+            var hours = parseInt(timeComponents[0]);
+            var minutes = parseInt(timeComponents[1]);
+            var seconds = parseInt(timeComponents[2]);
+
+            if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+                return 'Invalid time format';
+            }
+
+            hours = (hours < 10) ? '0' + hours : hours;
+            minutes = (minutes < 10) ? '0' + minutes : minutes;
+            seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+            var formattedTime = hours + ':' + minutes + ':' + seconds;
+
+            return formattedTime;
         }
 
         // function updateClock() {
