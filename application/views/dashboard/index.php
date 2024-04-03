@@ -164,7 +164,7 @@
             };
 
             socket.onerror = function(error) {
-                console.error('WebSocket error: ' + error);
+                console.error('WebSocket error : ' + error);
                 // Handle WebSocket error, if necessary
             };
         }

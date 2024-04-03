@@ -56,10 +56,10 @@
 
 
 <div class="modal fade" id="createTask" tabindex="-1" aria-labelledby="createTaskLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-success-subtle">
-                <h5 class="modal-title" id="createTaskLabel">Create Activity</h5>
+                <h5 class="modal-title" id="createTaskLabel">Create Activity Outbound</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" id="createTaskBtn-close" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -70,87 +70,55 @@
 
 
                     <div class="row g-4 mb-3">
-                        <div class="col col-lg-3">
-                            <label for="priority-field" class="form-label">Factory Code</label>
-                            <!-- <input type="text" id="factory" name="factory" class="form-control" value=""> -->
-                            <select class="form-control" name="factory" id="factory" required>
-                                <option value="">Choose Factory</option>
-                                <?php foreach ($factory->result() as $f) { ?>
-                                    <option value="<?= $f->id ?>"><?= $f->name ?></option>
-                                <?php } ?>
-                            </select>
+                        <div class="col col-lg-4">
+                            <label for="" class="form-label">No picking list</label>
+                            <input type="text" id="no_pl" name="no_pl" class="form-control" placeholder="" value="" required>
                         </div>
-                        <div class="col col-lg-3">
-                            <label for="task-title-input" class="form-label">SJ No</label>
-                            <input type="text" id="sj" name="sj" class="form-control" placeholder="" value="" required>
+                        <div class="col col-lg-4">
+                            <label for="" class="form-label">Picking list date</label>
+                            <input type="date" id="pl_date" name="pl_date" class="form-control" placeholder="" value="" required>
                         </div>
-                        <div class="col col-lg-2">
-                            <label for="task-title-input" class="form-label">SJ Send Date</label>
-                            <input type="date" id="send_date" name="send_date" class="form-control" placeholder="" value="" required>
-                        </div>
-                        <div class="col col-lg-2">
-                            <label for="priority-field" class="form-label">SJ Date</label>
-                            <input type="date" id="sj_date" name="sj_date" class="form-control" placeholder="" value="">
-                        </div>
-                        <div class="col col-lg-2">
-                            <label for="priority-field" class="form-label">SJ Time</label>
-                            <input type="time" id="sj_time" name="sj_time" class="form-control" placeholder="" value="">
+                        <div class="col col-lg-4">
+                            <label for="" class="form-label">Picking list time</label>
+                            <input type="time" id="pl_time" name="pl_time" class="form-control" placeholder="" value="">
                         </div>
                     </div>
 
                     <div class="row g-4 mb-3">
-                        <div class="col-lg-4">
-                            <label for="task-status" class="form-label">No Truck</label>
-                            <input type="text" id="no_truck" name="no_truck" class="form-control" value="">
-                        </div>
-                        <div class="col col-lg-4">
-                            <label for="priority-field" class="form-label">Expedisi</label>
-                            <!-- <input type="text" id="expedisi" name="expedisi" class="form-control" placeholder="" value=""> -->
-                            <select class="form-control" name="expedisi" id="expedisi" required>
-                                <option value="">Choose Ekspedisi</option>
-                                <?php foreach ($ekspedisi->result() as $e) { ?>
-                                    <option value="<?= $e->id ?>"><?= $e->name ?></option>
+                        <div class="col col-lg-3">
+                            <label for="priority-field" class="form-label">Checker</label>
+                            <select class="form-control" name="checker_id" id="checker_id" required>
+                                <option value="">Choose checker</option>
+                                <?php foreach ($checker->result() as $check) { ?>
+                                    <option value="<?= $check->id ?>"><?= $check->fullname ?></option>
                                 <?php } ?>
                             </select>
                         </div>
-                        <div class="col col-lg-4">
+                        <div class="col col-lg-3">
+                            <label for="priority-field" class="form-label">No truck</label>
+                            <input type="text" id="no_truck" name="no_truck" class="form-control" placeholder="" value="">
+                        </div>
+                        <div class="col col-lg-3">
                             <label for="priority-field" class="form-label">Driver</label>
                             <input type="text" id="driver" name="driver" class="form-control" placeholder="" value="">
                         </div>
-                    </div>
-
-                    <div class="mb-3 position-relative row">
-
                         <div class="col col-lg-3">
-                            <label for="task-status" class="form-label">Alocation Code</label>
-                            <input type="text" id="alocation" name="alocation" class="form-control" value="">
-                        </div>
-                        <div class="col col-lg-3">
-                            <label for="task-assign-input" class="form-label">Pintu Unloading</label>
-                            <input type="text" id="pintu_unloading" name="pintu_unloading" class="form-control" value="">
-                        </div>
-                        <div class="col col-lg-3">
-                            <label for="task-status" class="form-label">Qty</label>
-                            <input type="number" id="qty" name="qty" class="form-control" placeholder="" value="">
-                        </div>
-                        <div class="col col-lg-3">
-                            <label for="task-status" class="form-label">Time of arival</label>
-                            <input type="time" id="toa" name="toa" class="form-control" placeholder="" value="">
+                            <label for="priority-field" class="form-label">Ekspedisi</label>
+                            <select class="form-control" name="ekspedisi" id="ekspedisi" required>
+                                <option value="">Choose ekspedisi</option>
+                                <?php foreach ($ekspedisi->result() as $eks) { ?>
+                                    <option value="<?= $eks->id ?>"><?= $eks->name ?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                     </div>
 
                     <div class="row g-4 mb-3">
-                        <div class="col col-lg-3">
-                            <label for="task-assign-input" class="form-label">Checker</label>
-                            <select class="form-control" name="checker" id="checker" required>
-                                <option value="">Choose Checker</option>
-                                <?php foreach ($checker->result() as $c) { ?>
-                                    <option value="<?= $c->id ?>"><?= $c->fullname ?></option>
-                                <?php } ?>
-                            </select>
+                        <div class="col col-lg-4">
+                            <label for="priority-field" class="form-label">Qty</label>
+                            <input type="number" id="qty" name="qty" class="form-control" placeholder="" value="">
                         </div>
-
-                        <div class="col-lg-6">
+                        <div class="col-lg-8">
                             <label for="priority-field" class="form-label">Remarks</label>
                             <input type="text" id="remarks" name="remarks" class="form-control" value="">
                         </div>
@@ -173,93 +141,88 @@
     $(document).ready(function() {
         getRowComplete();
 
-        // $('#sButton').on('click', function() {
-        //     let checker = $('#sChecker').val().trim();
-        //     let startDate = $('#sStartDate').val().trim();
-        //     let endDate = $('#sEndDate').val().trim();
-        //     let dataToPost = {
-        //         checker: checker,
-        //         startDate: startDate,
-        //         endDate: endDate
-        //     }
-        //     getRowComplete(dataToPost);
-        // })
+        $('#sButton').on('click', function() {
+            let checker = $('#sChecker').val().trim();
+            let startDate = $('#sStartDate').val().trim();
+            let endDate = $('#sEndDate').val().trim();
+            let dataToPost = {
+                checker: checker,
+                startDate: startDate,
+                endDate: endDate
+            }
+            getRowComplete(dataToPost);
+        })
 
-        // $('#tablePlace').on('click', '.btnEdit', async function() {
-        //     startLoading();
-        //     let id = $(this).data('id');
-        //     let result = await $.post('getTaskCompleteById', {
-        //         id: id
-        //     }, function(response) {}, 'json');
+        $('#tablePlace').on('click', '.btnEdit', async function() {
+            startLoading();
+            let id = $(this).data('id');
+            let result = await $.post('getTaskCompleteById', {
+                id: id
+            }, function(response) {
+                let task = response.task;
+                $('#proses').val('edit_task');
+                $('#id_task').val(id);
+                $('#no_pl').val(task.no_pl);
+                $('#pl_date').val(task.pl_date);
+                $('#pl_time').val(formatTime(task.pl_time));
+                $('#ekspedisi').val(task.ekspedisi);
+                $('#no_truck').val(task.no_truck);
+                $('#qty').val(task.qty);
+                $('#checker_id').val(task.checker_id);
+                $('#driver').val(task.driver);
+                $('#remarks').val(task.remarks);
+                $('#btnTask').text('Edit');
+                $('#createTaskLabel').text('Edit task');
+                $('#createTask').modal('show');
+                stopLoading();
+            }, 'json');
+        });
 
-        //     let task = result.task;
-        //     $('#proses').val('edit_task');
-        //     $('#id_task').val(id);
-        //     $('#checker').val(task.checker_id);
-        //     $('#alocation').val(task.alloc_code);
-        //     $('#factory').val(task.factory_code);
-        //     $('#expedisi').val(task.ekspedisi);
-        //     $('#no_truck').val(task.no_truck);
-        //     $('#qty').val(task.qty);
-        //     $('#sj').val(task.no_sj);
-        //     $('#sj_date').val(task.sj_date);
-        //     $('#send_date').val(task.sj_send_date);
-        //     $('#toa').val(task.time_arival);
-        //     $('#sj_time').val(task.sj_time);
-        //     $('#driver').val(task.driver);
-        //     $('#remarks').val(task.remarks);
-        //     $('#pintu_unloading').val(task.pintu_unloading);
-        //     $('#btnTask').text('Edit');
-        //     $('#createTaskLabel').text('Edit task');
-        //     $('#createTask').modal('show');
-        //     stopLoading();
-        // });
-
-        // $('#creatask').on('submit', function(e) {
-        //     e.preventDefault();
-        //     let form = new FormData(this);
-        //     let proses = $('#proses').val();
-        //     $.ajax({
-        //         url: 'editTaskCompleted',
-        //         type: 'POST',
-        //         data: form,
-        //         processData: false,
-        //         contentType: false,
-        //         dataType: 'JSON',
-        //         success: function(response) {
-        //             if (response.success == true) {
-        //                 getRowComplete();
-        //                 $('#createTask').modal('hide');
-        //             }
-        //         }
-        //     });
-        // })
+        $('#creatask').on('submit', function(e) {
+            e.preventDefault();
+            let form = new FormData(this);
+            let proses = $('#proses').val();
+            $.ajax({
+                url: 'editTaskCompleted',
+                type: 'POST',
+                data: form,
+                processData: false,
+                contentType: false,
+                dataType: 'JSON',
+                success: function(response) {
+                    if (response.success == true) {
+                        getRowComplete();
+                        $('#createTask').modal('hide');
+                    }
+                }
+            });
+        })
 
 
 
 
-        // $('#tablePlace').on('click', '.btnDelete', function() {
-        //     let id = $(this).data('id');
-        //     Swal.fire({
-        //         icon: 'question',
-        //         title: "Are you sure to delete this activity?",
-        //         showCancelButton: true,
-        //         confirmButtonText: "Yes",
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
-        //             $.post('deleteCompleteActivity', {
-        //                 id: id
-        //             }, function(response) {
-        //                 if (response.success == true) {
-        //                     Swal.fire("Deleted!", "", "success");
-        //                     getRowComplete();
-        //                 }
-        //             }, 'json');
-        //         } else if (result.isDenied) {
-        //             Swal.fire("Changes are not saved", "", "info");
-        //         }
-        //     });
-        // })
+        $('#tablePlace').on('click', '.btnDelete', function() {
+            let id = $(this).data('id');
+            Swal.fire({
+                icon: 'question',
+                title: "Are you sure to delete this activity?",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post('deleteTaskCompleted', {
+                        id: id
+                    }, function(response) {
+                        if (response.success == true) {
+                            Swal.fire("Deleted!", "", "success");
+                            getRowComplete();
+                        }
+                    }, 'json');
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
+                }
+            });
+        })
 
         $('#btnExcel').on('click', downloadExcel);
 

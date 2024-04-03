@@ -181,6 +181,30 @@
     </div>
 </div>
 <script>
+    function formatTime(timeString) {
+        var timeComponents = timeString.split(':');
+
+        if (timeComponents.length !== 3) {
+            return 'Invalid time format';
+        }
+
+        var hours = parseInt(timeComponents[0]);
+        var minutes = parseInt(timeComponents[1]);
+        var seconds = parseInt(timeComponents[2]);
+
+        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+            return 'Invalid time format';
+        }
+
+        hours = (hours < 10) ? '0' + hours : hours;
+        minutes = (minutes < 10) ? '0' + minutes : minutes;
+        seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+        var formattedTime = hours + ':' + minutes + ':' + seconds;
+
+        return formattedTime;
+    }
+
     function stopLoading() {
         var divLoading = document.querySelector(".pLoading");
         divLoading.style.display = "none";

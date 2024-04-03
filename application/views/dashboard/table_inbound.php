@@ -37,21 +37,5 @@
                 </td>
             </tr>
         <?php } ?>
-        <!-- <tr>
-            <td>
-                <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">2024-03-30</div>
-                </div>
-            </td>
-            <td>XY9000002</td>
-            <td>Dodi</td>
-            <td>43 MENIT</td>
-            <td>52 MENIT</td>
-            <td>-</td>
-            <td>
-                <span class="badge bg-primary-subtle text-success">ON PROCCESS</span>
-            </td>
-        </tr>
-        <tr> -->
     </tbody>
 </table>

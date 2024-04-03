@@ -148,9 +148,43 @@ class Outbound_m extends CI_Model
             a.start_scanning, a.stop_scanning, a.activity_created_date as created_at
             FROM tb_out a
             INNER JOIN master_user b ON a.checker_id = b.id) ss
-            -- WHERE CONVERT(DATE, created_at) = CONVERT(DATE, GETDATE())
+            WHERE CONVERT(DATE, created_at) = CONVERT(DATE, GETDATE())
             order by created_at desc";
         $query = $this->db->query($sql);
         return $query;
+    }
+
+    public function getTaskCompleteById($post = null)
+    {
+        // if (isset($post['search'])) {
+        //     if ($post['search'] != '') {
+        //         $search = $post['search'];
+        //         $this->db->like('no_sj', $search, 'both');
+        //     }
+        // }
+
+        if (isset($post['id'])) {
+            if ($post['id'] != '') {
+                $id = $post['id'];
+                $this->db->where('a.id', $id);
+            }
+        }
+
+        $this->db->select('a.*, b.fullname as checker_name');
+        $this->db->from('tb_out a');
+        $this->db->join('master_user b', 'a.checker_id = b.id');
+        return $this->db->get();
+    }
+
+    public function editTaskCompleted($id, $params)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('tb_out', $params);
+    }
+
+    public function deleteActivityComplete($id, $params)
+    {
+        $this->db->where('id', $id);
+        $this->db->update('tb_out', $params);
     }
 }

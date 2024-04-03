@@ -214,4 +214,75 @@ class Outbound extends CI_Controller
         );
         echo json_encode($data);
     }
+
+    public function getTaskCompleteById()
+    {
+        $post = $this->input->post();
+        $task = $this->outbound_m->getTaskCompleteById($post);
+        $response = array(
+            'success' => true,
+            'task' => $task->row()
+        );
+        echo json_encode($response);
+    }
+
+    public function editTaskCompleted()
+    {
+        $post = $this->input->post();
+        $id = $post['id_task'];
+        $params = array(
+            'no_pl' => $post['no_pl'],
+            'no_truck' => $post['no_truck'],
+            'qty' => $post['qty'],
+            'checker_id' => $post['checker_id'],
+            'pl_date' => $post['pl_date'],
+            'pl_time' => $post['pl_time'],
+            'ekspedisi' => $post['ekspedisi'],
+            'driver' => $post['driver'],
+            'remarks' => $post['remarks'],
+            'updated_date' => currentDateTime(),
+            'updated_by' => userId()
+        );
+
+        $this->outbound_m->editTaskCompleted($id, $params);
+
+        if ($this->db->affected_rows() > 0) {
+            $response = array(
+                'success' => true,
+                'message' => 'Update data successfully'
+            );
+        } else {
+            $repsonse = array(
+                'success' => false,
+                'message' => 'Failed update data'
+            );
+        }
+        echo json_encode($response);
+    }
+
+    public function deleteTaskCompleted()
+    {
+        $post = $this->input->post();
+        $id = $post['id'];
+        $params = array(
+            'is_deleted' => 'Y',
+            'deleted_at' => currentDateTime(),
+            'deleted_by' => userId()
+        );
+
+        $this->outbound_m->deleteActivityComplete($id, $params);
+
+        if ($this->db->affected_rows() > 0) {
+            $response = array(
+                'success' => true,
+                'message' => 'delete data successfully'
+            );
+        } else {
+            $repsonse = array(
+                'success' => false,
+                'message' => 'Failed delete data'
+            );
+        }
+        echo json_encode($response);
+    }
 }
