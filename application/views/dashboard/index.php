@@ -130,182 +130,182 @@
 
 
 <script>
-    $(document).ready(function() {
-        getAllProccessInbound();
+    // $(document).ready(function() {
+    //     getAllProccessInbound();
 
 
-        var socket;
-        initWebSocket();
+    //     var socket;
+    //     initWebSocket();
 
-        function initWebSocket() {
-            let hostname = window.location.hostname;
-            console.log(hostname);
-            socket = new WebSocket('ws://' + hostname + ':8001');
+    //     function initWebSocket() {
+    //         let hostname = window.location.hostname;
+    //         console.log(hostname);
+    //         socket = new WebSocket('ws://' + hostname + ':8001');
 
-            socket.onopen = function() {
-                $('#spConnect').html(`<span class="position-absolute mt-2 translate-middle badge border border-light rounded-circle bg-success p-2"><span class="visually-hidden">Connected</span></span>`);
-                // console.log('WebSocket connection opened');
-            };
+    //         socket.onopen = function() {
+    //             $('#spConnect').html(`<span class="position-absolute mt-2 translate-middle badge border border-light rounded-circle bg-success p-2"><span class="visually-hidden">Connected</span></span>`);
+    //             // console.log('WebSocket connection opened');
+    //         };
 
-            socket.onmessage = function(event) {
-                getAllProccessInbound();
-                cartInbound();
-                getAllProccessOutbound();
-                cartOutbound();
-                // console.log('Received message: ' + event.data);
-                // Handle received message
-            };
+    //         socket.onmessage = function(event) {
+    //             getAllProccessInbound();
+    //             cartInbound();
+    //             getAllProccessOutbound();
+    //             cartOutbound();
+    //             // console.log('Received message: ' + event.data);
+    //             // Handle received message
+    //         };
 
-            socket.onclose = function(event) {
-                $('#spConnect').html(`<span class="position-absolute mt-2 translate-middle badge border border-light rounded-circle bg-danger p-2"><span class="visually-hidden">Not Connected</span></span>`);
-                // console.log('WebSocket connection closed');
-                // Try to re-initiate connection after a delay
-                setTimeout(initWebSocket, 5000); // Retry after 5 seconds
-            };
+    //         socket.onclose = function(event) {
+    //             $('#spConnect').html(`<span class="position-absolute mt-2 translate-middle badge border border-light rounded-circle bg-danger p-2"><span class="visually-hidden">Not Connected</span></span>`);
+    //             // console.log('WebSocket connection closed');
+    //             // Try to re-initiate connection after a delay
+    //             setTimeout(initWebSocket, 5000); // Retry after 5 seconds
+    //         };
 
-            socket.onerror = function(error) {
-                console.error('WebSocket error : ' + error);
-                // Handle WebSocket error, if necessary
-            };
-        }
+    //         socket.onerror = function(error) {
+    //             console.error('WebSocket error : ' + error);
+    //             // Handle WebSocket error, if necessary
+    //         };
+    //     }
 
-        function getAllProccessInbound() {
-            $.post('getAllProccessInbound', function(response) {
-                let divInbound = $('#divInbound');
-                divInbound.empty();
-                divInbound.html(response);
-            });
-        }
+    //     function getAllProccessInbound() {
+    //         $.post('getAllProccessInbound', function(response) {
+    //             let divInbound = $('#divInbound');
+    //             divInbound.empty();
+    //             divInbound.html(response);
+    //         });
+    //     }
 
-        getAllProccessOutbound();
-        function getAllProccessOutbound() {
-            $.post('getAllProccessOutbound', function(response) {
-                let divOutbound = $('#divOutbound');
-                divOutbound.empty();
-                divOutbound.html(response);
-            });
-        }
+    //     getAllProccessOutbound();
+    //     function getAllProccessOutbound() {
+    //         $.post('getAllProccessOutbound', function(response) {
+    //             let divOutbound = $('#divOutbound');
+    //             divOutbound.empty();
+    //             divOutbound.html(response);
+    //         });
+    //     }
 
-        cartInbound();
-
-
-        function cartInbound() {
-
-            $.post('getPresentaseInbound', {}, function(response) {
-
-                let data = response.data;
-
-                let presentase = Math.round(data.presentase);
-
-                $('#spInboundProses').text(data.inbound_proses);
-                $('#spInboundComplete').text(data.inbound_complete);
-                $('#spInboundTotal').text(data.total_inbound);
-
-                $('#cartInbound').empty();
-                $('#cartInbound').html(`<div id="ctr" class="apex-charts"></div>`);
-
-                var options = {
-                    series: [presentase],
-                    chart: {
-                        type: "radialBar",
-                        width: 105,
-                        sparkline: {
-                            enabled: true
-                        }
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    plotOptions: {
-                        radialBar: {
-                            hollow: {
-                                margin: 0,
-                                size: "70%"
-                            },
-                            track: {
-                                margin: 1
-                            },
-                            dataLabels: {
-                                show: true,
-                                name: {
-                                    show: false
-                                },
-                                value: {
-                                    show: true,
-                                    fontSize: "16px",
-                                    fontWeight: 600,
-                                    offsetY: 8
-                                }
-                            }
-                        }
-                    },
-                    colors: ['#0000FF'] // Gunakan warna-warna yang telah Anda definisikan
-                };
-
-                var chart = new ApexCharts(document.querySelector("#ctr"), options);
-                chart.render();
-            }, 'json');
-        }
+    //     cartInbound();
 
 
-        cartOutbound();
+    //     function cartInbound() {
 
-        function cartOutbound() {
+    //         $.post('getPresentaseInbound', {}, function(response) {
 
-            $.post('getPresentaseOutbound', {}, function(response) {
+    //             let data = response.data;
 
-                let data = response.data;
+    //             let presentase = Math.round(data.presentase);
 
-                let presentase = Math.round(data.presentase);
+    //             $('#spInboundProses').text(data.inbound_proses);
+    //             $('#spInboundComplete').text(data.inbound_complete);
+    //             $('#spInboundTotal').text(data.total_inbound);
 
-                $('#spOutboundProses').text(data.outbound_proses);
-                $('#spOutboundComplete').text(data.outbound_complete);
-                $('#spOutboundTotal').text(data.total_outbound);
+    //             $('#cartInbound').empty();
+    //             $('#cartInbound').html(`<div id="ctr" class="apex-charts"></div>`);
 
-                $('#cartOutbound').empty();
-                $('#cartOutbound').html(`<div id="ctro" class="apex-charts"></div>`);
+    //             var options = {
+    //                 series: [presentase],
+    //                 chart: {
+    //                     type: "radialBar",
+    //                     width: 105,
+    //                     sparkline: {
+    //                         enabled: true
+    //                     }
+    //                 },
+    //                 dataLabels: {
+    //                     enabled: false
+    //                 },
+    //                 plotOptions: {
+    //                     radialBar: {
+    //                         hollow: {
+    //                             margin: 0,
+    //                             size: "70%"
+    //                         },
+    //                         track: {
+    //                             margin: 1
+    //                         },
+    //                         dataLabels: {
+    //                             show: true,
+    //                             name: {
+    //                                 show: false
+    //                             },
+    //                             value: {
+    //                                 show: true,
+    //                                 fontSize: "16px",
+    //                                 fontWeight: 600,
+    //                                 offsetY: 8
+    //                             }
+    //                         }
+    //                     }
+    //                 },
+    //                 colors: ['#0000FF'] // Gunakan warna-warna yang telah Anda definisikan
+    //             };
 
-                var options = {
-                    series: [presentase],
-                    chart: {
-                        type: "radialBar",
-                        width: 105,
-                        sparkline: {
-                            enabled: true
-                        }
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    plotOptions: {
-                        radialBar: {
-                            hollow: {
-                                margin: 0,
-                                size: "70%"
-                            },
-                            track: {
-                                margin: 1
-                            },
-                            dataLabels: {
-                                show: true,
-                                name: {
-                                    show: false
-                                },
-                                value: {
-                                    show: true,
-                                    fontSize: "16px",
-                                    fontWeight: 600,
-                                    offsetY: 8
-                                }
-                            }
-                        }
-                    },
-                    colors: ['#FF5733'] // Gunakan warna-warna yang telah Anda definisikan
-                };
+    //             var chart = new ApexCharts(document.querySelector("#ctr"), options);
+    //             chart.render();
+    //         }, 'json');
+    //     }
 
-                var chart = new ApexCharts(document.querySelector("#ctro"), options);
-                chart.render();
-            }, 'json');
-        }
-    });
+
+    //     cartOutbound();
+
+    //     function cartOutbound() {
+
+    //         $.post('getPresentaseOutbound', {}, function(response) {
+
+    //             let data = response.data;
+
+    //             let presentase = Math.round(data.presentase);
+
+    //             $('#spOutboundProses').text(data.outbound_proses);
+    //             $('#spOutboundComplete').text(data.outbound_complete);
+    //             $('#spOutboundTotal').text(data.total_outbound);
+
+    //             $('#cartOutbound').empty();
+    //             $('#cartOutbound').html(`<div id="ctro" class="apex-charts"></div>`);
+
+    //             var options = {
+    //                 series: [presentase],
+    //                 chart: {
+    //                     type: "radialBar",
+    //                     width: 105,
+    //                     sparkline: {
+    //                         enabled: true
+    //                     }
+    //                 },
+    //                 dataLabels: {
+    //                     enabled: false
+    //                 },
+    //                 plotOptions: {
+    //                     radialBar: {
+    //                         hollow: {
+    //                             margin: 0,
+    //                             size: "70%"
+    //                         },
+    //                         track: {
+    //                             margin: 1
+    //                         },
+    //                         dataLabels: {
+    //                             show: true,
+    //                             name: {
+    //                                 show: false
+    //                             },
+    //                             value: {
+    //                                 show: true,
+    //                                 fontSize: "16px",
+    //                                 fontWeight: 600,
+    //                                 offsetY: 8
+    //                             }
+    //                         }
+    //                     }
+    //                 },
+    //                 colors: ['#FF5733'] // Gunakan warna-warna yang telah Anda definisikan
+    //             };
+
+    //             var chart = new ApexCharts(document.querySelector("#ctro"), options);
+    //             chart.render();
+    //         }, 'json');
+    //     }
+    // });
 </script>

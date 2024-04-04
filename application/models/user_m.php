@@ -67,7 +67,7 @@ class User_m extends CI_Model
         $this->db->select('a.id, a.fullname, a.username, a.role, b.role as role_name');
         $this->db->from('master_user a');
         $this->db->join('master_role b', 'b.id = a.role');
-        $this->db->where('a.is_deleted <> ', 'Y');
+        // $this->db->where('a.is_deleted <> ', 'Y');
         if ($username != null && $password != null) {
             $this->db->where('a.username', $username);
             $this->db->where('a.password', $password);

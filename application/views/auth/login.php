@@ -32,115 +32,76 @@
 <body>
 
     <!-- auth-page wrapper -->
-    <div class="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100">
-        <div class="bg-overlay"></div>
-        <!-- auth-page content -->
-        <div class="auth-page-content overflow-hidden pt-lg-5">
+    <div class="auth-page-wrapper pt-5">
+        <!-- auth page bg -->
+        <div class="auth-one-bg-position auth-one-bg" id="auth-particles">
+            <div class="bg-overlay"></div>
+
+            <div class="shape">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 120">
+                    <path d="M 0,36 C 144,53.6 432,123.2 720,124 C 1008,124.8 1296,56.8 1440,40L1440 140L0 140z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- auth page content -->
+        <div class="auth-page-content">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="card overflow-hidden">
-                            <div class="row g-0">
-                                <div class="col-lg-6">
-                                    <div class="swiper default-swiper rounded swiper-initialized swiper-horizontal swiper-backface-hidden">
-                                        <div class="swiper-wrapper" id="" aria-live="off">
-                                            <div class="swiper-slide swiper-slide-active" role="group" data-swiper-slide-index="1" style="width: 400px;">
-                                                <img src="<?= base_url('jar/html/default/') ?>assets/images/small/aerox.png" alt="" class="img-fluid">
-                                            </div>
-                                            <div class="swiper-slide swiper-slide-next" role="group" data-swiper-slide-index="2" style="width: 400px;">
-                                                <img src="<?= base_url('jar/html/default/') ?>assets/images/small/xsr.png" alt="" class="img-fluid">
-                                            </div>
-                                            <div class="swiper-slide swiper-slide-next" role="group" data-swiper-slide-index="2" style="width: 400px;">
-                                                <img src="<?= base_url('jar/html/default/') ?>assets/images/small/mxking.png" alt="" class="img-fluid">
-                                            </div>
-                                            <div class="swiper-slide swiper-slide-next" role="group" data-swiper-slide-index="3" style="width: 400px;">
-                                                <img src="<?= base_url('jar/html/default/') ?>assets/images/small/xmax.png" alt="" class="img-fluid">
-                                            </div>
-                                            <div class="swiper-slide swiper-slide-next" role="group" data-swiper-slide-index="0" style="width: 400px;">
-                                                <img src="<?= base_url('jar/html/default/') ?>assets/images/small/nmax.png" alt="" class="img-fluid">
-                                            </div>
-                                            <div class="swiper-slide swiper-slide-next" role="group" data-swiper-slide-index="0" style="width: 400px;">
-                                                <img src="<?= base_url('jar/html/default/') ?>assets/images/small/filano.png" alt="" class="img-fluid">
-                                            </div>
-                                        </div>
-                                        <!-- <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span> -->
-                                    </div>
-                                    <!-- <div class="p-lg-5 p-4 auth-one-bg h-100">
-                                        <div class="bg-overlay"></div>
-                                        <div class="position-relative h-100 d-flex flex-column">
-                                            <div class="mb-4">
-                                                <a href="index.html" class="d-block">
-                                                    <h3 class="text-white mb-1">
-                                                        <img id="logo" src="<?= base_url('jar/html/default/') ?>assets/images/yusen-kotak.jpg" alt="" height="60">
-                                                        <span style="text-decoration: underline;">Yamaha Motor Indonesia</span>
-                                                    </h3>
-                                                </a>
-                                            </div>
-                                            <div class="mt-auto">
-                                                
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                </div>
-                                <!-- end col -->
+                        <div class="text-center mt-sm-5 mb-4 text-white-50">
+                            <div>
+                                <a href="index.html" class="d-inline-block auth-logo">
+                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/logo-piaggio.png" alt="" height="150">
+                                </a>
+                            </div>
+                            <p class="mt-0 fs-15 fw-medium"></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
 
-                                <div class="col-lg-6">
-                                    <div class="p-lg-5 p-4">
-                                        <div>
-                                            <img id="logo" src="<?= base_url('jar/html/default/') ?>assets/images/small/yusen-logistics.png" alt="" height="50">
-                                            &nbsp;
-                                            <img id="logo" src="<?= base_url('jar/html/default/') ?>assets/images/small/yamaha-indonesia.png" alt="" height="70">
-                                            <!-- <h5 class="text-primary">Indonesia</h5> -->
-                                            <!-- <p class="text-muted">Indonesia.</p> -->
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6 col-xl-5">
+                        <div class="card mt-4">
+
+                            <div class="card-body p-4">
+                                <div class="text-center mt-2">
+                                    <h5 class="text-primary">Welcome !</h5>
+                                </div>
+                                <div class="p-2 mt-4">
+                                    <form id="loginForm">
+
+                                        <div class="mb-3">
+                                            <label for="username" class="form-label">Username</label>
+                                            <input type="text" class="form-control" id="username" placeholder="Enter username">
                                         </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label" for="password-input">Password</label>
+                                            <div class="position-relative auth-pass-inputgroup mb-3">
+                                                <input type="password" class="form-control pe-5 password-input" placeholder="Enter password" id="password">
+                                                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="submit" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                                            </div>
+                                        </div>
+
+
 
                                         <div class="mt-4">
-                                            <form id="loginForm">
-
-                                                <div class="mb-3">
-                                                    <label for="username" class="form-label">Username</label>
-                                                    <input type="text" class="form-control" id="username" placeholder="Enter username" autocomplete="off">
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="password-input">Password</label>
-                                                    <div class="position-relative auth-pass-inputgroup mb-3">
-                                                        <input type="password" class="form-control pe-5 password-input" placeholder="Enter password" id="password">
-                                                        <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
-                                                    </div>
-                                                </div>
-
-                                                <!-- <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
-                                                    <label class="form-check-label" for="auth-remember-check">Remember me</label>
-                                                </div> -->
-
-                                                <div class="mt-4">
-                                                    <button id="loginButton" class="btn btn-success w-100" type="submit">Sign In</button>
-                                                </div>
-
-                                                <div id="failedAlert" style="display: none;" class="mt-4">
-                                                    <div class="alert alert-danger mb-xl-0" role="alert">
-                                                        <strong> Login gagal! </strong> username atau password salah
-                                                    </div>
-                                                </div>
-
-                                            </form>
+                                            <button class="btn btn-success w-100" type="submit">Sign In</button>
                                         </div>
 
-                                        <div class="mt-5 text-center">
-                                            <!-- <p class="mb-0">Don't have an account ? <a href="auth-signup-cover.html" class="fw-semibold text-primary text-decoration-underline"> Signup</a> </p> -->
+                                        <div id="failedAlert" style="display: none;" class="mt-4">
+                                            <div class="alert alert-danger mb-xl-0" role="alert">
+                                                <strong> Login gagal! </strong> username atau password salah
+                                            </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
-                                <!-- end col -->
                             </div>
-                            <!-- end row -->
                         </div>
-                        <!-- end card -->
-                    </div>
-                    <!-- end col -->
 
+                    </div>
                 </div>
                 <!-- end row -->
             </div>
@@ -154,11 +115,11 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <!-- <p class="mb-0">&copy;
+                            <p class="mb-0 text-muted">&copy;
                                 <script>
                                     document.write(new Date().getFullYear())
-                                </script> Velzon. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand
-                            </p> -->
+                                </script> PT. Puninar Yusen Logistics
+                            </p>
                         </div>
                     </div>
                 </div>

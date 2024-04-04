@@ -283,12 +283,12 @@
                                 <span class="d-flex align-items-center">
                                     <img class="rounded-circle header-profile-user" src="<?= base_url('jar/html/default/') ?>assets/images/users/user-dummy-img.jpg" alt="Header Avatar">
                                     <span class="text-start ms-xl-2">
-                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?= $this->session->userdata('user_data')['username'] ?></span>
+                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?= $this->session->userdata('piaggio_auth')['username'] ?></span>
                                     </span>
                                 </span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <h6 class="dropdown-header">Welcome <?= $this->session->userdata('user_data')['username'] ?></h6>
+                                <h6 class="dropdown-header">Welcome <?= $this->session->userdata('piaggio_auth')['username'] ?></h6>
                                 <a id="logoutLink" class="dropdown-item" href="#"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
                             </div>
                         </div>
@@ -319,7 +319,7 @@
                     </span>
                     <span class="logo-lg">
                         <img style="border-radius: 10%; margin-top: -5px;" src="<?= base_url('jar/html/default/') ?>assets/images/yusen-kotak.jpg" alt="" height="40">
-                        &nbsp;<span style="color: white; font-size: 16px;"><strong>Yamaha Motor</strong></span>
+                        &nbsp;<span style="color: white; font-size: 16px;"><strong>Piaggio</strong></span>
                     </span>
                 </a>
                 <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">

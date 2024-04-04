@@ -3,7 +3,7 @@
 function is_not_logged_in()
 {
     $CI = &get_instance();
-    if (!$CI->session->userdata('user_data')) {
+    if (!$CI->session->userdata('piaggio_auth')) {
         redirect(base_url('auth/login'));
     }
 }
@@ -11,7 +11,7 @@ function is_not_logged_in()
 function is_logged_in()
 {
     $CI = &get_instance();
-    if ($CI->session->userdata('user_data')) {
+    if ($CI->session->userdata('piaggio_auth')) {
         redirect(base_url('dashboard'));
     }
 }
@@ -106,5 +106,5 @@ function currentDateTime()
 
 function userId()
 {
-    return $_SESSION['user_data']['user_id'];
+    return $_SESSION['piaggio_auth']['user_id'];
 }

@@ -29,7 +29,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 // exit;
 // $config['base_url'] = 'http://localhost:88/ymi';
 
-$config['base_url'] = "http://" . $_SERVER['HTTP_HOST'] . "/ymi";
+$config['base_url'] = "https://" . $_SERVER['HTTP_HOST'] . "/piagio";
 // print_r($config['base_url']);
 // die;
 

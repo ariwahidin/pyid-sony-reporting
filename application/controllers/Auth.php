@@ -28,7 +28,7 @@ class Auth extends CI_Controller
 				'username' => $login->row()->username,
 				'role' => $login->row()->role,
 			);
-			$this->session->set_userdata('user_data', $user_data);
+			$this->session->set_userdata('piaggio_auth', $user_data);
 			$response = array(
 				'success' => true
 			);
