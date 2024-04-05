@@ -115,15 +115,15 @@ class Maintenance_m extends CI_Model
                 if ($post['startDate'] != '' && $post['endDate'] != '') {
                     $startdate = $post['startDate'];
                     $enddate = $post['endDate'];
-                    $sql .= " WHERE CONVERT(DATE, created_at) between CONVERT(DATE, '$startdate')and CONVERT(DATE, '$enddate')";
+                    $sql .= " AND CONVERT(DATE, created_at) between CONVERT(DATE, '$startdate')and CONVERT(DATE, '$enddate')";
                 } else {
-                    $sql .= " WHERE CONVERT(DATE, created_at) = CONVERT(DATE, GETDATE())";
+                    $sql .= " AND CONVERT(DATE, created_at) = CONVERT(DATE, GETDATE())";
                 }
             }
 
             if (isset($post['idActivity'])) {
                 $id = $post['idActivity'];
-                $sql .= " WHERE a.id = '$id'";
+                $sql .= " AND a.id = '$id'";
             }
         }
 
