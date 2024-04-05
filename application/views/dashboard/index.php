@@ -16,7 +16,14 @@
         </div>
     </div>
 </div>
+
 <div class="row">
+    <div class="col-md-12">
+        <h5>Welcome, <?= $_SESSION['piaggio_auth']['fullname'] ?></h5>
+    </div>
+</div>
+
+<div style="display: none;" class="row">
     <div class="col-md-6">
         <div class="card card-animate overflow-hidden">
             <div class="card-header align-items-center d-flex">
@@ -83,7 +90,7 @@
     </div>
 </div>
 
-<div class="row project-wrapper">
+<div style="display: none;" class="row project-wrapper">
     <div class="col-xl-6">
         <div class="card">
             <div class="card-header align-items-center d-flex">

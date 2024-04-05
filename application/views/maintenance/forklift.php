@@ -35,8 +35,16 @@
     </div>
 </div>
 <div class="card">
-    <div class="card-header">
-        <button class="btn btn-primary" id="btnCreate">Create new task</button>
+    <div class="card-header d-flex">
+        <span style="padding-top: 8px;">Start Date : </span>&nbsp;
+        <input style="width: 160px;" type="date" class="form-control" id="startDate">
+        &nbsp;&nbsp;
+        <span style="padding-top: 8px;">End Date : </span>&nbsp;
+        <input style="width: 160px;" type="date" class="form-control" id="endDate">
+        &nbsp;&nbsp;
+        <button class="btn btn-success" id="btnExcel">Excel Summary</button>
+        &nbsp;&nbsp;
+        <button class="btn btn-primary" id="btnCreate">Create new</button>
     </div>
     <div class="card-body table-responsive" id="content">
     </div>
@@ -47,7 +55,7 @@
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-header p-3 bg-success-subtle">
-                <h5 class="modal-title" id="createTaskLabel">Create Activity Outbound</h5>
+                <h5 class="modal-title" id="createTaskLabel"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" id="createTaskBtn-close" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -122,6 +130,32 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalDetail" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header p-3 bg-success-subtle">
+                <h5 class="modal-title" id="">Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" id="createTaskBtn-close" aria-label="Close"></button>
+            </div>
+            <div class="modal-body table-responsive">
+
+                <div id="tblHeader"></div>
+                <br>
+                <div id="tblDetail"></div>
+
+
+            </div>
+            <div class="modal-footer">
+                <div class="hstack gap-2 justify-content-end">
+                    <button type="button" class="btn btn-ghost-success" data-bs-dismiss="modal"><i class="ri-close-fill align-bottom"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="<?= base_url() ?>myassets/js/exceljs.min.js"></script>
+
 <script>
     $(document).ready(function() {
 
@@ -137,6 +171,343 @@
             $('#proses').val('new_task');
             $('#createTask').modal('show');
         });
+
+        $('#btnExcel').on('click', downloadExcel);
+
+        $('#content').on('click', '.btnDetailExcel', function() {
+            let id = $(this).data('id');
+            $.post('getExcelDetail', {
+                    idActivity: id
+                },
+                function(response) {
+
+                    let dataHeader = response.header
+                    let dataDetail = response.detail
+
+                    startLoading();
+                    setTimeout(function() {
+                            stopLoading();
+                            let dataAct = dataHeader;
+                            let dataActDetail = dataDetail;
+
+                            var headers = Object.keys(dataAct[0]);
+                            var headers2 = Object.keys(dataActDetail[0]);
+                            var workbook = new ExcelJS.Workbook();
+
+                            var sheet1 = workbook.addWorksheet('HEADER');
+                            var sheet2 = workbook.addWorksheet('DETAIL');
+
+                            sheet1.addRow(headers).eachCell(function(row, rowNumber) {
+                                row.fill = {
+                                    type: 'pattern',
+                                    pattern: 'solid',
+                                    fgColor: {
+                                        argb: 'FFFF00'
+                                    }
+                                };
+                            });
+
+                            sheet2.addRow(headers2).eachCell(function(row, rowNumber) {
+                                row.fill = {
+                                    type: 'pattern',
+                                    pattern: 'solid',
+                                    fgColor: {
+                                        argb: 'FFFF00'
+                                    }
+                                };
+                            });
+
+                            // Menentukan lebar kolom berdasarkan isi
+                            sheet1.columns.forEach(function(column) {
+                                var maxLength = 0;
+                                column.eachCell(function(cell) {
+                                    var columnLength = cell.value ? cell.value.toString().length : 10;
+                                    if (columnLength > maxLength) {
+                                        maxLength = columnLength;
+                                    }
+                                });
+                                column.width = maxLength < 10 ? 10 : maxLength;
+                            });
+
+                            sheet2.columns.forEach(function(column) {
+                                var maxLength = 0;
+                                column.eachCell(function(cell) {
+                                    var columnLength = cell.value ? cell.value.toString().length : 10;
+                                    if (columnLength > maxLength) {
+                                        maxLength = columnLength;
+                                    }
+                                });
+                                column.width = maxLength < 10 ? 10 : maxLength;
+                            });
+
+                            // Menambahkan border ke seluruh tabel
+                            sheet1.eachRow(function(row) {
+                                row.eachCell(function(cell) {
+                                    cell.border = {
+                                        top: {
+                                            style: 'thin'
+                                        },
+                                        left: {
+                                            style: 'thin'
+                                        },
+                                        bottom: {
+                                            style: 'thin'
+                                        },
+                                        right: {
+                                            style: 'thin'
+                                        }
+                                    };
+                                });
+                            });
+
+                            sheet2.eachRow(function(row) {
+                                row.eachCell(function(cell) {
+                                    cell.border = {
+                                        top: {
+                                            style: 'thin'
+                                        },
+                                        left: {
+                                            style: 'thin'
+                                        },
+                                        bottom: {
+                                            style: 'thin'
+                                        },
+                                        right: {
+                                            style: 'thin'
+                                        }
+                                    };
+                                });
+                            });
+
+                            dataAct.forEach(function(row, ) {
+                                var rowData = headers.map(function(header) {
+                                    return row[header];
+                                });
+                                sheet1.addRow(rowData);
+                                // Menentukan lebar kolom berdasarkan isi
+                                sheet1.columns.forEach(function(column) {
+                                    var maxLength = 0;
+                                    column.eachCell(function(cell) {
+                                        var columnLength = cell.value ? cell.value.toString().length : 10;
+                                        if (columnLength > maxLength) {
+                                            maxLength = columnLength;
+                                        }
+                                    });
+                                    column.width = maxLength < 10 ? 10 : maxLength;
+                                });
+
+                                // Menambahkan border ke seluruh tabel
+                                sheet1.eachRow(function(row) {
+                                    row.eachCell(function(cell) {
+                                        cell.border = {
+                                            top: {
+                                                style: 'thin'
+                                            },
+                                            left: {
+                                                style: 'thin'
+                                            },
+                                            bottom: {
+                                                style: 'thin'
+                                            },
+                                            right: {
+                                                style: 'thin'
+                                            }
+                                        };
+                                    });
+                                });
+                            });
+
+                            dataActDetail.forEach(function(row, ) {
+                                var rowData = headers2.map(function(header) {
+                                    return row[header];
+                                });
+                                sheet2.addRow(rowData);
+                                // Menentukan lebar kolom berdasarkan isi
+                                sheet2.columns.forEach(function(column) {
+                                    var maxLength = 0;
+                                    column.eachCell(function(cell) {
+                                        var columnLength = cell.value ? cell.value.toString().length : 10;
+                                        if (columnLength > maxLength) {
+                                            maxLength = columnLength;
+                                        }
+                                    });
+                                    column.width = maxLength < 10 ? 10 : maxLength;
+                                });
+
+                                // Menambahkan border ke seluruh tabel
+                                sheet2.eachRow(function(row) {
+                                    row.eachCell(function(cell) {
+                                        cell.border = {
+                                            top: {
+                                                style: 'thin'
+                                            },
+                                            left: {
+                                                style: 'thin'
+                                            },
+                                            bottom: {
+                                                style: 'thin'
+                                            },
+                                            right: {
+                                                style: 'thin'
+                                            }
+                                        };
+                                    });
+                                });
+                            });
+
+                            workbook.xlsx.writeBuffer().then(function(buffer) {
+                                var blob = new Blob([buffer], {
+                                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                                });
+                                var url = window.URL.createObjectURL(blob);
+                                var a = document.createElement('a');
+                                a.href = url;
+                                a.download = 'DETAIL ACTIVITY.xlsx';
+                                document.body.appendChild(a);
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                            });
+                        },
+                        3000);
+                }, 'json');
+        })
+
+        $('#content').on('click', '.btnDetail', function() {
+            let id_activity = $(this).data('id');
+            let dataToPost = {
+                idActivity: id_activity
+            }
+            $.post('getItemDetail', dataToPost, function(response) {
+                if (response.success == true) {
+
+                    let tblHeader = $('#tblHeader');
+                    tblHeader.empty();
+                    tblHeader.html(response.table_header);
+
+
+                    let divTable = $('#tblDetail');
+                    divTable.empty();
+                    divTable.html(response.table_detail);
+                    $('#modalDetail').modal('show');
+                }
+            }, 'json');
+        })
+
+        function downloadExcel() {
+            startLoading();
+            setTimeout(async function() {
+                    stopLoading();
+                    let startDate = $('#startDate').val().trim();
+                    let endDate = $('#endDate').val().trim();
+                    let dataToPost = {
+                        startDate: startDate,
+                        endDate: endDate
+                    }
+                    let dataAct = await $.post('getDataExcel', dataToPost, function() {}, 'json');
+
+                    // console.log(dataAct);
+                    // return
+
+                    var headers = Object.keys(dataAct.data[0]);
+                    var workbook = new ExcelJS.Workbook();
+
+                    var sheet1 = workbook.addWorksheet('Sheet 1');
+
+                    sheet1.addRow(headers).eachCell(function(row, rowNumber) {
+                        row.fill = {
+                            type: 'pattern',
+                            pattern: 'solid',
+                            fgColor: {
+                                argb: 'FFFF00'
+                            }
+                        };
+                    });
+
+                    // Menentukan lebar kolom berdasarkan isi
+                    sheet1.columns.forEach(function(column) {
+                        var maxLength = 0;
+                        column.eachCell(function(cell) {
+                            var columnLength = cell.value ? cell.value.toString().length : 10;
+                            if (columnLength > maxLength) {
+                                maxLength = columnLength;
+                            }
+                        });
+                        column.width = maxLength < 10 ? 10 : maxLength;
+                    });
+
+                    // Menambahkan border ke seluruh tabel
+                    sheet1.eachRow(function(row) {
+                        row.eachCell(function(cell) {
+                            cell.border = {
+                                top: {
+                                    style: 'thin'
+                                },
+                                left: {
+                                    style: 'thin'
+                                },
+                                bottom: {
+                                    style: 'thin'
+                                },
+                                right: {
+                                    style: 'thin'
+                                }
+                            };
+                        });
+                    });
+
+                    dataAct.data.forEach(function(row, ) {
+                        var rowData = headers.map(function(header) {
+                            return row[header];
+                        });
+                        sheet1.addRow(rowData);
+                        // Menentukan lebar kolom berdasarkan isi
+                        sheet1.columns.forEach(function(column) {
+                            var maxLength = 0;
+                            column.eachCell(function(cell) {
+                                var columnLength = cell.value ? cell.value.toString().length : 10;
+                                if (columnLength > maxLength) {
+                                    maxLength = columnLength;
+                                }
+                            });
+                            column.width = maxLength < 10 ? 10 : maxLength;
+                        });
+
+                        // Menambahkan border ke seluruh tabel
+                        sheet1.eachRow(function(row) {
+                            row.eachCell(function(cell) {
+                                cell.border = {
+                                    top: {
+                                        style: 'thin'
+                                    },
+                                    left: {
+                                        style: 'thin'
+                                    },
+                                    bottom: {
+                                        style: 'thin'
+                                    },
+                                    right: {
+                                        style: 'thin'
+                                    }
+                                };
+                            });
+                        });
+                    });
+
+                    workbook.xlsx.writeBuffer().then(function(buffer) {
+                        var blob = new Blob([buffer], {
+                            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        });
+                        var url = window.URL.createObjectURL(blob);
+                        var a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'SUMMARY ACTIVITY.xlsx';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    });
+                },
+                3000);
+        }
 
         //     function initWebSocket() {
         //         let hostname = window.location.hostname;
@@ -213,7 +584,23 @@
         getActivity()
 
         function getActivity() {
-            $.post('getActivity', {}, function(response) {
+            var today = new Date().toISOString().split('T')[0];
+            if ($('#startDate').val() == '') {
+                $('#startDate').val(today)
+            }
+
+            if ($('#endDate').val() == '') {
+                $('#endDate').val(today)
+            }
+
+            let startDate = $('#startDate').val().trim();
+            let endDate = $('#endDate').val().trim();
+            let dataToPost = {
+                startDate: startDate,
+                endDate: endDate
+            }
+
+            $.post('getActivity', dataToPost, function(response) {
                 let content = $('#content');
                 content.empty();
                 content.html(response)
@@ -327,20 +714,33 @@
             }, 'json');
         })
 
-        //     $('#content').on('click', '.btnDelete', function() {
-        //         startLoading();
-        //         let id = $(this).data('id');
-        //         $.post('deleteOut', {
-        //             id: id
-        //         }, function(response) {
-        //             stopLoading();
-        //             if (response.success == true) {
-        //                 getAllRowTask();
-        //                 socket.send('ping');
-        //             }
-        //         }, 'json');
+        $('#content').on('click', '.btnDelete', function() {
+            // startLoading();
+            let id = $(this).data('id');
 
-        //     });
+            Swal.fire({
+                icon: "question",
+                title: "Do you want to delete this data?",
+                showCancelButton: true,
+                confirmButtonText: "Yes!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Swal.fire("Saved!", "", "success");
+                    $.post('deleteActivity', {
+                        id: id
+                    }, function(response) {
+                        // stopLoading();
+                        if (response.success == true) {
+                            getActivity();
+                            //     getAllRowTask();
+                            //     socket.send('ping');
+                        }
+                    }, 'json');
+                }
+            });
+
+
+        });
 
         //     $('#content').on('click', '.btnActivity', function() {
         //         startLoading();

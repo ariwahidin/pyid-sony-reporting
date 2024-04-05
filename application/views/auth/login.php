@@ -4,10 +4,9 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Sign In | Yamaha Motor</title>
+    <title>Sign In | Piaggio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Yamaha Motor Indonesia" name="description" />
-    <meta content="Themesbrand" name="author" />
+    <meta content="Piaggio" name="description" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?= base_url('jar/html/default/') ?>assets/images/yusen-kotak.jpg">
     <!--Swiper slider css-->
@@ -52,7 +51,11 @@
                         <div class="text-center mt-sm-5 mb-4 text-white-50">
                             <div>
                                 <a href="index.html" class="d-inline-block auth-logo">
-                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/logo-piaggio.png" alt="" height="150">
+                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/Piaggio-Logo.png" alt="" height="80">
+                                </a>
+                                &nbsp;
+                                <a href="index.html" class="d-inline-block auth-logo">
+                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/yusen-logistics.png" alt="" height="80">
                                 </a>
                             </div>
                             <p class="mt-0 fs-15 fw-medium"></p>
@@ -67,7 +70,7 @@
 
                             <div class="card-body p-4">
                                 <div class="text-center mt-2">
-                                    <h5 class="text-primary">Welcome !</h5>
+                                    <h5 class="text-primary">Login to your account with username and password</h5>
                                 </div>
                                 <div class="p-2 mt-4">
                                     <form id="loginForm">
@@ -88,7 +91,7 @@
 
 
                                         <div class="mt-4">
-                                            <button class="btn btn-success w-100" type="submit">Sign In</button>
+                                            <button class="btn btn-success w-100" type="submit">Log In</button>
                                         </div>
 
                                         <div id="failedAlert" style="display: none;" class="mt-4">

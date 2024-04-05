@@ -9,7 +9,8 @@ class Maintenance_m extends CI_Model
             'hour_start' => $post['meter_start'],
             'hour_end' => $post['meter_finish'],
             'created_at' => currentDateTime(),
-            'created_by' => userId()
+            'created_by' => userId(),
+            'is_deleted' => 'N'
         );
 
         $this->db->insert('activity_h', $params_h);
@@ -95,7 +96,7 @@ class Maintenance_m extends CI_Model
         }
     }
 
-    function getActivity()
+    function getActivity($post = null)
     {
         $sql = "select a.id, b.name as forklift, hour_start, hour_end,item_check, item_good, item_not_good,
         c.fullname as created_by, a.created_at
@@ -107,8 +108,39 @@ class Maintenance_m extends CI_Model
         (select count(is_good) from activity_d WHERE is_good = 'Y' and id_activity = a.id_activity) as item_good,
         (select count(is_good) from activity_d WHERE is_good = 'N' and id_activity = a.id_activity) as item_not_good
         from activity_d a
-        group by id_activity)d on d.id_activity = a.id
-        order by a.id DESC";
+        group by id_activity)d on d.id_activity = a.id WHERE a.is_deleted <> 'Y'";
+
+        if ($post != null) {
+            if (isset($post['starDate']) && isset($post['endDate'])) {
+                if ($post['startDate'] != '' && $post['endDate'] != '') {
+                    $startdate = $post['startDate'];
+                    $enddate = $post['endDate'];
+                    $sql .= " WHERE CONVERT(DATE, created_at) between CONVERT(DATE, '$startdate')and CONVERT(DATE, '$enddate')";
+                } else {
+                    $sql .= " WHERE CONVERT(DATE, created_at) = CONVERT(DATE, GETDATE())";
+                }
+            }
+
+            if (isset($post['idActivity'])) {
+                $id = $post['idActivity'];
+                $sql .= " WHERE a.id = '$id'";
+            }
+        }
+
+
+        $sql .= " order by a.id DESC";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    function getItemDetail($idActivity)
+    {
+        $sql = "select b.name as [ITEM CHECKED], CASE WHEN a.is_good = 'Y' THEN 'GOOD' ELSE 'NOT GOOD' END AS CONDITION, 
+        a.[desc] AS [DESCRIPTION], 
+        CONVERT(DATE, a.created_at) as [DATE], c.fullname as [PIC] from activity_d a 
+        inner join master_item_check b on  a.id_item_check = b.id
+        inner join master_user c on c.id  = a.created_by
+        WHERE a.id_activity = '$idActivity'";
         $query = $this->db->query($sql);
         return $query;
     }
@@ -121,5 +153,11 @@ class Maintenance_m extends CI_Model
     function getHeader($id)
     {
         return $this->db->get_where('activity_h', ['id' => $id]);
+    }
+
+    function deleteActivity($id, $params)
+    {
+        $this->db->where(['id' => $id]);
+        $this->db->update('activity_h', $params);
     }
 }

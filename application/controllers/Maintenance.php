@@ -84,4 +84,122 @@ class Maintenance extends CI_Controller
         }
         echo json_encode($response);
     }
+
+    public function getDataExcel()
+    {
+        $post = $this->input->post();
+        $rows = $this->maintenance_m->getActivity($post)->result();
+        $dataExcel = array();
+        $no = 1;
+        foreach ($rows as $val) {
+            $row = array();
+            $row['NO'] = $no++;
+            $row['PIC'] = $val->created_by;
+            $row['FORKLIFT'] = $val->forklift;
+            $row['START HOURS'] = $val->hour_start;
+            $row['FINISH HOURS'] = $val->hour_end;
+            $row['ITEM CHECKED'] = $val->item_check;
+            $row['GOOD ITEM'] = $val->item_good;
+            $row['NOT GOOD ITEM'] = $val->item_not_good;
+            $row['DATE'] = date('Y-m-d H:i:s', strtotime($val->created_at));
+            array_push($dataExcel, $row);
+        }
+
+        // var_dump($dataExcel);
+
+        // exit;
+
+        $data = array(
+            'success' => true,
+            'data' => $dataExcel
+        );
+        echo json_encode($data);
+    }
+
+    public function getExcelDetail()
+    {
+        $post = $this->input->post();
+        $id = $post['idActivity'];
+
+
+        $rows = $this->maintenance_m->getActivity($post)->result();
+        $dataExcelHeader = array();
+        $no = 1;
+        foreach ($rows as $val) {
+            $row = array();
+            $row['NO'] = $no++;
+            $row['PIC'] = $val->created_by;
+            $row['FORKLIFT'] = $val->forklift;
+            $row['START HOURS'] = $val->hour_start;
+            $row['FINISH HOURS'] = $val->hour_end;
+            $row['ITEM CHECKED'] = $val->item_check;
+            $row['GOOD ITEM'] = $val->item_good;
+            $row['NOT GOOD ITEM'] = $val->item_not_good;
+            $row['DATE'] = date('Y-m-d', strtotime($val->created_at));
+            array_push($dataExcelHeader, $row);
+        }
+
+        $detail = $this->maintenance_m->getItemDetail($id)->result();
+        $dataExcelDetail = array();
+        $no = 1;
+        foreach ($detail as $val) {
+            $row = array();
+            $row['NO'] = $no++;
+            $row['ITEM CHECKED'] = $val->{'ITEM CHECKED'};
+            $row['CONDITION'] = $val->{'CONDITION'};
+            $row['DESCRIPTION'] = $val->{'DESCRIPTION'};
+            $row['DATE'] = $val->{'DATE'};
+            $row['PIC'] = $val->{'PIC'};
+            array_push($dataExcelDetail, $row);
+        }
+
+        $data = array(
+            'success' => true,
+            'header' => $dataExcelHeader,
+            'detail' => $dataExcelDetail
+        );
+        echo json_encode($data);
+    }
+
+    public function getItemDetail()
+    {
+        $post = $this->input->post();
+        $id = $post['idActivity'];
+        $detail = $this->maintenance_m->getItemDetail($id);
+        $data = array(
+            'activity' => $this->maintenance_m->getActivity($post),
+            'item' => $detail
+        );
+        $response = array(
+            'success' => true,
+            'item' => $detail->result(),
+            'table_header' =>  $this->load->view('maintenance/table_activity_header', $data, true),
+            'table_detail' => $this->load->view('maintenance/table_detail', $data, true)
+        );
+        echo json_encode($response);
+    }
+
+    public function deleteActivity()
+    {
+        $post = $this->input->post();
+        $id = $post['id'];
+        $params = array(
+            'deleted_at' => currentDateTime(),
+            'deleted_by' => userId(),
+            'is_deleted' => 'Y'
+        );
+        $this->maintenance_m->deleteActivity($id, $params);
+        if ($this->db->affected_rows() > 0) {
+            $response = array(
+                'success' => true,
+                'message' => 'Delete data is successfully'
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => 'Failed deleting data'
+            );
+        }
+        echo json_encode($response);
+    }
 }

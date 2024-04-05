@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="<?= ($this->uri->segment(1) == 'dashboard' && $this->uri->segment(2) == 'index') ? 'sm' : 'lg' ?>" data-sidebar-image="none" data-preloader="disable">
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="<?= ($this->uri->segment(1) == '' && $this->uri->segment(2) == 'index') ? 'sm' : 'lg' ?>" data-sidebar-image="none" data-preloader="disable">
 
 <head>
 
