@@ -3,12 +3,12 @@
         <tr>
             <th scope="col">NO.</th>
             <th scope="col">FORKLIFT</th>
+            <th scope="col">PIC</th>
             <th scope="col">HOURS START</th>
             <th scope="col">HOURS FINISH</th>
             <th scope="col">ITEM</th>
             <th scope="col">GOOD</th>
             <th scope="col">NOT GOOD</th>
-            <th scope="col">PIC</th>
             <th scope="col">DATE</th>
             <th scope="col">ACTION</th>
         </tr>
@@ -19,14 +19,14 @@
         foreach ($activity->result() as $data) {
         ?>
             <tr>
-                <td><?= $no++ ?></td>
+                <td style="white-space: nowrap;"><?= $no++ ?></td>
                 <td><?= $data->forklift ?></td>
+                <td style="white-space: nowrap;"><?= $data->created_by ?></td>
                 <td><?= $data->hour_start ?></td>
                 <td><?= $data->hour_end ?></td>
                 <td><?= $data->item_check ?></td>
                 <td><?= $data->item_good ?></td>
                 <td><?= $data->item_not_good ?></td>
-                <td><?= $data->created_by ?></td>
                 <td><?= date('Y-m-d H:i:s', strtotime($data->created_at)) ?></td>
                 <td style="white-space: nowrap;">
                     <button class="btn btn-sm btn-success btnDetailExcel" data-id="<?= $data->id ?>">Excel</button>
