@@ -3,7 +3,6 @@
 <link href="<?= base_url() ?>myassets/css/responsive.dataTables.css" rel="stylesheet" />
 <link href="<?= base_url() ?>myassets/css/rowReorder.dataTables.css" rel="stylesheet" />
 <script src="<?= base_url() ?>myassets/js/jquery-3.7.0.js"></script>
-<<<<<<< HEAD
 <script src="<?= base_url() ?>myassets/js/jquery.dataTables.min.js"></script>
 
 <style>
@@ -21,14 +20,6 @@
     }
 </style>
 
-=======
-<script src="<?= base_url() ?>myassets/js/dataTables.js"></script>
-<!-- <script src="<?= base_url() ?>myassets/js/jquery.dataTables.min.js"></script> -->
-<script src="<?= base_url() ?>myassets/js/dataTables.rowReorder.js"></script>
-<script src="<?= base_url() ?>myassets/js/rowReorder.dataTables.js"></script>
-<script src="<?= base_url() ?>myassets/js/dataTables.responsive.js"></script>
-<script src="<?= base_url() ?>myassets/js/responsive.dataTables.js"></script>
->>>>>>> 8ea89d881beee10dfd06287c49ea8a8e1cb6ab35
 <div class="row">
     <div class="col-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
