@@ -231,7 +231,7 @@
 
             let videoMode = true;
 
-            if (checkDeviceType == 'mobile') {
+            if (checkDeviceType() == 'mobile') {
                 videoMode = {
                     facingMode: {
                         exact: cameraMode
