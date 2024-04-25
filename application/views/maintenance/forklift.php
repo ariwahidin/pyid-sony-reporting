@@ -155,6 +155,10 @@
                     <div class="mb-2 row">
                         <div class="form-group">
                             <div id="videoContainer"></div>
+                            <select id="cameraSelect">
+                                <option value="user">Kamera Depan</option>
+                                <option value="environment">Kamera Belakang</option>
+                            </select>
                             <button type="button" id="startCamera">Mulai Kamera</button>
                             <button type="button" id="capturePhoto">Ambil Foto</button>
                         </div>
@@ -205,17 +209,22 @@
         var videoStream;
 
         $("#startCamera").click(function() {
-            startCamera();
+            var selectedCamera = $("#cameraSelect").val();
+            startCamera(selectedCamera);
         });
 
         $("#capturePhoto").click(function() {
             capturePhoto();
         });
 
-        function startCamera() {
+        function startCamera(cameraMode) {
             $("#videoContainer").empty();
             navigator.mediaDevices.getUserMedia({
-                    video: true
+                    video: {
+                        facingMode: {
+                            exact: cameraMode
+                        }
+                    }
                 })
                 .then(function(stream) {
                     videoStream = stream;
@@ -702,7 +711,7 @@
                 content.empty();
                 content.html(response)
                 $('#tableCompleteActivities').DataTable({
-                    sort : false,
+                    sort: false,
                     responsive: true,
                     paging: false,
                     rowReorder: true,
@@ -712,7 +721,7 @@
                     //     visible: false, // Atur menjadi false untuk menyembunyikan kolom pada layar kecil
                     // }],
                     rowReorder: {
-                    selector: 'td:nth-child(2)'
+                        selector: 'td:nth-child(2)'
                     }
                 });
             });

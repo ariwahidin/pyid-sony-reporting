@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'AW\Ari',
+	// 'hostname' => 'AW\Ari',
 	// 'username' => 'ari',
 	// 'password' => '@Aw18051995',
 	// 'database' => 'DB_YMI_15',
@@ -83,7 +83,7 @@ $db['default'] = array(
 	// 'username' => 'PY-ID907',
 	// 'password' => '@PYID907',
 	// 'database' => 'DB_YMI_15',
-	// 'hostname' => 'PYIDIT-NB13\MSSQLSERVER01',
+	'hostname' => 'PYIDIT-NB13\MSSQLSERVER01',
 	'username' => 'PY-ID907',
 	'password' => '@PYID907',
 	'database' => 'DB_PIAGIO',
