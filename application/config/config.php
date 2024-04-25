@@ -27,9 +27,16 @@ defined('BASEPATH') or exit('No direct script access allowed');
 // exit;
 
 // exit;
-$config['base_url'] = 'http://localhost:82/piaggio';
+// $config['base_url'] = 'http://localhost:82/piaggio';
 
-// $config['base_url'] = "http://" . $_SERVER['HTTP_HOST'] . "/piaggio";
+$host = $_SERVER['HTTP_HOST'];
+
+$protocol = "http://";
+if ($host == "laracv.com") {
+    $protocol = "https://";
+}
+
+$config['base_url'] = $protocol . $_SERVER['HTTP_HOST'] . "/piaggio";
 // print_r($config['base_url']);
 // die;
 

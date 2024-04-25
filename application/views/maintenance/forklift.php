@@ -1,6 +1,22 @@
 <link href="<?= base_url() ?>myassets/css/jquery.dataTables.min.css" rel="stylesheet" />
 <script src="<?= base_url() ?>myassets/js/jquery-3.7.0.js"></script>
 <script src="<?= base_url() ?>myassets/js/jquery.dataTables.min.js"></script>
+
+<style>
+    #videoContainer {
+        width: 300px;
+        height: 300px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    video {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
 <div class="row">
     <div class="col-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -120,6 +136,14 @@
                         <hr class="mt-3 mb-1">
                     </div>
 
+                    <div class="mb-2 row">
+                        <div class="form-group">
+                            <div id="videoContainer"></div>
+                            <button type="button" id="startCamera">Mulai Kamera</button>
+                            <button type="button" id="capturePhoto">Ambil Foto</button>
+                        </div>
+                    </div>
+
                     <div class="hstack gap-2 justify-content-end">
                         <button type="button" class="btn btn-ghost-success" data-bs-dismiss="modal"><i class="ri-close-fill align-bottom"></i> Close</button>
                         <button type="submit" class="btn btn-primary" id="btnTask">Create</button>
@@ -158,6 +182,63 @@
 
 <script>
     $(document).ready(function() {
+
+
+        // Start Foto
+
+        var videoStream;
+
+        $("#startCamera").click(function() {
+            startCamera();
+        });
+
+        $("#capturePhoto").click(function() {
+            capturePhoto();
+        });
+
+        function startCamera() {
+            $("#videoContainer").empty();
+            navigator.mediaDevices.getUserMedia({
+                    video: true
+                })
+                .then(function(stream) {
+                    videoStream = stream;
+                    var video = $("<video autoplay playsinline></video>");
+                    video.appendTo("#videoContainer");
+                    video.get(0).srcObject = stream;
+                })
+                .catch(function(error) {
+                    console.error("Gagal mengakses kamera:", error);
+                    alert("Gagal mengakses kamera. Pastikan izin kamera diizinkan.");
+                });
+        }
+
+        function capturePhoto() {
+            var canvas = $("<canvas></canvas>").get(0);
+            canvas.width = 300;
+            canvas.height = 300;
+            var context = canvas.getContext("2d");
+
+            context.drawImage($("video").get(0), 0, 0, 300, 300);
+            var photoDataUrl = canvas.toDataURL("image/png");
+
+            // Simpan atau tampilkan foto yang diambil
+            // Di sini Anda bisa melakukan AJAX request untuk mengunggah foto ke server, atau menampilkan foto di halaman web
+            $("#videoContainer").empty();
+            $("<img>").attr("src", photoDataUrl).appendTo("#videoContainer");
+
+            // Hentikan akses kamera
+            stopCamera();
+        }
+
+        function stopCamera() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(function(track) {
+                    track.stop();
+                });
+            }
+        }
+        // End Foto
 
         //     var socket;
         //     getAllRowTask();
