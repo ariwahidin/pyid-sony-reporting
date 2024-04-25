@@ -217,14 +217,30 @@
             capturePhoto();
         });
 
+        function checkDeviceType() {
+            // Deteksi apakah perangkat memiliki layar lebar (desktop) atau tidak (perangkat seluler)
+            var deviceType = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? "mobile" : "desktop";
+
+            // Tampilkan hasil deteksi
+            // alert("Tipe perangkat: " + deviceType);
+            return deviceType;
+        }
+
         function startCamera(cameraMode) {
             $("#videoContainer").empty();
-            navigator.mediaDevices.getUserMedia({
-                    video: {
-                        facingMode: {
-                            exact: cameraMode
-                        }
+
+            let videoMode = true;
+
+            if (checkDeviceType == 'mobile') {
+                videoMode = {
+                    facingMode: {
+                        exact: cameraMode
                     }
+                }
+            }
+
+            navigator.mediaDevices.getUserMedia({
+                    video: videoMode
                 })
                 .then(function(stream) {
                     videoStream = stream;
