@@ -768,6 +768,7 @@
 
         $('#creatask').on('submit', function(e) {
             e.preventDefault();
+            startLoading();
             let form = new FormData(this);
             form.append('photo', photoDataUrl);
 
@@ -782,6 +783,7 @@
                     contentType: false,
                     dataType: 'JSON',
                     success: function(response) {
+                        stopLoading();
                         if (response.success == true) {
                             getActivity();
                             // socket.send('ping');
@@ -805,6 +807,7 @@
                     contentType: false,
                     dataType: 'JSON',
                     success: function(response) {
+                        stopLoading();
                         if (response.success == true) {
                             getActivity();
                             Swal.fire({

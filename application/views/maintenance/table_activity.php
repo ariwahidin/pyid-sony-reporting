@@ -1,4 +1,4 @@
-<table style="font-size: 12px;" class="table table-bordered table-striped align-middle mb-0" id="tableCompleteActivities">
+<table style="font-size: 12px;" class="table table-responsive table-nowrap table-bordered table-striped align-middle mb-0" id="tableCompleteActivities">
     <thead>
         <tr>
             <th scope="col">NO.</th>
