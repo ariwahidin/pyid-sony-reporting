@@ -1,5 +1,9 @@
-<link href="<?= base_url() ?>myassets/css/jquery.dataTables.min.css" rel="stylesheet" />
+<!-- <link href="<?= base_url() ?>myassets/css/jquery.dataTables.min.css" rel="stylesheet" /> -->
+<link href="<?= base_url() ?>myassets/css/dataTables.dataTables.css" rel="stylesheet" />
+<link href="<?= base_url() ?>myassets/css/responsive.dataTables.css" rel="stylesheet" />
+<link href="<?= base_url() ?>myassets/css/rowReorder.dataTables.css" rel="stylesheet" />
 <script src="<?= base_url() ?>myassets/js/jquery-3.7.0.js"></script>
+<<<<<<< HEAD
 <script src="<?= base_url() ?>myassets/js/jquery.dataTables.min.js"></script>
 
 <style>
@@ -17,6 +21,14 @@
     }
 </style>
 
+=======
+<script src="<?= base_url() ?>myassets/js/dataTables.js"></script>
+<!-- <script src="<?= base_url() ?>myassets/js/jquery.dataTables.min.js"></script> -->
+<script src="<?= base_url() ?>myassets/js/dataTables.rowReorder.js"></script>
+<script src="<?= base_url() ?>myassets/js/rowReorder.dataTables.js"></script>
+<script src="<?= base_url() ?>myassets/js/dataTables.responsive.js"></script>
+<script src="<?= base_url() ?>myassets/js/responsive.dataTables.js"></script>
+>>>>>>> 8ea89d881beee10dfd06287c49ea8a8e1cb6ab35
 <div class="row">
     <div class="col-12">
         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -34,13 +46,11 @@
     </div>
 </div>
 
-<div class="row mb-3 pb-1">
+<div class="row">
     <div class="col-12">
         <div class="d-flex align-items-lg-center flex-lg-row flex-column">
             <div class="flex-grow-1">
                 <h4 class="card-title mb-0 flex-grow-1"><strong id="clock"></strong></h4>
-                <!-- <h4 class="fs-16 mb-1">Hi , <?= $_SESSION['piaggio_auth']['fullname'] ?></h4> -->
-                <!-- <p class="text-muted mb-0">This is a task that you must complete.</p> -->
             </div>
             <?php if ($_SESSION['piaggio_auth']['role'] != 4) { ?>
                 <div class="mt-3 ms-3 mt-lg-0">
@@ -51,16 +61,31 @@
     </div>
 </div>
 <div class="card">
-    <div class="card-header d-flex">
-        <span style="padding-top: 8px;">Start Date : </span>&nbsp;
-        <input style="width: 160px;" type="date" class="form-control" id="startDate">
-        &nbsp;&nbsp;
-        <span style="padding-top: 8px;">End Date : </span>&nbsp;
-        <input style="width: 160px;" type="date" class="form-control" id="endDate">
-        &nbsp;&nbsp;
-        <button class="btn btn-success" id="btnExcel">Excel Summary</button>
-        &nbsp;&nbsp;
-        <button class="btn btn-primary" id="btnCreate">Create new</button>
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row d-flex mb-1">
+                    <div class="col-6">
+                        <span>Start Date : </span>
+                        <input type="date" class="form-control-sm" id="startDate">
+                    </div>
+                    <div class="col-6">
+                        <span>End Date : </span>
+                        <input type="date" class="form-control-sm" id="endDate">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row d-flex">
+                    <div class="col-12 col-md-6">
+                        <button class="btn btn-sm btn-success" id="btnExcel">Excel Summary</button>
+                        <button class="btn btn-sm btn-primary" id="btnCreate">Create new</button>
+                    </div>
+                    <div class="col-6">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="card-body table-responsive" id="content">
     </div>
@@ -685,7 +710,20 @@
                 let content = $('#content');
                 content.empty();
                 content.html(response)
-                $('#tableCompleteActivities').DataTable();
+                $('#tableCompleteActivities').DataTable({
+                    sort : false,
+                    responsive: true,
+                    paging: false,
+                    rowReorder: true,
+                    scrollY: 300,
+                    // columnDefs: [{
+                    //     targets: [1, 2], // Indeks kolom yang ingin Anda atur
+                    //     visible: false, // Atur menjadi false untuk menyembunyikan kolom pada layar kecil
+                    // }],
+                    rowReorder: {
+                    selector: 'td:nth-child(2)'
+                    }
+                });
             });
         }
 
