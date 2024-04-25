@@ -8,6 +8,7 @@ class Maintenance extends CI_Controller
         parent::__construct();
         $this->load->model(['item_forklift_m', 'maintenance_m', 'forklift_m']);
         is_not_logged_in();
+        $this->load->helper(array('form', 'url'));
     }
 
     public function render($view, array $data = null)
@@ -52,6 +53,20 @@ class Maintenance extends CI_Controller
     public function createMaintenance()
     {
         $post = $this->input->post();
+
+        // Dapatkan data gambar dari permintaan POST
+        $photoDataUrl = $post['photo']; // Ini akan berisi URL data gambar dalam format base64
+
+        // Decode URL base64 menjadi data biner
+        $photoData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $photoDataUrl));
+
+        // Simpan data gambar ke file di server
+        $filename = 'nama_file.jpg'; // Ubah sesuai kebutuhan Anda
+        $file_path = './uploads/' . $filename;
+        file_put_contents($file_path, $photoData);
+
+        die;
+
         $this->maintenance_m->createActivity($post);
         if ($this->db->affected_rows() > 0) {
             $response = array(

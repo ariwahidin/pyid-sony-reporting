@@ -207,6 +207,7 @@
         // Start Foto
 
         var videoStream;
+        var photoDataUrl = null;
 
         $("#startCamera").click(function() {
             var selectedCamera = $("#cameraSelect").val();
@@ -261,7 +262,7 @@
             var context = canvas.getContext("2d");
 
             context.drawImage($("video").get(0), 0, 0, 300, 300);
-            var photoDataUrl = canvas.toDataURL("image/png");
+            photoDataUrl = canvas.toDataURL("image/png");
 
             // Simpan atau tampilkan foto yang diambil
             // Di sini Anda bisa melakukan AJAX request untuk mengunggah foto ke server, atau menampilkan foto di halaman web
@@ -746,6 +747,9 @@
         $('#creatask').on('submit', function(e) {
             e.preventDefault();
             let form = new FormData(this);
+            form.append('photo', photoDataUrl);
+
+
             let proses = $('#proses').val();
             if (proses === 'new_task') {
                 $.ajax({
