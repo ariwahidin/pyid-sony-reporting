@@ -45,7 +45,8 @@ class Maintenance extends CI_Controller
         $response = array(
             'success' => true,
             'header' => $header->row(),
-            'detail' => $detail->result()
+            'detail' => $detail->result(),
+            'photo' => $this->db->get_where('activity_img', ['activity_id' => $id])->row()
         );
         echo json_encode($response);
     }
@@ -54,20 +55,41 @@ class Maintenance extends CI_Controller
     {
         $post = $this->input->post();
 
-        // Dapatkan data gambar dari permintaan POST
-        $photoDataUrl = $post['photo']; // Ini akan berisi URL data gambar dalam format base64
+        // var_dump($post['photo']);
+        // die;
 
-        // Decode URL base64 menjadi data biner
-        $photoData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $photoDataUrl));
 
-        // Simpan data gambar ke file di server
-        $filename = 'nama_file.jpg'; // Ubah sesuai kebutuhan Anda
-        $file_path = './uploads/' . $filename;
-        file_put_contents($file_path, $photoData);
+        $saveData = $this->maintenance_m->createActivity($post);
 
-        die;
+        if ($saveData['success'] == true) {
 
-        $this->maintenance_m->createActivity($post);
+            $id = $saveData['id'];
+            // Dapatkan data gambar dari permintaan POST
+            $photoDataUrl = $post['photo']; // Ini akan berisi URL data gambar dalam format base64
+
+            if ($photoDataUrl != 'null') {
+                // Decode URL base64 menjadi data biner
+                $photoData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $photoDataUrl));
+                // Simpan data gambar ke file di server
+                $filename = $id . '_' . date('YmdHis', strtotime(currentDateTime())) . '.jpg'; // Ubah sesuai kebutuhan Anda
+                $file_path = './uploads/' . $filename;
+                file_put_contents($file_path, $photoData);
+            } else {
+                $filename = 'no_photo.jpg';
+            }
+
+            $params = array(
+                'activity_id' => $id,
+                'file_name' => $filename,
+                'img_ket' => $post['img_ket'],
+                'created_at' => currentDateTime(),
+                'created_by' => userId()
+            );
+            $this->db->insert('activity_img', $params);
+        }
+
+
+
         if ($this->db->affected_rows() > 0) {
             $response = array(
                 'success' => true,
@@ -85,7 +107,40 @@ class Maintenance extends CI_Controller
     public function editActivity()
     {
         $post = $this->input->post();
+
+        // var_dump($post);
+        // die;
+
         $this->maintenance_m->editActivity($post);
+
+
+        $photoDataUrl = $post['photo']; // Ini akan berisi URL data gambar dalam format base64
+        $id = $post['id_task'];
+
+        if ($photoDataUrl != 'null') {
+            // Decode URL base64 menjadi data biner
+            $photoData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $photoDataUrl));
+            // Simpan data gambar ke file di server
+            $filename = $id . '_' . date('YmdHis', strtotime(currentDateTime())) . '.jpg'; // Ubah sesuai kebutuhan Anda
+            $file_path = './uploads/' . $filename;
+            file_put_contents($file_path, $photoData);
+
+            $params = array(
+                'activity_id' => $id,
+                'file_name' => $filename,
+                'img_ket' => $post['img_ket'],
+                'updated_at' => currentDateTime(),
+                'updated_by' => userId()
+            );
+            $this->db->where(['activity_id' => $id]);
+            $this->db->update('activity_img', $params);
+        }
+
+
+
+
+
+
         if ($this->db->affected_rows() > 0) {
             $response = array(
                 'success' => true,
@@ -183,7 +238,8 @@ class Maintenance extends CI_Controller
         $detail = $this->maintenance_m->getItemDetail($id);
         $data = array(
             'activity' => $this->maintenance_m->getActivity($post),
-            'item' => $detail
+            'item' => $detail,
+            'photo' => $this->db->get_where('activity_img', ['activity_id' => $id])->row()
         );
         $response = array(
             'success' => true,

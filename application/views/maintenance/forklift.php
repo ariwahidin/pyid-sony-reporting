@@ -161,7 +161,16 @@
                             </select>
                             <button type="button" id="startCamera">Mulai Kamera</button>
                             <button type="button" id="capturePhoto">Ambil Foto</button>
+
                         </div>
+                    </div>
+
+                    <div class="mb-2 row">
+                        <div class="form-group col">
+                            <label style="font-weight: bold;">Keterangan gambar : </label>
+                            <input class="form-control" type="text" name="img_ket" id="img_ket" value="">
+                        </div>
+                        <hr class="mt-3 mb-1">
                     </div>
 
                     <div class="hstack gap-2 justify-content-end">
@@ -280,6 +289,13 @@
                 });
             }
         }
+
+        $('#createTask').on('hidden.bs.modal', function() {
+            // Fungsi yang ingin Anda jalankan ketika modal ditutup
+            console.log('Modal ditutup');
+            stopCamera();
+            //Tambahkan fungsi lain sesuai kebutuhan Anda
+        });
         // End Foto
 
         //     var socket;
@@ -292,6 +308,8 @@
             $('#btnTask').text('Create');
             $('#createTaskLabel').text('Form ceklist forklift');
             $('#proses').val('new_task');
+            $("#videoContainer").empty();
+            $('#img_ket').val('');
             $('#createTask').modal('show');
         });
 
@@ -511,6 +529,10 @@
                     let divTable = $('#tblDetail');
                     divTable.empty();
                     divTable.html(response.table_detail);
+
+                    $("#videoContainer").empty();
+                    // $("<img>").attr("src", photoDataUrl).appendTo("#videoContainer");
+
                     $('#modalDetail').modal('show');
                 }
             }, 'json');
@@ -809,6 +831,7 @@
             let result = await $.post('getActivityById', {
                 id: id
             }, function(response) {
+                photoDataUrl = null;
                 let detail = response.detail;
 
                 detail.forEach(function(elem) {
@@ -828,6 +851,9 @@
                 });
 
                 let header = response.header;
+
+                // console.log(response);
+
                 $('#proses').val('edit_task');
                 $('#id_task').val(id);
                 $('#forklift').val(header.id_forklift);
@@ -848,6 +874,12 @@
                 // // $('#pintu_unloading').val(task.pintu_unloading);
                 $('#btnTask').text('Edit');
                 $('#createTaskLabel').text('Edit Activity');
+
+                $("#videoContainer").empty();
+                $("<img>").attr("src", "<?= base_url('uploads/') ?>" + response.photo.file_name).appendTo("#videoContainer");
+
+                $('#img_ket').val(response.photo.img_ket)
+
                 $('#createTask').modal('show');
                 stopLoading();
             }, 'json');

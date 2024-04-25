@@ -40,9 +40,20 @@ class Maintenance_m extends CI_Model
                 $params_d[$key]['desc'] = $desc[$key];
             }
 
-
             $this->db->insert_batch('activity_d',  $params_d);
+
+
+            $result = array(
+                'success' => true,
+                'id' => $id_activity
+            );
+        } else {
+            $result = array(
+                'success' => false,
+            );
         }
+
+        return $result;
     }
 
 

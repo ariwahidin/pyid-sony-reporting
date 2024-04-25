@@ -1,4 +1,4 @@
-<table style="font-size: 12px;" class="table table-bordered table-striped align-middle mb-0" id="tableActivityHeader">
+<table style="font-size: 12px;" class="table table-sm table-bordered table-striped align-middle mb-0" id="tableActivityHeader">
     <thead>
         <tr>
             <th scope="col">FORKLIFT</th>
