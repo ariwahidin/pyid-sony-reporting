@@ -28,7 +28,7 @@
         <div class="col col-md-7">
             <div class="card">
                 <div class="card-header">
-                    <a href="waranty/printWarantyReguler" class="btn btn-success float-end" id="btnPrint">Print Waranty</a>
+                    <a href="<?= base_url('waranty/printWarantyReguler') ?>" class="btn btn-success float-end" id="btnPrint">Print Waranty</a>
                 </div>
                 <div class="card-body" id="cardTable">
                     <table id="data-table" class="table display table-sm compact" style="width:100%">

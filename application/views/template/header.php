@@ -361,24 +361,6 @@
                     </div>
                     <ul class="navbar-nav" id="navbar-nav">
                         <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-                        <li class="nav-item">
-                            <a class="nav-link menu-link" href="<?= base_url('dashboard/index') ?>">
-                                <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboard">Dashboards</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link menu-link" href="<?= base_url('#') ?>">
-                                <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboard">Waranty</span>
-                            </a>
-                            <div class="collapse menu-dropdown show" id="">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a href="<?= base_url() ?>" class="nav-link menuNav" data-id="pwg001" data-url="<?= base_url('waranty') ?>" data-tab-name="Regular Waranty">Regular</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
                         <?php
                         foreach (parentMenu()->result() as $parent) {
                         ?>

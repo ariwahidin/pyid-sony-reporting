@@ -27,7 +27,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 // exit;
 
 // exit;
-$config['base_url'] = 'http://localhost:82/wms_new';
+$config['base_url'] = 'http://localhost:82/pyid-sony-reporting';
 
 // $host = $_SERVER['HTTP_HOST'];
 

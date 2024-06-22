@@ -4,23 +4,34 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Sign In | Piaggio</title>
+    <title>Sign In | Sony Reporting</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Piaggio" name="description" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('public/assets') }}/images/yusen-kotak.jpg">
-    <!--Swiper slider css-->
-    <link href="{{ asset('public/assets') }}/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <!-- jsvectormap css -->
+    <link href="<?= base_url('jar/html/default/') ?>assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="<?= base_url('jar/html/default/') ?>assets/images/yusen-kotak.jpg">
+
+    <!-- gridjs css -->
+    <link rel="stylesheet" href="<?= base_url('jar/html/default/') ?>assets/libs/gridjs/theme/mermaid.min.css">
     <!-- Layout config Js -->
-    <script src="{{ asset('public/assets') }}/js/layout.js"></script>
+    <script src="<?= base_url('jar/html/default/') ?>assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
-    <link href="{{ asset('public/assets') }}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url('jar/html/default/') ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
-    <link href="{{ asset('public/assets') }}/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url('jar/html/default/') ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
-    <link href="{{ asset('public/assets') }}/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url('jar/html/default/') ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
-    <link href="{{ asset('public/assets') }}/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url('jar/html/default/') ?>assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+
+
+    <!-- Sweet Alert css-->
+    <link href="<?= base_url('jar/html/default/') ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <script src="<?= base_url() ?>myassets/js/jquery-3.7.0.js"></script>
+    <script src="<?= base_url() ?>myassets/js/moment.js"></script>
+    <script src="<?= base_url() ?>myassets/js/moment-time-zone.js"></script>
     <style>
         #logo {
             border-radius: 10%;
@@ -46,22 +57,18 @@
         <!-- auth page content -->
         <div class="auth-page-content">
             <div class="container">
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center mt-sm-5 mb-4 text-white-50">
                             <div>
                                 <a href="index.html" class="d-inline-block auth-logo">
-                                    <img src="{{ asset('public/assets') }}/images/Piaggio-Logo.png" alt="" height="80">
-                                </a>
-                                &nbsp;
-                                <a href="index.html" class="d-inline-block auth-logo">
-                                    <img src="{{ asset('public/assets') }}/images/yusen-logistics.png" alt="" height="80">
+                                    <img src="<?= base_url('jar/html/default/assets/') ?>images/sony-logo.png" alt="" height="50" style="margin-top: 60px;">
                                 </a>
                             </div>
                             <p class="mt-0 fs-15 fw-medium"></p>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- end row -->
 
                 <div class="row justify-content-center">
@@ -70,7 +77,7 @@
 
                             <div class="card-body p-4">
                                 <div class="text-center mt-2">
-                                    <h5 class="text-primary">Login to your account with username and password</h5>
+                                    <h2 class="text-primary">SONY Reporting</h2>
                                 </div>
                                 <div class="p-2 mt-4">
                                     <form id="loginForm">
@@ -133,21 +140,21 @@
     <!-- end auth-page-wrapper -->
 
     <!-- JAVASCRIPT -->
-    <script src="{{ asset('public/assets') }}/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('public/assets') }}/libs/simplebar/simplebar.min.js"></script>
-    <script src="{{ asset('public/assets') }}/libs/node-waves/waves.min.js"></script>
-    <script src="{{ asset('public/assets') }}/libs/feather-icons/feather.min.js"></script>
-    <script src="{{ asset('public/assets') }}/js/pages/plugins/lord-icon-2.1.0.js"></script>
-    <script src="{{ asset('public/assets') }}/js/plugins.js"></script>
+    <script src="<?= base_url('jar/html/default/assets/') ?>libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url('jar/html/default/assets/') ?>libs/simplebar/simplebar.min.js"></script>
+    <script src="<?= base_url('jar/html/default/assets/') ?>libs/node-waves/waves.min.js"></script>
+    <script src="<?= base_url('jar/html/default/assets/') ?>libs/feather-icons/feather.min.js"></script>
+    <script src="<?= base_url('jar/html/default/assets/') ?>js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="<?= base_url('jar/html/default/assets/') ?>js/plugins.js"></script>
 
     <!--Swiper slider js-->
-    <script src="{{ asset('public/assets') }}/libs/swiper/swiper-bundle.min.js"></script>
+    <script src="<?= base_url('jar/html/default/assets/') ?>libs/swiper/swiper-bundle.min.js"></script>
 
     <!-- swiper.init js -->
-    <script src="{{ asset('public/assets') }}/js/pages/swiper.init.js"></script>
+    <script src="<?= base_url('jar/html/default/assets/') ?>js/pages/swiper.init.js"></script>
 
     <!-- password-addon init -->
-    <script src="{{ asset('public/assets') }}/js/pages/password-addon.init.js"></script>
+    <script src="<?= base_url('jar/html/default/assets/') ?>js/pages/password-addon.init.js"></script>
 
     <script>
         document.getElementById("username").focus()
