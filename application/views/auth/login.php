@@ -8,19 +8,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Piaggio" name="description" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="<?= base_url('jar/html/default/') ?>assets/images/yusen-kotak.jpg">
+    <link rel="shortcut icon" href="{{ asset('public/assets') }}/images/yusen-kotak.jpg">
     <!--Swiper slider css-->
-    <link href="<?= base_url('jar/html/default/') ?>assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('public/assets') }}/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
     <!-- Layout config Js -->
-    <script src="<?= base_url('jar/html/default/') ?>assets/js/layout.js"></script>
+    <script src="{{ asset('public/assets') }}/js/layout.js"></script>
     <!-- Bootstrap Css -->
-    <link href="<?= base_url('jar/html/default/') ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('public/assets') }}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
-    <link href="<?= base_url('jar/html/default/') ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('public/assets') }}/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
-    <link href="<?= base_url('jar/html/default/') ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('public/assets') }}/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
-    <link href="<?= base_url('jar/html/default/') ?>assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('public/assets') }}/css/custom.min.css" rel="stylesheet" type="text/css" />
     <style>
         #logo {
             border-radius: 10%;
@@ -51,11 +51,11 @@
                         <div class="text-center mt-sm-5 mb-4 text-white-50">
                             <div>
                                 <a href="index.html" class="d-inline-block auth-logo">
-                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/Piaggio-Logo.png" alt="" height="80">
+                                    <img src="{{ asset('public/assets') }}/images/Piaggio-Logo.png" alt="" height="80">
                                 </a>
                                 &nbsp;
                                 <a href="index.html" class="d-inline-block auth-logo">
-                                    <img src="<?= base_url('jar/html/default/') ?>assets/images/yusen-logistics.png" alt="" height="80">
+                                    <img src="{{ asset('public/assets') }}/images/yusen-logistics.png" alt="" height="80">
                                 </a>
                             </div>
                             <p class="mt-0 fs-15 fw-medium"></p>
@@ -84,7 +84,7 @@
                                             <label class="form-label" for="password-input">Password</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
                                                 <input type="password" class="form-control pe-5 password-input" placeholder="Enter password" id="password">
-                                                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="submit" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                                                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                             </div>
                                         </div>
 
@@ -133,21 +133,21 @@
     <!-- end auth-page-wrapper -->
 
     <!-- JAVASCRIPT -->
-    <script src="<?= base_url('jar/html/default/') ?>assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="<?= base_url('jar/html/default/') ?>assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="<?= base_url('jar/html/default/') ?>assets/libs/node-waves/waves.min.js"></script>
-    <script src="<?= base_url('jar/html/default/') ?>assets/libs/feather-icons/feather.min.js"></script>
-    <script src="<?= base_url('jar/html/default/') ?>assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
-    <script src="<?= base_url('jar/html/default/') ?>assets/js/plugins.js"></script>
+    <script src="{{ asset('public/assets') }}/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('public/assets') }}/libs/simplebar/simplebar.min.js"></script>
+    <script src="{{ asset('public/assets') }}/libs/node-waves/waves.min.js"></script>
+    <script src="{{ asset('public/assets') }}/libs/feather-icons/feather.min.js"></script>
+    <script src="{{ asset('public/assets') }}/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="{{ asset('public/assets') }}/js/plugins.js"></script>
 
     <!--Swiper slider js-->
-    <script src="<?= base_url('jar/html/default/') ?>assets/libs/swiper/swiper-bundle.min.js"></script>
+    <script src="{{ asset('public/assets') }}/libs/swiper/swiper-bundle.min.js"></script>
 
     <!-- swiper.init js -->
-    <script src="<?= base_url('jar/html/default/') ?>assets/js/pages/swiper.init.js"></script>
+    <script src="{{ asset('public/assets') }}/js/pages/swiper.init.js"></script>
 
     <!-- password-addon init -->
-    <script src="<?= base_url('jar/html/default/') ?>assets/js/pages/password-addon.init.js"></script>
+    <script src="{{ asset('public/assets') }}/js/pages/password-addon.init.js"></script>
 
     <script>
         document.getElementById("username").focus()

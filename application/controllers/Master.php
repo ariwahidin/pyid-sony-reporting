@@ -18,10 +18,6 @@ class Master extends CI_Controller
     }
 
     
-
-
-
-
     public function listChecker()
     {
         $data = array(

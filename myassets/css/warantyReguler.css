@@ -1,0 +1,173 @@
+.imgBarcode {
+    margin-top: 20px;
+    width: 280px;
+    height: 25px
+}
+
+.imgBarcode2 {
+    margin-top: 20px;
+    width: 280px;
+    height: 25px
+}
+
+.divItemModel {
+    position: absolute;
+    margin-top: 80px;
+    margin-left: 60px;
+}
+
+.divTokoPenjual {
+    position: absolute;
+    margin-top: 120px;
+    margin-left: 60px;
+}
+
+.divTanggalPenjualan {
+    position: absolute;
+    margin-top: 230px;
+    margin-left: 70px;
+}
+
+.divKodeBawah1 {
+    position: absolute;
+    margin-top: 335px;
+}
+
+.divKodeBawah2 {
+    position: absolute;
+    margin-top: 335px;
+}
+
+.p3a {
+    max-width: 200px;
+    text-align: center;
+    font-size: 9px;
+    margin-left: 275px;
+}
+
+.page {
+    position: relative;
+    width: 148mm;
+    height: 210mm;
+    padding: 5mm !important;
+    margin-bottom: 20px;
+    background-size: contain;
+    font-family: Arial, Helvetica, sans-serif;
+    page-break-before: always;
+}
+
+.page:first-child {
+    page-break-before: auto;
+}
+
+@media print {
+    .page {
+        page-break-before: always;
+    }
+
+    /* Mencegah page-break sebelum elemen pertama */
+    .page:first-child {
+        page-break-before: auto;
+    }
+}
+
+.barcode {
+    position: absolute;
+    padding-left: 35mm;
+    text-align: center;
+}
+
+.barcode2 {
+    position: absolute;
+    margin-top: 400px;
+    margin-left: 160px;
+    text-align: center;
+}
+
+.p1 {
+    margin-top: 5mm;
+    margin-left: 30mm;
+    font-size: 12px;
+}
+
+.p2 {
+    margin-top: -20px;
+    margin-left: 15mm;
+    font-size: 10px;
+}
+
+.p3 {
+    margin-top: 120px;
+    margin-left: 30mm;
+    font-size: 12px;
+}
+
+.p4 {
+    margin-left: 120px;
+    font-size: 10px;
+}
+
+.p5 {
+    margin-left: 350px;
+    font-size: 10px;
+}
+
+.print-button {
+    margin-left: 20px;
+}
+
+.pb1 {
+    margin-top: 0px;
+    font-size: 14px;
+}
+
+.pb2 {
+    margin-top: 0px;
+    font-size: 14px;
+}
+
+.divItemModel2 {
+    position: absolute;
+    margin-top: 480px;
+    margin-left: 150px;
+}
+
+.p6 {
+    font-size: 12px;
+}
+
+.divTokoPenjual2 {
+    position: absolute;
+    margin-top: 500px;
+    margin-left: 150px;
+}
+
+.p7 {
+    font-size: 12px;
+}
+
+.divKodeBawah2a {
+    position: absolute;
+    margin-top: 550px;
+    margin-left: 400px;
+}
+
+.p8 {
+    font-size: 10px;
+}
+
+.divKodeBawah1a {
+    position: absolute;
+    margin-top: 450px;
+    margin-left: 420px;
+}
+
+.p9 {
+    font-size: 10px;
+}
+
+.p10 {
+    margin-top: 25mm;
+    margin-left: 110mm;
+    font-size: 10px;
+}

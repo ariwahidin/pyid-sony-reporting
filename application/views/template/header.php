@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="<?= ($this->uri->segment(1) == '' && $this->uri->segment(2) == 'index') ? 'sm' : 'lg' ?>" data-sidebar-image="none" data-preloader="disable">
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="<?= $this->uri->segment(1) == 'dashboard' ? 'sm' : 'lg' ?>" data-sidebar-image="none" data-preloader="disable">
 
 <head>
 
@@ -39,6 +39,28 @@
 </head>
 
 <style>
+
+</style>
+
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    #containerFrame {
+        width: 100%;
+        height: 100%;
+    }
+
+    iframe {
+        width: 100%;
+        margin-left: 0px !important;
+        min-height: 651.297px;
+    }
+
     /* CSS untuk latar belakang hitam transparan */
     .overlay {
         position: fixed;
@@ -254,15 +276,20 @@
                             </a>
                         </div>
 
-                        <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
+                        <!-- <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
                             <span class="hamburger-icon">
                                 <span></span>
                                 <span></span>
                                 <span></span>
                             </span>
-                        </button>
+                        </button> -->
 
+                        <div class="d-block p-2" id="tabOpenBadge">
+                            <!-- <button class="badge badge-label bg-secondary"> <i class="mdi mdi-circle-medium"></i> <span class="">Test</span> &nbsp; <span class="badge bg-danger"><strong>X</strong></span></button> -->
+                        </div>
                     </div>
+
+
 
                     <div class="d-flex align-items-center">
 
@@ -272,11 +299,11 @@
                             </button>
                         </div>
 
-                        <div class="ms-1 header-item d-none d-sm-flex">
+                        <!-- <div class="ms-1 header-item d-none d-sm-flex">
                             <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode">
                                 <i class='bx bx-moon fs-22'></i>
                             </button>
-                        </div>
+                        </div> -->
 
                         <div class="dropdown ms-sm-3 header-item topbar-user">
                             <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -319,7 +346,7 @@
                     </span>
                     <span class="logo-lg">
                         <img style="border-radius: 10%; margin-top: -5px;" src="<?= base_url('jar/html/default/') ?>assets/images/yusen-kotak.jpg" alt="" height="40">
-                        &nbsp;<span style="color: white; font-size: 16px;"><strong>Piaggio</strong></span>
+                        &nbsp;<span style="color: white; font-size: 16px;"><strong>Demo</strong></span>
                     </span>
                 </a>
                 <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -339,6 +366,18 @@
                                 <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboard">Dashboards</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="<?= base_url('#') ?>">
+                                <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboard">Waranty</span>
+                            </a>
+                            <div class="collapse menu-dropdown show" id="">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url() ?>" class="nav-link menuNav" data-id="pwg001" data-url="<?= base_url('waranty') ?>" data-tab-name="Regular Waranty">Regular</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
 
                         <?php
                         foreach (parentMenu()->result() as $parent) {
@@ -354,7 +393,7 @@
                                         foreach (child_menu($parent->id)->result() as $child) {
                                         ?>
                                             <li class="nav-item">
-                                                <a href="<?= base_url($child->url) ?>" class="nav-link" data-key="t-starter"> <?= $child->menu_name ?> </a>
+                                                <a href="<?= base_url() ?>" class="nav-link menuNav" data-id="<?= $child->id ?>" data-url="<?= base_url($child->url) ?>" data-tab-name="<?= $child->menu_name ?>" data-key="t-starter"> <?= $child->menu_name ?> </a>
                                             </li>
                                         <?php
                                         }
@@ -381,5 +420,5 @@
         <!-- ============================================================== -->
         <div class="main-content">
 
-            <div class="page-content">
-                <div class="container-fluid">
+            <div class="">
+                <div style="padding:inherit; padding-top: 65px;" class="container-fluid" id="containerFrame">

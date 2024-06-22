@@ -12,9 +12,9 @@ class Forklift extends CI_Controller
 
     public function render($view, array $data = null)
     {
-        $this->load->view('template/header');
+        $this->load->view('template/header_iframe');
         $this->load->view($view, $data);
-        $this->load->view('template/footer');
+        $this->load->view('template/footer_iframe');
     }
 
     public function index()
@@ -23,6 +23,7 @@ class Forklift extends CI_Controller
             'forklift' => $this->forklift_m->getForklift()
         );
         $this->render('forklift/index', $data);
+        // $this->load->view('forklift/index', $data);
     }
 
     public function createForklift()

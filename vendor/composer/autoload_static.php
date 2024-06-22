@@ -38,6 +38,7 @@ class ComposerStaticInit6a7879dec78672d13c6e0a2abd9f8271
         'P' => 
         array (
             'Psr\\Http\\Message\\' => 17,
+            'Picqer\\Barcode\\' => 15,
             'PhpParser\\' => 10,
         ),
         'G' => 
@@ -108,6 +109,10 @@ class ComposerStaticInit6a7879dec78672d13c6e0a2abd9f8271
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Picqer\\Barcode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/picqer/php-barcode-generator/src',
         ),
         'PhpParser\\' => 
         array (

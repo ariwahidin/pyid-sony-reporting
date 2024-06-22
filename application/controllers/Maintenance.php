@@ -13,9 +13,9 @@ class Maintenance extends CI_Controller
 
     public function render($view, array $data = null)
     {
-        $this->load->view('template/header');
+        $this->load->view('template/header_iframe');
         $this->load->view($view, $data);
-        $this->load->view('template/footer');
+        $this->load->view('template/footer_iframe');
     }
 
     public function forklift()

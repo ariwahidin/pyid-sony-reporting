@@ -20,12 +20,13 @@
     }
 </style>
 
-<div class="row">
-    <div class="col-12">
-        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-            <h4 class="mb-sm-0">Maintenance Forklift</h4>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between mt-1">
+                <h4 class="mb-sm-0">Maintenance Forklift</h4>
 
-            <!-- <div class="page-title-right">
+                <!-- <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="javascript: void(0);">Outbound Task</a>
                         <span id="spConnect"></span>
@@ -33,174 +34,175 @@
                 </ol>
             </div> -->
 
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="d-flex align-items-lg-center flex-lg-row flex-column">
-            <div class="flex-grow-1">
-                <h4 class="card-title mb-0 flex-grow-1"><strong id="clock"></strong></h4>
-            </div>
-            <?php if ($_SESSION['piaggio_auth']['role'] != 4) { ?>
-                <div class="mt-3 ms-3 mt-lg-0">
-
-                </div>
-            <?php } ?>
-        </div>
-    </div>
-</div>
-<div class="card">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="row d-flex mb-1">
-                    <div class="col-6">
-                        <span>Start Date : </span>
-                        <input type="date" class="form-control-sm" id="startDate">
-                    </div>
-                    <div class="col-6">
-                        <span>End Date : </span>
-                        <input type="date" class="form-control-sm" id="endDate">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="row d-flex">
-                    <div class="col-12 col-md-6">
-                        <button class="btn btn-sm btn-success" id="btnExcel">Excel Summary</button>
-                        <button class="btn btn-sm btn-primary" id="btnCreate">Create new</button>
-                    </div>
-                    <div class="col-6">
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-    <div class="card-body table-responsive" id="content">
-    </div>
-</div>
 
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+                <div class="flex-grow-1">
+                    <h4 class="card-title mb-0 flex-grow-1"><strong id="clock"></strong></h4>
+                </div>
+                <?php if ($_SESSION['piaggio_auth']['role'] != 4) { ?>
+                    <div class="mt-3 ms-3 mt-lg-0">
 
-<div class="modal fade" id="createTask" tabindex="-1" aria-labelledby="createTaskLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md modal-dialog-centered">
-        <div class="modal-content border-0">
-            <div class="modal-header p-3 bg-success-subtle">
-                <h5 class="modal-title" id="createTaskLabel"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" id="createTaskBtn-close" aria-label="Close"></button>
+                    </div>
+                <?php } ?>
             </div>
-            <div class="modal-body">
-                <div id="task-error-msg" class="alert alert-danger py-2"></div>
-                <form autocomplete="off" id="creatask">
-                    <input type="hidden" id="proses" name="proses" class="form-control">
-                    <input type="hidden" id="id_task" name="id_task" class="form-control">
-
-                    <div class="mb-2 row">
-                        <div class="form-group col">
-                            <label style="font-weight: bold;">Forklift</label>
-                            <select name="forklift" id="forklift" class="form-control" required>
-                                <option value="">Choose Forklift</option>
-                                <?php
-                                foreach ($forklift->result() as $data) {
-                                ?>
-                                    <option value="<?= $data->id ?>"><?= $data->name ?></option>
-                                <?php
-                                }
-                                ?>
-                            </select>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row d-flex mb-1">
+                        <div class="col-6">
+                            <span>Start Date : </span>
+                            <input type="date" class="form-control-sm" id="startDate">
                         </div>
-                        <hr class="mt-3 mb-1">
+                        <div class="col-6">
+                            <span>End Date : </span>
+                            <input type="date" class="form-control-sm" id="endDate">
+                        </div>
                     </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row d-flex">
+                        <div class="col-12 col-md-6">
+                            <button class="btn btn-sm btn-success" id="btnExcel">Excel Summary</button>
+                            <button class="btn btn-sm btn-primary" id="btnCreate">Create new</button>
+                        </div>
+                        <div class="col-6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body table-responsive" id="content">
+        </div>
+    </div>
 
-                    <?php
-                    foreach ($item->result() as $data) {
-                    ?>
+
+    <div class="modal fade" id="createTask" tabindex="-1" aria-labelledby="createTaskLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header p-3 bg-success-subtle">
+                    <h5 class="modal-title" id="createTaskLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="createTaskBtn-close" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="task-error-msg" class="alert alert-danger py-2"></div>
+                    <form autocomplete="off" id="creatask">
+                        <input type="hidden" id="proses" name="proses" class="form-control">
+                        <input type="hidden" id="id_task" name="id_task" class="form-control">
+
                         <div class="mb-2 row">
-                            <label style="font-weight: bold;"><?= $data->name ?></label>
-                            <div class="col">
-                                <input class="form-check-input" type="radio" name="<?= $data->id ?>" value="Y" require checked>
-                                <label class="form-check-label">
-                                    Good
-                                </label>
-                            </div>
-                            <div class="col">
-                                <input class="form-check-input" type="radio" name="<?= $data->id ?>" value="N" require>
-                                <label class="form-check-label">
-                                    Not Good
-                                </label>
-                            </div>
-                            <div class="col-md-12 mt-2">
-                                <input type="text" id="desc-<?= $data->id ?>" name="desc-<?= $data->id ?>" class="form-control" placeholder="Descrption">
+                            <div class="form-group col">
+                                <label style="font-weight: bold;">Forklift</label>
+                                <select name="forklift" id="forklift" class="form-control" required>
+                                    <option value="">Choose Forklift</option>
+                                    <?php
+                                    foreach ($forklift->result() as $data) {
+                                    ?>
+                                        <option value="<?= $data->id ?>"><?= $data->name ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
                             </div>
                             <hr class="mt-3 mb-1">
                         </div>
-                    <?php
-                    }
-                    ?>
+
+                        <?php
+                        foreach ($item->result() as $data) {
+                        ?>
+                            <div class="mb-2 row">
+                                <label style="font-weight: bold;"><?= $data->name ?></label>
+                                <div class="col">
+                                    <input class="form-check-input" type="radio" name="<?= $data->id ?>" value="Y" require checked>
+                                    <label class="form-check-label">
+                                        Good
+                                    </label>
+                                </div>
+                                <div class="col">
+                                    <input class="form-check-input" type="radio" name="<?= $data->id ?>" value="N" require>
+                                    <label class="form-check-label">
+                                        Not Good
+                                    </label>
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <input type="text" id="desc-<?= $data->id ?>" name="desc-<?= $data->id ?>" class="form-control" placeholder="Descrption">
+                                </div>
+                                <hr class="mt-3 mb-1">
+                            </div>
+                        <?php
+                        }
+                        ?>
 
 
-                    <div class="mb-2 row">
-                        <div class="form-group col">
-                            <label style="font-weight: bold;">Hour Meter Start</label>
-                            <input class="form-control" type="number" name="meter_start" value="">
+                        <div class="mb-2 row">
+                            <div class="form-group col">
+                                <label style="font-weight: bold;">Hour Meter Start</label>
+                                <input class="form-control" type="number" name="meter_start" value="">
+                            </div>
+                            <div class="form-group col">
+                                <label style="font-weight: bold;">Hour Meter Fisnish</label>
+                                <input class="form-control" type="number" name="meter_finish" value="">
+                            </div>
+                            <hr class="mt-3 mb-1">
                         </div>
-                        <div class="form-group col">
-                            <label style="font-weight: bold;">Hour Meter Fisnish</label>
-                            <input class="form-control" type="number" name="meter_finish" value="">
+
+                        <div class="mb-2 row">
+                            <div class="form-group">
+                                <div id="videoContainer"></div>
+                                <select id="cameraSelect">
+                                    <option value="user">Kamera Depan</option>
+                                    <option value="environment">Kamera Belakang</option>
+                                </select>
+                                <button type="button" id="startCamera">Mulai Kamera</button>
+                                <button type="button" id="capturePhoto">Ambil Foto</button>
+
+                            </div>
                         </div>
-                        <hr class="mt-3 mb-1">
-                    </div>
 
-                    <div class="mb-2 row">
-                        <div class="form-group">
-                            <div id="videoContainer"></div>
-                            <select id="cameraSelect">
-                                <option value="user">Kamera Depan</option>
-                                <option value="environment">Kamera Belakang</option>
-                            </select>
-                            <button type="button" id="startCamera">Mulai Kamera</button>
-                            <button type="button" id="capturePhoto">Ambil Foto</button>
-
+                        <div class="mb-2 row">
+                            <div class="form-group col">
+                                <label style="font-weight: bold;">Keterangan gambar : </label>
+                                <input class="form-control" type="text" name="img_ket" id="img_ket" value="">
+                            </div>
+                            <hr class="mt-3 mb-1">
                         </div>
-                    </div>
 
-                    <div class="mb-2 row">
-                        <div class="form-group col">
-                            <label style="font-weight: bold;">Keterangan gambar : </label>
-                            <input class="form-control" type="text" name="img_ket" id="img_ket" value="">
+                        <div class="hstack gap-2 justify-content-end">
+                            <button type="button" class="btn btn-ghost-success" data-bs-dismiss="modal"><i class="ri-close-fill align-bottom"></i> Close</button>
+                            <button type="submit" class="btn btn-primary" id="btnTask">Create</button>
                         </div>
-                        <hr class="mt-3 mb-1">
-                    </div>
-
-                    <div class="hstack gap-2 justify-content-end">
-                        <button type="button" class="btn btn-ghost-success" data-bs-dismiss="modal"><i class="ri-close-fill align-bottom"></i> Close</button>
-                        <button type="submit" class="btn btn-primary" id="btnTask">Create</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="modalDetail" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content border-0">
-            <div class="modal-header p-3 bg-success-subtle">
-                <h5 class="modal-title" id="">Detail</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" id="createTaskBtn-close" aria-label="Close"></button>
-            </div>
-            <div class="modal-body table-responsive">
+    <div class="modal fade" id="modalDetail" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-header p-3 bg-success-subtle">
+                    <h5 class="modal-title" id="">Detail</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" id="createTaskBtn-close" aria-label="Close"></button>
+                </div>
+                <div class="modal-body table-responsive">
 
-                <div id="tblHeader"></div>
-                <br>
-                <div id="tblDetail"></div>
+                    <div id="tblHeader"></div>
+                    <br>
+                    <div id="tblDetail"></div>
 
 
-            </div>
-            <div class="modal-footer">
-                <div class="hstack gap-2 justify-content-end">
-                    <button type="button" class="btn btn-ghost-success" data-bs-dismiss="modal"><i class="ri-close-fill align-bottom"></i> Close</button>
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-ghost-success" data-bs-dismiss="modal"><i class="ri-close-fill align-bottom"></i> Close</button>
+                    </div>
                 </div>
             </div>
         </div>
